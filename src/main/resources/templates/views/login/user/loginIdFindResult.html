@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+      
+	<th:block layout:fragment="content">
+		<section id="login-container">
+		    <div class="rda-wrap">
+		        <div id="login-logo-box">
+		            <div id="login-logo"><img th:src="@{/images/logo.png}" alt="로고"></div>
+		            <h1 id="login-title">아이디 찾기</h1>
+		            <p class="login-result">회원님의 회원가입 시 아이디입니다.</p>
+		        </div>
+		        <div id="login-content-box">
+		            <form>
+		                <div>
+		                    <div class="login-input-box">
+		                        <div class="login-input-title">아이디</div>
+		                        <p id="idFindResult" class="login-input">gildong2***</p>
+		                    </div>
+		                </div>
+		                <div id="loginButtonBox">
+		                    <a th:href="@{/login/user/pwfind}" id="" class="login-button">비밀번호 찾기</a>
+		                    <a th:href='@{/login/user}' id="backButton" class="login-button">로그인</a>
+		                </div>
+		            </form>
+		        </div>
+		    </div>
+		</section>
+	</th:block>
+</html>
+<script th:inline="javascript">
+	$(function(){
+		$('header').remove();
+		$('footer').remove();
+	})
+</script>

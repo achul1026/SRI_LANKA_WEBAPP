@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+      
+	<th:block layout:fragment="content">
+		<div id="fullCalendar"></div>
+	</th:block>
+</html>
+<script th:inline="javascript">
+$(function() {
+	// 10 backgroundColor
+	const colorR = '#FF0100';
+	const colorYr = '#FE8400';
+	const colorY = '#FFFF00';
+	const colorGy = '#40CA77';
+	const colorG = '#008929';
+	const colorBg = '#0097BD';
+	const colorB = '#0152A6';
+	const colorPb = '#002A95';
+	const colorP = '#98128D';
+	const colorRp = '#DE056A';
+	
+	const calendarEl = document.getElementById('fullCalendar');
+	
+	const calendarData = /*[[${calendarData}]]*/
+	let calendarDataListArray = null; 
+	if(!isNull(calendarData)){
+		calendarDataListArray = JSON.parse(calendarData);
+	}
+		  
+	let calendar = new FullCalendar.Calendar(calendarEl, {
+		initialView: 'dayGridMonth',
+		headerToolbar: {          
+			left: 'prev',
+			center: 'title',      
+			right: 'next'       
+		},
+		height:'calc(100vh - 200px)',
+		eventBorderColor:'transparent',
+		events: calendarDataListArray,
+	});
+		
+		calendar.render();
+		
+  		let today = new Date();
+		let year = today.getFullYear();
+		let month = today.getMonth() +1;
+		let monthSet = month < 10 ? '0' + month : month;
+		let calendarToday = monthSet+'월 '+year+'년';
+		const centerTitle = document.querySelector('.fc-toolbar-title');
+		if(centerTitle) centerTitle.textContent = calendarToday;
+		
+	    calendar.on('datesSet', function(info) {
+	        let centerTitle = document.querySelector('.fc-toolbar-title');
+	        if (centerTitle) {
+	            let year = info.view.currentStart.getFullYear();
+	            let month = info.view.currentStart.getMonth() +1;
+	            let monthSet = month < 10 ? '0' + month : month;
+	            centerTitle.textContent = monthSet+'월 '+year+'년';
+	        }
+	    });
+	});
+	
+	
+	function endDate(dateStr) {
+	  var date = new Date(dateStr);
+	  date.setDate(date.getDate() + 1);
+	  return date.toISOString().split('T')[0];
+	}
+
+</script>

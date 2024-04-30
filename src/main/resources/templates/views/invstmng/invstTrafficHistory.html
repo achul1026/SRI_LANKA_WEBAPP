@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+      
+	<th:block layout:fragment="content">
+		<section id="surveyWrap">
+        	<div id="tcSurveyHistoryWrap" class="is-box">
+<!--				<div>
+					<a th:href="@{/tc/mcc/history}" class="is-key-button">MCC</a>
+					<a th:href="@{/tc/tm/history}" class="is-basic-button">TM</a>
+					<a th:href="@{/tc/axelload/history}" class="is-basic-button">AXLELOAD</a>
+				</div>-->		    	
+				
+		    	<div id="dateSettingWrap" class="is-box">
+		    		<div>날짜설정</div>
+		    		<div id="dateSetting">
+			    		<div id="dayPicker" class="input-date"><input type="text" class="date-picker startPicker wd100" id="startPicker" onchange="invstHistorySearchList();" readonly/></div>
+			    		<!--<div id="monthPicker" class="input-date none"><input type="text" class="date-picker monthPicker wd100" readonly/></div>-->
+		    		</div>
+		    	</div>
+		    	<div class="is-box">
+		    		<div>방향</div>
+		    		<div>
+			    		<select class="select-list-box" id="exmndrctId" onchange="invstHistorySearchList();">
+							<th:block th:each="item : ${exmnDrctList}">
+								<option th:selected="${item.exmndrctId eq tlExmnRsltHistorySearchDTO.exmndrctId}" th:text="|${item.startlcNm} -> ${item.endlcNm}|" th:value="${item.exmndrctId}" th:data-startlc-nm="${item.startlcNm}" th:data-endlc-nm="${item.endlcNm}"></option>
+							</th:block>
+						</select>
+		    		</div>
+		    	</div>
+            	<div class="is-box">
+            		<div class="tcTiemWrap scroll">
+						<div class="tc-time-box" th:each="item : ${tlExmnRsltHistoryDTO.hourList}">
+							<div class="tc-time" th:text="${item.hour}"></div>
+							<div class="tc-check">
+								<img th:if="${!item.isExists}" th:src="@{/images/un_check.png}" alt="check">
+								<img th:if="${item.isExists}" th:src="@{/images/check.png}" alt="check">
+							</div>
+						</div>
+        			</div>
+        		</div>
+        		<div class="is-box">
+        			<div class="tc-survey-history-text">
+        				<div>조사 근무 시간</div>
+        				<div th:text="${@commonUtils.formatLocalDateTime(tlExmnRsltHistoryDTO.startDt,'HH:mm')} +' ~ '+ ${@commonUtils.formatLocalDateTime(tlExmnRsltHistoryDTO.endDt,'HH:mm')}">06:00 ~ 18:00</div>
+        			</div>
+        			<div class="tc-survey-history-text">
+        				<div>조사 근무 형태</div>
+        				<div th:text="${tlExmnRsltHistoryDTO.exmnDiv}">1시간 단위 15분 조사</div>
+        			</div>
+        			<div class="tc-survey-history-text">
+        				<div>총 조사 횟수</div>
+        				<div th:text="|${tlExmnRsltHistoryDTO.invstTotalCnt}번|"></div>
+        			</div>
+        			<div class="tc-survey-history-text">
+        				<div>조사 완료</div>
+        				<div th:text="|${tlExmnRsltHistoryDTO.invstCompletedCnt}번|"></div>
+        			</div>
+        			<div class="tc-survey-history-text">
+        				<div>조사 미완료</div>
+        				<div th:text="|${tlExmnRsltHistoryDTO.invstNotCompletedCnt}번|"></div>
+        			</div>
+        		</div>
+        	</div>
+		</section>
+	</th:block>
+</html>
+<script th:inline="javascript">
+	dateToggleButton();
+	
+	const paramDate = /*[[${tlExmnRsltHistorySearchDTO.paramDate}]]*/ 
+	if(!isNull(paramDate)){
+		document.getElementById('startPicker').value = paramDate; 
+	}
+	
+	function invstHistorySearchList(){
+		const startPicker = document.getElementById('startPicker').value;
+		const exmndrctId = document.getElementById('exmndrctId').value;
+		const params = new URLSearchParams();
+		params.append('paramDate', startPicker);
+		params.append('exmndrctId', exmndrctId);
+		window.location.href=__contextPath__+"/invstmng/traffic/history?"+params.toString();
+	}
+</script>

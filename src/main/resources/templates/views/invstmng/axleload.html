@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+      
+	<th:block layout:fragment="content">
+		<div id="surveyMapContainer" class="directionNone">
+			<div id="map"></div>
+	    	<div id="mapControl">
+		    	<div id="currentLocation"><img th:src="@{/images/current_location.png}" alt="현재위치"/></div>
+		    	<div id="zoomBox">
+			    	<div id="zoomIn"><img th:src="@{/images/zoom_in.png}" alt="확대"/></div>
+			    	<div id="zoomOut"><img th:src="@{/images/zoom_out.png}" alt="축소"/></div>
+		    	</div>
+	    	</div>			
+		</div>
+		<div id="surveyContent">
+			<div class="content-wrap">
+				<div id="top-line"></div>
+				<div id="surveyInner">
+					<div>
+						<div class="survey-location">조사위치</div>
+						<div>스리랑카 OO지역 OO도로 동쪽 -> 서쪽 방향</div>
+					</div>
+					<div class="mt8">
+						<button type="button" id="locationSaveButton" class="is-key-button wd100">조사위치등록</button>
+						<input type="button" id="locationChangeButton" class="is-key-button wd100 none" value="조사위치변경"/>
+						<div id="locationChangeBox" class="none">
+							<input type="text" id="locationChangeText" class="is-input"  placeholder="위치 변경 사유를 입력해주세요."/>
+							<button type="button" id="locationChangeSaveButton" class="is-key-button">변경</button>												
+						</div>
+					</div>
+					<div class="is-box mt24">
+						<div class="survey-item">
+							<div class="survey-title">조사일시</div>
+							<div class="survey-text"><span>2023.11.02 06:00 ~ 18:00</span></div>
+						</div>
+						<div class="survey-item">
+							<div class="survey-title">근무형태</div>
+							<div class="survey-text">1인 1조 1시간 단위 15분 근무</div>
+						</div>
+						<div class="survey-item">
+							<div class="survey-title">날씨</div>
+							<div class="survey-text">
+								<label class="survey-weather is-secondary-button is-primary-button" for="weatherSunny"><input type="radio" id="weatherSunny" value="sunny" name="weatherButton" checked/>맑음</label>
+								<label class="survey-weather is-secondary-button" for="weatherCloud"><input type="radio" id="weatherCloud" value="cloud" name="weatherButton"/>흐림</label>
+								<label class="survey-weather is-secondary-button" for="weatherRain"><input type="radio" id="weatherRain" value="rain" name="weatherButton"/>비</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>			
+	</th:block>
+</html>
+<script>
+	surveyMap(126.9423889029348, 37.54162975284942, 100);
+</script>

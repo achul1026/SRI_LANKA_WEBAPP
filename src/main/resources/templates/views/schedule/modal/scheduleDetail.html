@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/modalLayout}">
+      
+	<th:block layout:fragment="modalContent">
+		<div class="modal-date-box">
+			<div class="flex-center">
+				<span class="modal-title-line modal-title-line1"></span>
+				<div class="modal-date-title">MCC 조사</div>
+			</div>
+			<ul class="modal-survey-content">
+				<li>조사기간 : <span>11월 7일 ~ 11월 18일</span></li>
+				<li>조사시간 : <span>오전 6:00 ~ 오후 6:00</span></li>
+			</ul>
+		</div>
+		<div class="modal-date-box">
+			<div class="flex-center">
+				<span class="modal-title-line modal-title-line2"></span>
+				<div class="modal-date-title">OD 조사</div>
+			</div>
+			<ul class="modal-survey-content">
+				<li>조사기간 : <span>11월 7일 ~ 11월 18일</span></li>
+				<li>조사시간 : <span>오전 6:00 ~ 오후 6:00</span></li>
+			</ul>
+		</div>
+	</th:block>
+</html>

@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+#headerContainer {
+	position:relative;
+	padding:16px 24px;
+    border-bottom: 1px solid var(--gray);
+}
+#headerItem {
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+}
+#headerPageName {
+	position:absolute;
+	top:50%;
+	left:50%;
+	transform:translate(-50%, -50%);
+}
+#pageName {
+	font-size:20px;
+	font-weight:700;
+	color:var(--key-color);
+}
+#headerNextButton {
+	padding:4px 8px;
+	font-size:14px;
+	color:var(--white);
+	border-radius:4px;
+	background-color:var(--key-color);
+}
+
+@media screen and (min-width: 768px) {
+	
+}                 

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+	<th:block layout:fragment="content">
+		<div id="headerWrap">
+		    <div id="headerLogo"><img th:src="@{/images/logo.png}" alt="logo"></div>
+		    <h1 class="header-title">RDA</h1>
+		</div>
+	    <section id="sectionWrap">
+        	<div class="box-title-more surverDetail">
+				<div class="box-title">조사 정보</div>
+			</div>
+	        <div id="userBox" class="is-box">
+	            <ul>
+	            	<li><span id="surveyTitle" th:text="${exmnInfo.exmnNm}"></span></li>
+	            	<li><span>조사코드 : </span><span th:text="${exmnInfo.partcptCd}"></span></li>
+	            	<li><span>조사기간 : </span><span th:text="${@commonUtils.formatLocalDateTime(exmnInfo.startDt,'YYYY-MM-dd')} +' ~ '+ ${@commonUtils.formatLocalDateTime(exmnInfo.endDt,'YYYY-MM-dd')}"></span></li>	
+	            	<li><span>조사시간 : </span><span th:text="${@commonUtils.formatLocalDateTime(exmnInfo.startDt,'HH:mm')} +' ~ '+ ${@commonUtils.formatLocalDateTime(exmnInfo.endDt,'HH:mm')}"></span></li>
+	            </ul>
+	        </div>
+	        <div>
+	            <div id="allContainer">
+	            	<!-- 조사원 정보 -->
+	            	<div id="surveyorListBox">
+	            		<div id="surveyorListWrap">
+							<div class="box-title-more">
+								<div class="box-title">조사원 정보</div>
+							</div>
+	            			<ul class="is-box surveyor-box scroll">
+	            				<li class="surveyor-list" th:each="item:${pollsterInfo}">
+            						<span class="surveyor-name-box">
+            							<span th:text="${item.pollsterType.getName()}"></span>
+            							<span th:text="${item.pollsterNm}"></span>
+            						</span>
+            						<span>
+            							<span th:text="${item.pollsterTel}"></span>
+            							<span th:text="${item.pollsterEmail}"></span>
+            						</span>
+	            				</li>
+	            			</ul>
+	            		</div>
+	            	</div>
+	            	<!-- 조사원 정보 END -->
+					<div id="odTcBox">
+						<th:block th:if="${exmnInfo.exmnType.getType() == 'survey'}">
+							<div id="od-wrap">
+								<div class="box-title-more">
+									<div class="box-title">OD 조사 이력</div>
+									<a th:href="@{/od/history}" class="more-title">전체보기</a>
+								</div>
+								<div id="mobileBox">
+									<div class="is-box od-box">
+										<div class="od-day">오늘</div>
+										<div class="od-total">
+											<span>2</span>건
+										</div>
+									</div>
+									<div class="is-box od-box">
+										<div class="od-day">이번 주</div>
+										<div class="od-total">
+											<span>2</span>건
+										</div>
+									</div>
+									<div class="is-box od-box">
+										<div class="od-day">이번 달</div>
+										<div class="od-total">
+											<span>2</span>건
+										</div>
+									</div>
+								</div>
+								<div id="tabletBox">
+									<div id="tableFlex" class="is-box">
+										<div>
+											<div class="od-day">오늘</div>
+											<div class="od-total">
+												<span>2</span>건
+											</div>
+										</div>
+										<div>
+											<div class="od-day">이번 주</div>
+											<div class="od-total">
+												<span>2</span>건
+											</div>
+										</div>
+										<div>
+											<div class="od-day">이번 달</div>
+											<div class="od-total">
+												<span>2</span>건
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</th:block>
+						<th:block th:if="${exmnInfo.exmnType.getType() == 'traffic'}">
+							<div id="tc-wrap">
+								<div class="box-title-more">
+									<div class="box-title">TC 조사 이력</div>
+									<a th:href="@{/invstmng/traffic/history}" class="more-title">전체보기</a>
+								</div>
+								<div class="is-box">
+									<div id="tcDataOn">
+										<div id="tcDate"></div>
+										<div class="tcTiemWrap scroll">
+											<div class="tc-time-box" th:each="item : ${hourList}">
+												<div class="tc-time" th:text="${item.hour}"></div>
+												<div class="tc-check">
+													<img th:if="${!item.isExists}" th:src="@{/images/un_check.png}" alt="check">
+													<img th:if="${item.isExists}" th:src="@{/images/check.png}" alt="check">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div id="tcDataOff" class="none">오늘은 조사 일정이 없습니다.</div>
+								</div>
+							</div>
+						</th:block>
+					</div>
+					<div>
+						<a th:href="@{/invstmng/{exmnmngId}(exmnmngId=${exmnmngId})}" class="is-key-button survey-start">조사시작</a>
+					</div>
+					<div id="noticeWrap">
+            			<div class="box-title-more">
+			                <div class="box-title">알림</div>
+							<a th:href="@{/notice}" class="more-title">전체보기</a>
+			            </div>
+			            <div class="is-box">
+			            	<div class="notice-box" th:each="item : ${noticeList}" th:onclick="|location.href='@{/notice/detail/{bbsId}(bbsId=${item.bbsId})}'|">
+			            		<a href="#" class="notice-item">
+			            			<span>
+					            		<span class="notice-txt" th:text="${item.bbsTitle}">이 이야기는 전설적인 퇴마사 감옥지의 퇴마록 퇴마록 퇴마록 퇴마록 퇴마록</span>
+					            		<span class="notice-date" th:text="${@commonUtils.formatLocalDateTime(item.registDt, 'yyyy-MM-dd')}">2023.12.22</span>
+			            			</span>
+									<i class="notice-more-icon"></i>			            		
+			            		</a>
+			            	</div>
+			            </div>
+            		</div>
+	            </div>
+	        </div>
+	    </section>
+		<div id="mainFooter">
+			<div id="mainFooterWrap">
+				<div id="mainFooterLogoSiteInner">
+	    			<div id="mainFooterLogoBox">
+	    				<div id="mainFooterLogo"><img th:src="@{/images/logo.png}" alt="logo"></div>
+	    				<div>스리랑카 조사 앱</div>	
+					</div>
+	                <div id="relevantSite">
+	                    <div id="siteWrap">
+	                        <a href="javascript:void(0)" id="siteLabel">관련 웹사이트</a>
+	                        <div id="siteItem">
+	                            <a href="javascript:void(0)">TEST</a>
+	                            <a href="javascript:void(0)">TEST</a>
+	                            <a href="javascript:void(0)">TEST</a>
+	                            <a href="javascript:void(0)">TEST</a>
+	                        </div>
+	                    </div>
+	                </div>		
+				</div>
+				<div id="mainFooterAddress">
+					<div>주소 : Sri Lanka, Colombo</div>
+					<div>대표전화 : 023-456-7891</div>
+					<div>대표 이메일 : email@gmail.com</div>
+				</div>
+				<div id="mainFooterCopyright">Copyright © Sri Lanka Colombo RDA</div>
+			</div>
+		</div>		    
+	</th:block>
+</html>
+<script th:inline="javascript">
+	$('header').remove();
+	
+	let today = new Date();   
+	let year = today.getFullYear(); 
+	let month = today.getMonth()+1;
+	let date = today.getDate();
+	const tcDate = document.getElementById('tcDate');
+	if(month <= 9 && date <= 9) {
+		tcDate.textContent = year+'-0'+month+'-0'+date;
+	} else if(month <= 9) {
+		tcDate.textContent = year+'-0'+month+'-'+date;
+	} else if(date <= 9){
+		tcDate.textContent = year+'-'+month+'-0'+date;
+	} else {
+		tcDate.textContent = year+'-'+month+'-'+date;
+	}
+	
+    document.getElementById('siteLabel').addEventListener('click', () => {
+    	document.getElementById('siteWrap').classList.toggle('active');
+    	return false;
+    })
+    
+</script>

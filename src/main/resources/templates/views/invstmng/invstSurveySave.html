@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+      
+	<th:block layout:fragment="content">
+		<div id="surveyContent" class="survey-content">
+			<div class="content-wrap">
+				<input type="hidden" id="exmnType" th:value="${invstRsltInfo.exmnType.type}">
+				<input type="hidden" id="exmnstartDt" th:value="|${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}T${@commonUtils.formatLocalDateTime(invstRsltInfo.startDt,'HH:mm:ss')}">
+				<input type="hidden" id="exmnendDt" th:value="|${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}T${@commonUtils.formatLocalDateTime(invstRsltInfo.endDt,'HH:mm:ss')}">
+				<div id="surveyInner">
+					<div class="is-box">
+						<div class="survey-item">
+							<div class="survey-title">조사위치</div>
+							<div id="exmnLc" class="survey-text" th:data-exmn-lc="${invstRsltInfo.exmnLc}" th:text="${invstRsltInfo.exmnLc}"></div>
+						</div>
+						<div class="survey-item">
+							<div class="survey-title">조사일시</div>
+							<div class="survey-text"><span th:text="|${#temporals.format(#temporals.createNow(), 'yyyy.MM.dd')} ${@commonUtils.formatLocalDateTime(invstRsltInfo.startDt,'HH:mm')} ~ ${@commonUtils.formatLocalDateTime(invstRsltInfo.endDt,'HH:mm')} |"></span></div>
+						</div>
+						<div class="survey-item">
+							<div class="survey-title">근무형태</div>
+							<div class="survey-text" id="exmnDiv" th:data-exmn-div="${invstRsltInfo.exmnDiv}" th:text="${invstRsltInfo.exmnDiv}"></div>
+						</div>
+						<div class="survey-item survey-direction">
+							<div class="survey-title">조사 목표 개수</div>
+							<div class="survey-text" th:text="|${invstRsltInfo.goalCnt}개|"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>			
+	</th:block>
+</html>
+<script th:inline="javascript">
+	document.body.classList.add('hidden');
+	document.getElementById('headerNextButton').classList.remove('none');
+</script>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+      
+	<th:block layout:fragment="content">
+		<section id="login-container">
+		    <div class="rda-wrap">
+		        <div id="login-logo-box">
+		            <div id="login-logo"><img th:src="@{/images/logo.png}" alt="로고"></div>
+		            <h1 id="login-title">로그인</h1>
+		        </div>
+		        <div id="login-content-box">
+		            <form th:action="@{/login/user/confirm}" method="post">
+		                <div>
+		                    <div class="login-input-box">
+		                        <label for="userId" class="login-input-title">아이디</label>
+		                        <input type="text" name="userAccountId" placeholder="아이디를 입력해주세요." class="login-input" maxlength="200" required/>
+		                        <div class="error-message"></div>
+		                    </div>
+		                    <div class="login-input-box">
+		                        <label for="userPw" class="login-input-title">비밀번호</label>
+		                        <input type="password" name="userAccountPwd" maxlength="200" placeholder="비밀번호를 입력해주세요." class="login-input" required/>
+		                        <div class="error-message"></div>
+		                    </div>
+		                </div>
+		                <div class="flex-between">
+		                    <div class="flex-center">
+		                        <input type="checkbox" id="loginCheckBox">
+		                        <label for="loginCheckBox" class="login-check-txt">아이디 저장</label>
+		                    </div>
+		                    <div>
+			                    <a th:href="@{/login/user/idfind}" class="login-check-txt">ID 찾기</a>
+			                    <span class="login-check-txt">/</span>
+			                    <a th:href="@{/login/user/pwfind}" class="login-check-txt">PW 찾기</a>
+		                    </div>
+		                </div>
+		                <div id="loginButtonBox">
+		                    <button type="submit" class="login-button">로그인</button>
+		                    <a th:href="@{/intro}" id="backButton" class="login-button">처음화면으로 돌아가기</a>
+		                </div>
+		            </form>
+		            <div id="loginCode">
+		                <a th:href="@{/login/user/join}">회원가입</a>
+		            </div>
+		        </div>
+		    </div>
+		</section>
+	</th:block>
+</html>
+<script th:inline="javascript">
+	$(function(){
+		$('header').remove();
+		$('footer').remove();
+	})
+</script>

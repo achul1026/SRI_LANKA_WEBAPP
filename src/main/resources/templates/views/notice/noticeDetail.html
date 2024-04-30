@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+      
+	<th:block layout:fragment="content">
+		<section id="sectionWrap">
+			<div class="is-box notice-wrap">
+				<span class="notice-add-date">작성일 : <span th:text="${@commonUtils.formatLocalDateTime(notice.registDt, 'yyyy-MM-dd')}">2023-11-02</span></span>
+				<span class="notice-add-date">작성자 : <span th:text="${notice.registId}">문인기</span></span>
+			</div>
+			<div class="is-box notice-wrap">
+				<h3 th:text="${notice.bbsTitle}">MCC 조사 일정 변동 안내</h3>
+				<p class="mt16" th:utext="${notice.bbsCnts}">
+					안내문구안내문구안내문구안내문구안내문구안내문구안내문구안내문구안내문구안내문구안내문구안내문구
+					안내문구안내문구안내문구안내문구안내문구안내문구안내문구안내문구안내문구안내문구안내문구
+					안내문구안내문구안내문구안내문구안내문구안내문구안내문구안내문구안내문구
+				</p>
+			</div>
+		</section>
+	</th:block>
+</html>

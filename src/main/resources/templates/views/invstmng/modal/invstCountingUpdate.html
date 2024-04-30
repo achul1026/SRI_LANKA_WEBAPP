@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/modalLayout}">
+      
+	<th:block layout:fragment="modalContent">
+		<div id="surveyCountingUpdateBox">
+			<div id="modalCountingMinus"><img th:src="@{/images/button_minus.png}" alt="minus"></div>
+			<input type="text" id='modalCountingInput' class="is-input-reset"/>
+			<div id="modalCountingPlus"><img th:src="@{/images/button_plus.png}" alt="plus"></div>
+		</div>
+	</th:block>
+</html>

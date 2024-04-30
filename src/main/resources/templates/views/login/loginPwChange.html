@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+      
+	<th:block layout:fragment="content">
+		<section id="login-container">
+		    <div class="rda-wrap">
+		        <div id="login-logo-box">
+		            <div id="login-logo"><img th:src="@{/images/logo.png}" alt="로고"></div>
+		            <h1 id="login-title">비밀번호 변경</h1>
+		        </div>
+		        <div id="login-content-box">
+		            <form id="pwChangeForm">
+		                <div>
+		                    <div class="login-input-box">
+		                        <label for="" class="login-input-title">새 비밀번호</label>
+		                        <input type="password" id="userPw" placeholder="새 비밀번호를 입력해주세요." 
+		                        	class="login-input" minlength="8" maxlength="20" pattern="^(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*]).*$" 
+		                        	data-pattern-mismatch-text=" 8~20자리의 영문 소문자,숫자,특수문자로 입력해주세요." required/>
+		                        <div class="error-message"></div>
+		                    </div>
+		                    <div class="login-input-box">
+		                        <label for="" class="login-input-title">새 비밀번호 확인</label>
+		                        <input type="password" id="confirmPw" placeholder="새 비밀번호를 입력해주세요." 
+		                        	class="login-input" required/>
+		                        <div id="confirmError" class="error-message"></div>
+		                    </div>
+		                </div>
+		                <div id="loginButtonBox">
+		                    <button type="submit" id="pwChangeButton" class="login-button">비밀번호 변경</button>
+		                    <a th:href='@{/login}' id="backButton" class="login-button">로그인 화면으로 돌아가기</a>
+		                </div>
+		            </form>
+		        </div>
+		    </div>
+		</section>
+	</th:block>
+</html>
+<script th:inline="javascript">
+	$(function(){
+		$('header').remove();
+		$('footer').remove();
+		
+		passwordChange();
+		
+		/* 비밀번호 변경 성공시
+		$('#pwChangeButton').on('click', function(){
+		    new ModalBuilder().init().successBody('비밀번호 변경 완료').footer(4,'버튼명',function(button, modal){modal.close();}).open();
+		}) */
+	})
+</script>

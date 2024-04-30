@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+	<th:block layout:fragment="content">
+    	<div id="mapContainer">
+	    	<div id="map" class="map"></div>
+	    	<div id="mapControl">
+		    	<div id="currentLocation"><img th:src="@{/images/current_location.png}" alt="현재위치"/></div>
+		    	<div id="zoomBox">
+			    	<div id="zoomIn"><img th:src="@{/images/zoom_in.png}" alt="확대"/></div>
+			    	<div id="zoomOut"><img th:src="@{/images/zoom_out.png}" alt="축소"/></div>
+		    	</div>
+	    	</div>
+    	</div>
+	</th:block>
+</html>
+<script th:inline="javascript">
+	mapboxGl();
+</script>

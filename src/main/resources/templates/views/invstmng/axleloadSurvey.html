@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+      
+	<th:block layout:fragment="content">
+		<section id="surveyWrap">
+			<div class="is-box">
+				<h2 class="survey-question-title">AXLELOAD</h2>
+				<div class="survey-question-description">차량 정보를 입력하세요</div>
+			</div>
+  			<div class="is-box">
+				<h3 class="survey-sub-question-title"><span>Q1.</span>차량 종류는 무엇입니까?</h3>
+				<ul class="survey-question-option-box">
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>LGV</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>MG1</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>MG2</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>HG3</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>AG3</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked direct-check">
+							<i class="check-img"></i>
+							<span>기타</span>
+							<input type="text" class="survey-input-direct" readonly/>
+						</label>
+					</li>
+				</ul>
+			</div>
+			<div class="is-box">
+				<h3 class="survey-sub-question-title"><span>Q2.</span>차량 차축 구성은 무엇입니까?</h3>
+				<ul class="survey-question-option-box">
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>1.1</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>1.2</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>1.22</span>
+						</label>
+					</li>
+				</ul>
+			</div>
+			<div class="is-box">
+				<h3 class="survey-sub-question-title"><span>Q3.</span>차량 적재물 타입을 검색해주세요.</h3>
+				<div class="axleload-type-box">
+					<input type="text" class="is-input" placeholder="차량 적재물 타입을 검색해주세요." readonly/>
+					<input type="button" id="axleloadTypeButton" class="is-key-button" value="검색"/>
+				</div>
+			</div>
+			<div class="is-box">
+				<h3 class="survey-sub-question-title"><span>Q4.</span>출발지는 어디입니까?</h3>
+				<div class="survey-loaction-search-box startSearchBox"></div>
+				<div><input type="text" class="div-input wd100 locationSave" readonly/></div>
+			</div>
+			<div class="is-box">
+				<h3 class="survey-sub-question-title"><span>Q5.</span>도착지는 어디입니까?</h3>
+				<div class="survey-loaction-search-box endSearchBox"></div>
+				<div><input type="text" class="div-input wd100 locationSave" readonly/></div>
+			</div>
+			<div class="is-box">
+				<h3 class="survey-sub-question-title"><span>Q6.</span>차량의 중량(톤)</h3>
+				<ul class="survey-question-option-box unsetChecked">
+					<li>
+						<label>
+							<span class="survey-span-direct">AXLE 1 중량(톤)</span>
+							<input type="text" class="survey-input-direct"/>
+						</label>
+					</li>
+					<li>
+						<label>
+							<span class="survey-span-direct">AXLE 2 중량(톤)</span>
+							<input type="text" class="survey-input-direct"/>
+						</label>
+					</li>
+					<li>
+						<label>
+							<span class="survey-span-direct">AXLE 3 중량(톤)</span>
+							<input type="text" class="survey-input-direct"/>
+						</label>
+					</li>
+					<li>
+						<label>
+							<span class="survey-span-direct">AXLE 4 중량(톤)</span>
+							<input type="text" class="survey-input-direct"/>
+						</label>
+					</li>
+				</ul>
+			</div>								
+		</section>
+	</th:block>
+</html>
+
+<script>
+	locationSearch("startSearchBox");
+	locationSearch("endSearchBox");
+	
+	$('#axleloadTypeButton').on('click', () => {
+		new ModalBuilder().init('차량 적재물 타입').ajaxBody("/axleload/type").footer(1,'등록',function(button, modal){}).open();
+	})	
+</script>

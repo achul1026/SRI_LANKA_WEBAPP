@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+      
+	<th:block layout:fragment="content">
+		<section id="surveyWrap">
+			<div class="is-box">
+				<h2 class="survey-question-title">노측면접조사</h2>
+				<div class="survey-question-description">차량정보를 입력하세요</div>
+			</div>
+  			<div class="is-box">
+				<h3 class="survey-sub-question-title"><span>Q1.</span>차량 종류는 무엇입니까?</h3>
+				<ul class="survey-question-option-box">
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>MCL(MotorCycle)</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>TWL(Three Wheel)</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>CAR</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>VAN</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>NR_MBU(Medium Bus)</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>NR_LBU(Large Bus)</span>
+						</label>
+					</li>
+				</ul>
+			</div>
+			<!-- li 직접입력 포함되어있음 -->
+			<div class="is-box">
+				<h3 class="survey-sub-question-title"><span>Q3.</span>차량에 탑승한 승객 수는 몇명입니까?</h3>
+				<ul class="survey-question-option-box">
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>1명</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>2명</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>3명</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>4명</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked">
+							<i class="check-img"></i>
+							<span>5명</span>
+						</label>
+					</li>
+					<li>
+						<label>
+							<input type="radio" name="qusetOption" class="radio-checked direct-check">
+							<i class="check-img"></i>
+							<span>기타</span>
+							<input type="text" class="survey-input-direct" readonly/>
+						</label>
+					</li>
+				</ul>
+			</div>
+			<div class="is-box">
+				<h3 class="survey-sub-question-title"><span>Q4.</span>차량의 출발지는 어디입니까?</h3>
+				<div class="survey-loaction-search-box startSearchBox"></div>
+				<div><input type="text" class="div-input wd100 locationSave" readonly/></div>
+			</div>
+			<div class="is-box">
+				<h3 class="survey-sub-question-title"><span>Q6.</span>차량의 도착지는 어디입니까?</h3>
+				<div class="survey-loaction-search-box endSearchBox"></div>
+				<div><input type="text" class="div-input wd100 locationSave" readonly/></div>
+			</div>					
+		</section>
+	</th:block>
+</html>
+
+<script>
+	locationSearch("startSearchBox");
+	locationSearch("endSearchBox");
+</script>

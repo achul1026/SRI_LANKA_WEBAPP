@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+	<th:block th:fragment="sidebarFragment">
+		<aside id="sideMenu">
+			<div id="sideBackground" class="none"></div>
+			<div id="sideWrap">
+				<div id="sideCloseButton"><button type="button" onclick="sideMenuRemove();"><img th:src="@{/images/close_key_color.png}" alt="닫기"></button></div>
+				<div id="myInfoBox">
+					<div id="myNameBox">
+						<span id="myName">이태유</span>님
+						<br>
+						환영합니다.
+					</div>
+					<div id="myInfoArrow"><a href="#">MY<span><img th:src="@{/images/white_arrow.png}" alt="바로가기"></span></a></div>
+				</div>
+				<nav id="gnb">
+					<ul>
+						<li class="depth1">
+							<button type="button" onclick="sideDepthToggle(this)"><span><img th:src="@{/images/side_item_01.png}" alt="조사">조사</span><span class="depth2-box-img"><img th:src="@{/images/intro_arrow.png}" alt="바로가기"></span></button>
+							<span class="depth2-wrap">
+								<span class="depth2-box">
+									<a th:href="@{/mcc}">MCC 조사</a>
+									<a th:href="@{/tm}">TM 조사</a>
+									<a th:href="@{/od}">OD 조사</a>
+									<a th:href="@{/axleload}">AXLELOAD 조사</a>
+									<a th:href="@{/laborside}">RoadSide 조사</a>
+								</span>
+							</span>
+						</li>
+						<li class="depth1">
+							<button type="button" onclick="sideDepthToggle(this)"><span><img th:src="@{/images/side_item_02.png}" alt="이력">이력</span><span class="depth2-box-img"><img th:src="@{/images/intro_arrow.png}" alt="바로가기"></span></button>
+							<span class="depth2-wrap">
+								<span class="depth2-box">
+									<a th:href="@{/od/history}">OD 조사 이력</a>
+									<a th:href="@{/invstmng/traffic/history}">TC 조사 이력</a>
+								</span>
+							</span>
+						</li>
+					</ul>
+					<ul>
+						<li class="depth1"><a th:href="@{/map}"><span><img th:src="@{/images/side_item_03.png}" alt="지도">지도</span><span><img th:src="@{/images/intro_arrow.png}" alt="바로가기"></span></a></li>
+						<li class="depth1"><a th:href="@{/schedule}"><span><img th:src="@{/images/side_item_04.png}" alt="일정">일정</span><span><img th:src="@{/images/intro_arrow.png}" alt="바로가기"></span></a></li>
+						<li class="depth1"><a th:href="@{/notice}"><span><img th:src="@{/images/side_item_05.png}" alt="알림">알림</span><span><img th:src="@{/images/intro_arrow.png}" alt="바로가기"></span></a></li>
+					</ul>
+				</nav>
+				<div id="sideLogOutBox">
+					<a th:href="@{/login}" id="sideLogOut">
+						<span><img th:src="@{/images/logout.png}" alt="로그아웃"></span>
+						<span>로그아웃</span>
+					</a>
+				</div>
+			</div>
+		</aside>
+	</th:block>
+</html>

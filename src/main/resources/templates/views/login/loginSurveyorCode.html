@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link th:href="@{/images/favicon-16x16.png}" rel="icon">
+    <link th:href="@{/images/favicon-32x32.png}" rel="icon">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <script th:src="@{/js/jquery-1.12.4.min.js}"></script>
+    <script th:src="@{/js/prefixfree.min.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
+    <title>SRILANKA</title>
+    <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}"/>
+	<script type="text/javascript">
+	    var __contextPath__ = $('#contextPathHolder').attr('data-contextPath');
+	    if(isNull(__contextPath__)) __contextPath__ = '';  
+	</script>
+</head>
+<body>
+		<section id="login-container">
+		    <div class="rda-wrap">
+		        <div id="login-logo-box">
+		            <div id="login-logo"><img th:src="@{/images/logo.png}" alt="로고"></div>
+		            <h1 id="login-title">로그인</h1>
+		        </div>
+		        <div id="login-content-box">
+		            <form id="codeLoginForm">
+						<input type="hidden" name="loginType" value="code"/>
+						<input type="hidden" id="userPswd" name="userPswd" />
+		                <div>
+		                    <div class="login-input-box">
+		                        <label for="surveyorCodeLogin" class="login-input-title">조사코드</label>
+		                        <input type="text" id="userId" name="userId" placeholder="조사코드를 입력해주세요." class="login-input" required/>
+		                        <div class="error-message"></div>	
+		                    </div>
+		                </div>
+		                <div id="loginButtonBox">
+		                	<input type="button" class="login-button" value="확인" onclick="codeLoginConfirm();" />
+		                </div>
+		            </form>
+		        </div>
+		    </div>
+		</section>
+	</body>
+</html>
+<script th:inline="javascript">
+	$(function(){
+		$('header').remove();
+		$('footer').remove();
+	})
+	function codeLoginConfirm(){
+		const userId = document.getElementById('userId').value;
+		document.getElementById('userPswd').value = userId;
+		
+		const form = document.getElementById('codeLoginForm');
+		form.action = __contextPath__+'/login/surveyor/confirm';
+		form.method = 'POST';
+		
+		form.submit();
+	}
+</script>

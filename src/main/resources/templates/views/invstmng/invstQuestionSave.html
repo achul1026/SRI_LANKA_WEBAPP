@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+      
+	<th:block layout:fragment="content">
+		<section id="surveyWrap">
+			<div>
+				<div class="is-box">
+					<h2 class="survey-question-title"><span>1.</span>가구실태 조사</h2>
+					<div class="survey-question-description">가구원 정보와 차량정보를 입력하세요.</div>
+				</div>
+	  			<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q1.</span>지금 함께 거주하고 있는 가구원은 총 몇 명 입니까?</h3>
+					<ul class="survey-question-option-box">
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked">
+								<i class="check-img"></i>
+								<span>MCL(MotorCycle)</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked">
+								<i class="check-img"></i>
+								<span>TWL(Three Wheel)</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked">
+								<i class="check-img"></i>
+								<span>CAR</span>
+							</label>
+						</li>
+					</ul>
+				</div>
+				<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q3.</span>지금 함께 거주하고 있는 가구원 중 미취학 아동(7세 미만)은 총 몇 명 입니까?</h3>
+					<div><input type="text" class="is-input wd100"/></div>
+				</div>
+				<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q4.</span>보유 차량은 몇 대 입니까?</h3>
+					<ul class="survey-question-option-box">
+						<li>
+							<label>
+								<input type="checkbox" name="qusetOption" class="checkbox-checked">
+								<i class="check-img"></i>
+								<span class="survey-span-direct">오토바이</span>
+								<input type="text" class="survey-input-direct"/>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="checkbox" name="qusetOption" class="checkbox-checked">
+								<i class="check-img"></i>
+								<span class="survey-span-direct">삼륜차</span>
+								<input type="text" class="survey-input-direct"/>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="checkbox" name="qusetOption" class="checkbox-checked">
+								<i class="check-img"></i>
+								<span class="survey-span-direct">자동차</span>
+								<input type="text" class="survey-input-direct"/>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="checkbox" name="qusetOption" class="checkbox-checked">
+								<i class="check-img"></i>
+								<span class="survey-span-direct">벤</span>
+								<input type="text" class="survey-input-direct"/>
+							</label>
+						</li>
+					</ul>
+				</div>			
+			</div>
+			<div class="mt16">
+				<div class="is-box">
+					<h2 class="survey-question-title"><span>2.</span>개인실태 조사</h2>
+					<div class="survey-question-description">개인 특성 정보를 입력하세요.</div>
+				</div>
+	  			<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q1.</span>지금 함께 거주하고 있는 가구원은 총 몇 명 입니까?</h3>
+					<ul class="survey-question-option-box">
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked">
+								<i class="check-img"></i>
+								<span>MCL(MotorCycle)</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked">
+								<i class="check-img"></i>
+								<span>TWL(Three Wheel)</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked">
+								<i class="check-img"></i>
+								<span>CAR</span>
+							</label>
+						</li>
+					</ul>
+				</div>	
+			</div>
+			<div class="mt16">
+				<div class="is-box">
+					<h2 class="survey-question-title"><span>3.</span>통행실태 조사</h2>
+					<div class="survey-question-description">1.출발 정보를 입력하세요.</div>
+				</div>
+				<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q1.</span>출발지는 어디입니까?</h3>
+					<div class="survey-loaction-search-box startSearchBox"></div>
+					<div><input type="text" class="div-input wd100 locationSave" readonly/></div>
+				</div>
+				<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q2.</span>출발지 유형</h3>
+					<ul class="survey-question-option-box">
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked">
+								<i class="check-img"></i>
+								<span>가정</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked">
+								<i class="check-img"></i>
+								<span>직장</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked">
+								<i class="check-img"></i>
+								<span>학교</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked direct-check">
+								<i class="check-img"></i>
+								<span>기타</span>
+								<input type="text" class="survey-input-direct" readonly/>
+							</label>
+						</li>
+					</ul>
+				</div>				
+				<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q3.</span>출발시간</h3>
+					<div class="select-time-box">
+						<select class="select-list-box select-hour"></select>
+						<select class="select-list-box select-minute"></select>
+					</div>
+				</div>
+				<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q4.</span>이동수단</h3>
+					<select class="select-list-box wd100">
+						<option>TEST</option>
+						<option>TEST</option>
+					</select>
+				</div>
+				<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q4.</span>승객 수(버스 제외)</h3>
+					<div><input type="text" class="is-input wd100"/></div>
+				</div>				
+			</div>
+			<div class="mt16">
+				<div class="is-box">
+					<h2 class="survey-question-title"><span>3.</span>통행실태 조사</h2>
+					<div class="survey-question-description">2.환승 정보를 입력하세요.</div>
+				</div>
+				<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q1.</span>환승지 주소</h3>
+					<div class="survey-loaction-search-box endSearchBox"></div>
+					<div><input type="text" class="div-input wd100 locationSave" readonly/></div>
+				</div>
+				<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q2.</span>출발지 유형</h3>
+					<ul class="survey-question-option-box">
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked">
+								<i class="check-img"></i>
+								<span>가정</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked">
+								<i class="check-img"></i>
+								<span>직장</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked">
+								<i class="check-img"></i>
+								<span>학교</span>
+							</label>
+						</li>
+						<li>
+							<label>
+								<input type="radio" name="qusetOption" class="radio-checked direct-check">
+								<i class="check-img"></i>
+								<span>기타</span>
+								<input type="text" class="survey-input-direct" readonly/>
+							</label>
+						</li>
+					</ul>
+				</div>				
+				<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q3.</span>출발시간</h3>
+					<div class="select-time-box">
+						<select class="select-list-box select-hour"></select>
+						<select class="select-list-box select-minute"></select>
+					</div>
+				</div>
+				<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q4.</span>이동수단</h3>
+					<select class="select-list-box wd100 scroll">
+						<option>TEST</option>
+						<option>TEST</option>
+					</select>
+				</div>
+				<div class="is-box">
+					<h3 class="survey-sub-question-title"><span>Q5.</span>승객 수(버스 제외)</h3>
+					<div><input type="text" class="is-input wd100"/></div>
+				</div>
+				<div class="transfer-add-wrap defaultTransfer">
+					<label class="is-key-button transfer-add-box transferAddButton">
+						<input type="checkbox" class="transferCheckBox defaultTransferCheckbox">
+						<span class="transfer-add">환승 추가</span>
+					</label>
+				</div>				
+			</div>
+		</section>
+	</th:block>
+</html>
+
+<script>
+	
+	const headerNextButton = document.getElementById('headerNextButton');
+	headerNextButton.classList.remove('none');
+	headerNextButton.innerText = '확인';
+	
+	locationSearch("startSearchBox");
+	locationSearch("endSearchBox");
+	
+	const transferAdd = document.querySelector('.transferAddButton');
+	const transferCheckBox = document.querySelector('.transferCheckBox');
+	const transferWrap = document.querySelector('.transfer-add-wrap');
+	transferAdd.addEventListener('change', () => {
+		const transferButtonChecked = transferCheckBox.checked;
+		if(transferButtonChecked === true){
+			TransferSurvey('transferLocation1');
+			transferWrap.classList.add('none');
+		}
+	})
+	
+	
+</script>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+	<th:block th:fragment="headerFragment">
+		<header>
+			<div id="headerContainer">
+				<div id="headerItem">
+					<a th:href="@{/main}" id="headerPrevButton"><img th:src="@{/images/back_arrow.png}" alt="back"></a>
+					<a href="javascript:void(0)" id="headerNextButton" class="none">다음</a>
+				</div>
+				<div id="headerPageName">
+					<h1 id="pageName" th:data-page-type="${pageType eq null ? @loginUtils.getExmnmngTypeCd() : pageType}" th:data-exmnmng-id="${@loginUtils.getExmnmngId()}"
+						th:data-exmnrslt-id="${invstRsltInfo?.exmnrsltId}" th:text="${@loginUtils.getExmnmngTypeCd()}"></h1>
+				</div>			
+			</div>
+		</header>
+	</th:block>
+</html>

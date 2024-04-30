@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+	<th:block layout:fragment="content">
+	    <section id="sectionWrap">
+	    	<div id="dateSettingWrap" class="is-box">
+	    		<div>날짜설정</div>
+	    		<div id="dateSetting">
+		    		<div id="dateButtonBox">
+		    			<input type="button" id="dayPickerButton" class="is-basic-button is-key-button" value="일별">
+		    			<input type="button" id="monthpickerButton" class="is-basic-button" value="월별">
+		    		</div>
+		    		<div id="dayPicker" class="input-date"><input type="text" class="date-picker startPicker wd100" readonly/></div>
+		    		<div id="monthPicker" class="input-date none"><input type="text" class="date-picker monthPicker wd100" readonly/></div>
+	    		</div>
+	    	</div>
+	    	<div id="surveyChartWrap">
+	    		<div>
+		    		<div class="is-box">
+		    			<div class="chart-title">가구현황조사</div>
+		    			<div class="chart" id="houseHoldSurvey"></div>
+		    		</div>
+		    		<div class="is-box">
+		    			<div class="chart-title">개인현황조사</div>
+		    			<div class="chart" id="personalSurvey"></div>
+		    		</div>
+	    		</div>
+	    		<div>
+		    		<div class="is-box">
+		    			<div class="chart-title">개인통행조사</div>
+		    			<div class="chart" id="travelSurvey"></div>
+		    		</div>
+		    		<div class="is-box">
+		    			<div class="chart-title">노측면접조사</div>
+		    			<div class="chart" id="roadsideSurvey"></div>
+		    		</div>
+	    		</div>
+	    	</div>
+	    </section>
+	</th:block>
+</html>
+<script th:inline="javascript">
+	let surveyCompletion = 7;
+	let surveyTotal = 15;
+	chartCustom("houseHoldSurvey", "#FF5353", surveyCompletion, surveyTotal);
+	chartCustom("personalSurvey", "#FFB053", 1, 16);
+	chartCustom("travelSurvey", "#6AD9B1", 47, 49);
+	chartCustom("roadsideSurvey", "#53A2FF", 3, 6);
+
+	dateToggleButton();
+</script>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}">
+      
+	<th:block layout:fragment="content">
+		<div id="fullCalendar"></div>
+	</th:block>
+</html>
+<script>
+$(function() {
+	const calendarEl = document.getElementById('fullCalendar');
+	let calendar = new FullCalendar.Calendar(calendarEl, {
+		initialView: 'dayGridMonth',
+		headerToolbar: {          
+			left: 'prev',
+			center: 'title',      
+			right: 'next'       
+		},
+		height:'calc(100vh - 200px)',
+		eventBorderColor:'transparent',
+		events: [
+		  {
+		    title: 'colombo 가구실태조사',
+		    start: '2024-02-20',
+		    end:'2024-02-23',
+		    backgroundColor: "red",
+		  },
+		  {
+		    title: 'OD-21 지점 노측 면접 조사',
+		    url: 'http://google.com/',
+		    start: '2024-02-06',
+		    backgroundColor: "blue",
+		  }
+		],
+	    dateClick: function(info){
+    	    new ModalBuilder().init(info.dateStr).ajaxBody('/schedule/surveyor/detail').open();
+	    }		
+	});
+	
+		
+		calendar.render();
+		
+  		let today = new Date();
+		let year = today.getFullYear();
+		let month = today.getMonth() +1;
+		let monthSet = month < 10 ? '0' + month : month;
+		let calendarToday = monthSet+'월 '+year+'년';
+		const centerTitle = document.querySelector('.fc-toolbar-title');
+		if(centerTitle) centerTitle.textContent = calendarToday;
+		
+	    calendar.on('datesSet', function(info) {
+	        let centerTitle = document.querySelector('.fc-toolbar-title');
+	        if (centerTitle) {
+	            let year = info.view.currentStart.getFullYear();
+	            let month = info.view.currentStart.getMonth() +1;
+	            let monthSet = month < 10 ? '0' + month : month;
+	            centerTitle.textContent = monthSet+'월 '+year+'년';
+	        }
+	    });
+	});
+</script>
