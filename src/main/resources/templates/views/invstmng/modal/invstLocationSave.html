@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/modalLayout}">
+      
+	<th:block layout:fragment="modalContent">
+		<div class="survey-loaction-search-box surveyLocation"></div>
+		<div>
+			<input type="text" class="div-input wd100 surveyLocationValue" readonly/>
+		</div>
+	</th:block>
+</html>
+<script>
+	locationSearch('surveyLocation');
+</script>

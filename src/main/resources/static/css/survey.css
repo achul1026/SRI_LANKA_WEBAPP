@@ -2,23 +2,10 @@
 
 #surveyMapContainer {
 	position:relative;
-	/* 86px  direction (610), (524), (86) */
-	height:calc(100vh - 610px); 
-	transition:0.2s;
-}
-/* 524px */
-#surveyMapContainer.directionNone {
-	height:calc(100vh - 586px); 
+	/* transition:0.2s; */
 }
 #surveyMapContainer.map-active {
 	height:calc(100vh - 176px) !important;
-}
-/* #surveyMapContainer.map-remove {
-	height:calc(100vh - 610px) !important;
-} */
-/* 524 */
-#surveyMapContainer.directionNone.map-remove {
-	height:calc(100vh - 586px) !important;
 }
 #surveyContent {
 	border-radius:10px 10px 0 0;
@@ -30,13 +17,13 @@
 	border-radius:unset;
 }
 .content-wrap {
-	padding:24px;
+	padding:16px;
 }
 .survey-location {
 	font-weight:600;
 }
 .survey-item {
-	margin-top:16px;
+	margin-top:8px;
 }
 .survey-item:nth-child(1) {
 	margin-top:0;
@@ -58,7 +45,7 @@
 	transform:translateY(-50%);
 }
 .survey-text {
-	margin-top:8px;
+	margin-top:0;
 }
 .survey-weather {
 	margin-right:6px;
@@ -252,22 +239,46 @@
 	flex:unset;
 }
 
+.survey-location-box {
+	display:flex;
+	gap:8px;
+}
+.survey-location-box .locationSave {
+	flex:1;
+}
+#fiveMinutesAgoBox {
+	position:fixed;
+	top:-100px;
+	left:0;
+	width:100%;
+	padding:12px 24px;
+	font-size:14px;
+	background-color:var(--white);
+	box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.25);
+	transition:top 0.3s;
+}
+#fiveMinutesAgoBox.active {
+	top:0;
+}
+#fiveTime, #fiveStartTime, #fiveEndTime {
+	color:var(--key-color);
+	font-weight:600;
+}
+#fiveMinutesFlexBox {
+	display:flex;
+	align-items:center;
+	gap:8px;
+}
+#fiveMinutesImg {
+	display:inline-block;
+	width:36px;
+}
+#fiveMinutesImg img {
+	width:100%;
+}
 @media screen and (min-width: 768px) {
-	#surveyMapContainer {
-		/* 86px  direction (640), (556), (84) */
-		height:calc(100vh - 640px);
-	}
-	#surveyMapContainer.directionNone {
-		height:calc(100vh - 609px);
-	}
 	#surveyMapContainer.map-active {
 		height:calc(100vh - 200px) !important;
-	}
-	/* #surveyMapContainer.map-remove {
-		height:calc(100vh - 640px) !important;
-	} */			
-	#surveyMapContainer.directionNone.map-remove {
-		height:calc(100vh - 609px) !important;
 	}
 	.box-counting {
 		height:15%;

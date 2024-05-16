@@ -5,12 +5,11 @@
 	<footer id="footerContainer">
 		<div id="footerWrap">
 			<ul id="footerMenu">
-				<li><button type="button" onclick="sideMenuOpen();"><img th:src="@{/images/footer_menu_01.png}" alt="sidebar"></button></li>
 				<li><a th:href="@{/map}"><img th:src="@{/images/footer_menu_02.png}" alt="map"></a></li>
-				<li><a th:href="@{/main}"><img th:src="@{/images/footer_menu_03.png}" alt="home"></a></li>
-				<li><a th:href="@{/schedule}"><img th:src="@{/images/footer_menu_04.png}" alt="calendar"></a></li>
+				<li id="footerHomeItem"><a th:href="@{/main}"><img th:src="@{/images/footer_menu_03.png}" alt="home"></a></li>
 				<li><a th:href="@{/setting}"><img th:src="@{/images/footer_menu_05.png}" alt="setting"></a></li>
 			</ul>
+			<a th:href="@{/invstmng/{exmnmngId}(exmnmngId=${exmnmngId})}" id="footerSurveyStart" class="is-key-button survey-start none">Survey Start</a>
 		</div>
 	</footer>
 </th:block>

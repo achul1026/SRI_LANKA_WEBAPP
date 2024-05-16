@@ -14,7 +14,10 @@
 	        <div id="userBox" class="is-box">
 	            <ul>
 	            	<li><span id="surveyTitle" th:text="${exmnInfo.exmnNm}"></span></li>
-	            	<li><span>조사코드 : </span><span th:text="${exmnInfo.partcptCd}"></span></li>
+<!--	            	<li><span>조사코드 : </span><span th:text="${exmnInfo.partcptCd}"></span></li>-->
+	            	<!-- <li><span id="surveyTitle" th:text="${exmnInfo.exmnNm}"></span></li>
+	            	<li><span>조사코드 : </span><span th:text="${exmnInfo.partcptCd}"></span></li> -->
+	            	<li><span>조사위치 : </span><span>colombo > colombo > colombo</span></li>	
 	            	<li><span>조사기간 : </span><span th:text="${@commonUtils.formatLocalDateTime(exmnInfo.startDt,'YYYY-MM-dd')} +' ~ '+ ${@commonUtils.formatLocalDateTime(exmnInfo.endDt,'YYYY-MM-dd')}"></span></li>	
 	            	<li><span>조사시간 : </span><span th:text="${@commonUtils.formatLocalDateTime(exmnInfo.startDt,'HH:mm')} +' ~ '+ ${@commonUtils.formatLocalDateTime(exmnInfo.endDt,'HH:mm')}"></span></li>
 	            </ul>
@@ -42,84 +45,6 @@
 	            		</div>
 	            	</div>
 	            	<!-- 조사원 정보 END -->
-					<div id="odTcBox">
-						<th:block th:if="${exmnInfo.exmnType.getType() == 'survey'}">
-							<div id="od-wrap">
-								<div class="box-title-more">
-									<div class="box-title">OD 조사 이력</div>
-									<a th:href="@{/od/history}" class="more-title">전체보기</a>
-								</div>
-								<div id="mobileBox">
-									<div class="is-box od-box">
-										<div class="od-day">오늘</div>
-										<div class="od-total">
-											<span>2</span>건
-										</div>
-									</div>
-									<div class="is-box od-box">
-										<div class="od-day">이번 주</div>
-										<div class="od-total">
-											<span>2</span>건
-										</div>
-									</div>
-									<div class="is-box od-box">
-										<div class="od-day">이번 달</div>
-										<div class="od-total">
-											<span>2</span>건
-										</div>
-									</div>
-								</div>
-								<div id="tabletBox">
-									<div id="tableFlex" class="is-box">
-										<div>
-											<div class="od-day">오늘</div>
-											<div class="od-total">
-												<span>2</span>건
-											</div>
-										</div>
-										<div>
-											<div class="od-day">이번 주</div>
-											<div class="od-total">
-												<span>2</span>건
-											</div>
-										</div>
-										<div>
-											<div class="od-day">이번 달</div>
-											<div class="od-total">
-												<span>2</span>건
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</th:block>
-						<th:block th:if="${exmnInfo.exmnType.getType() == 'traffic'}">
-							<div id="tc-wrap">
-								<div class="box-title-more">
-									<div class="box-title">TC 조사 이력</div>
-									<a th:href="@{/invstmng/traffic/history}" class="more-title">전체보기</a>
-								</div>
-								<div class="is-box">
-									<div id="tcDataOn">
-										<div id="tcDate"></div>
-										<div class="tcTiemWrap scroll">
-											<div class="tc-time-box" th:each="item : ${hourList}">
-												<div class="tc-time" th:text="${item.hour}"></div>
-												<div class="tc-check">
-													<img th:if="${!item.isExists}" th:src="@{/images/un_check.png}" alt="check">
-													<img th:if="${item.isExists}" th:src="@{/images/check.png}" alt="check">
-												</div>
-											</div>
-										</div>
-									</div>
-									<div id="tcDataOff" class="none">오늘은 조사 일정이 없습니다.</div>
-								</div>
-							</div>
-						</th:block>
-					</div>
-					<div>
-						<a th:href="@{/invstmng/{exmnmngId}(exmnmngId=${exmnmngId})}" class="is-key-button survey-start">조사시작</a>
-					</div>
 					<div id="noticeWrap">
             			<div class="box-title-more">
 			                <div class="box-title">알림</div>
@@ -171,6 +96,10 @@
 </html>
 <script th:inline="javascript">
 	$('header').remove();
+	
+	//footer menu show/hide
+	document.getElementById('footerHomeItem').remove();
+	document.getElementById('footerSurveyStart').classList.remove('none');
 	
 	let today = new Date();   
 	let year = today.getFullYear(); 

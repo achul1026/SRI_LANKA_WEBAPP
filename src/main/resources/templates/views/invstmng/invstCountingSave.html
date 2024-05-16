@@ -18,6 +18,15 @@
 				</div>
 			</div>
 		</section>
+		<div id="fiveMinutesAgoBox">
+			<div id="fiveMinutesFlexBox">
+				<span id="fiveMinutesImg"><img th:src="@{/images/time.png}" alt="TIME"></span>
+				<div>
+					<div>저장 <span id="fiveTime">5분전</span> 입니다.</div>
+					<div>곧 <span id="fiveStartTime"></span>분 ~ <span id="fiveEndTime"></span>분 조사 개수가 저장 됩니다.</div>
+				</div>
+			</div>  
+		</div>
 	</th:block>
 </html>
 <script th:inline="javascript">
@@ -26,12 +35,12 @@
 	headerNextButton.classList.remove('none');
 	headerNextButton.innerText = '확인';
 	
-	
 	//5분알림
 	fiveMinutesAgo();
 	
 	//00,15,30,45분 데이터 저장
 	const trfvlmexmnId =  /*[[${trfvlmexmnId}]]*/ 
+	headerNextButton.setAttribute('onclick', "invstCountingSave(\'"+trfvlmexmnId+"'\)");
 	saveTrafficCounting(trfvlmexmnId);
 	
 </script>

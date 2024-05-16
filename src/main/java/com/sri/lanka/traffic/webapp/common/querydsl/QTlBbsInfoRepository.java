@@ -9,6 +9,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sri.lanka.traffic.webapp.common.entity.QTlBbsInfo;
 import com.sri.lanka.traffic.webapp.common.entity.TlBbsInfo;
+import com.sri.lanka.traffic.webapp.common.enums.code.BbsTypeCd;
 import com.sri.lanka.traffic.webapp.common.util.CommonUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class QTlBbsInfoRepository {
 															tlBbsInfo.bbsTitle, 
 															tlBbsInfo.registDt))
 				.from(tlBbsInfo)
-				.where(tlBbsInfo.dspyYn.eq("Y"))
+				.where(tlBbsInfo.dspyYn.eq("Y").and(tlBbsInfo.bbsType.eq(BbsTypeCd.ALARM.getCode())))
 				.orderBy(tlBbsInfo.registDt.desc());
 				
 		 		if (!CommonUtils.isNull(limit)) {

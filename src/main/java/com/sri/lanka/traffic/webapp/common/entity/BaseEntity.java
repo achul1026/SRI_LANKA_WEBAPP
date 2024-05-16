@@ -12,9 +12,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.sri.lanka.traffic.webapp.common.util.CommonUtils;
-import com.sri.lanka.traffic.webapp.common.util.LoginUtils;
-
 import lombok.Data;
 
 @Data

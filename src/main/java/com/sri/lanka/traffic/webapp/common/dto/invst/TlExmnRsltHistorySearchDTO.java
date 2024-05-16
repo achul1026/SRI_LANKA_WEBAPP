@@ -14,7 +14,7 @@ public class TlExmnRsltHistorySearchDTO {
 	
 	private String paramDate; //검색 날짜
 	private String exmndrctId; // 조사방향 아이디
-	private String exmnmngId = LoginUtils.getExmnmngId(); //조사 관리 아이디
+	private String exmnmngId; //조사 관리 아이디
 	private LocalDateTime startDt = LoginUtils.getInvstInfo().getStartDt();
 	private LocalDateTime endDt = LoginUtils.getInvstInfo().getEndDt();
 	

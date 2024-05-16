@@ -3,14 +3,10 @@ package com.sri.lanka.traffic.webapp.common.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import org.locationtech.jts.geom.Geometry;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters.LocalDateTimeConverter;
 
 import com.sri.lanka.traffic.webapp.common.enums.code.ExmnTypeCd;
 

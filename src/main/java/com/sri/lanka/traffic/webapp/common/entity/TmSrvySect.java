@@ -16,7 +16,7 @@ public class TmSrvySect{
     @Id
     private String sectId; //부문 아이디
 
-    private String exmnmngId; //조사 아이디
+    private String srvyId; //조사 아이디
 
     private String sectTitle; //부문 제목
 
@@ -30,9 +30,9 @@ public class TmSrvySect{
     public TmSrvySect(){}
     
     @Builder
-	public TmSrvySect(String sectId, String exmnmngId, String sectTitle, String sectSubtitle, SectTypeCd sectType, Integer sectSqno) {
+	public TmSrvySect(String sectId, String srvyId, String sectTitle, String sectSubtitle, SectTypeCd sectType, Integer sectSqno) {
 		this.sectId 		= sectId;
-		this.exmnmngId 		= exmnmngId;
+		this.srvyId 		= srvyId;
 		this.sectTitle 		= sectTitle;
 		this.sectSubtitle 	= sectSubtitle;
 		this.sectType 		= sectType;

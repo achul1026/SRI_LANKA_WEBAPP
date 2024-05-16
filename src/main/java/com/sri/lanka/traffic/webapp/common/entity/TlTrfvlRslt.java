@@ -12,7 +12,6 @@ import org.springframework.data.annotation.CreatedDate;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Entity
 @Data //교통량조사 결과정보

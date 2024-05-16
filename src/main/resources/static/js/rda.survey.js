@@ -1,16 +1,34 @@
 surveyMap = (maplon, maplat, mapMeters) => {
 	(async () => {
 		document.body.classList.add('hidden');
-		
-		let mapgl = await mapboxGl(maplon, maplat, mapMeters);
 		let startY = '';
-		let startHeight = '';
+		
 	    const targetElements = document.getElementById('surveyContent');
 	    const mapElements = document.getElementById('surveyMapContainer');
 	    
+	    const contentHeight = targetElements.offsetHeight;
+	    const headerHeight = document.getElementById('headerContainer').offsetHeight;
+	    const footerHeight = document.getElementById('footerContainer').offsetHeight;
+	    const windowHeight = window.innerHeight;
+		
+		
+		//처음 화면 진입시 view size 	    
+		const totalHeight = windowHeight - contentHeight - headerHeight -  footerHeight;
+		const firstViewHeight = totalHeight; //150
+        if(document.body.classList.contains('mobile')){
+			mapElements.style.height = `${firstViewHeight + 150}px`;	        
+		} else {
+			mapElements.style.height = `${firstViewHeight}px`;
+		}
+	    
+		const style = document.createElement('style');
+		document.head.appendChild(style);
+		style.appendChild(document.createTextNode(`#surveyMapContainer.map-remove { height: ${totalHeight}px !important}`));	    
+		
+		let mapgl = await mapboxGl(maplon, maplat, mapMeters);
+		
 	    targetElements.addEventListener('touchstart', (event) => {
 	    	startY = event.touches[0].clientY;
-	    	startHeight = targetElements.offsetHeight;
 	    })
         
 	    targetElements.addEventListener('touchmove', (event) => {
@@ -23,9 +41,8 @@ surveyMap = (maplon, maplat, mapMeters) => {
 		    const mapEleBounding = mapElements.getBoundingClientRect();
 		    const mapEleBottom = mapEleBounding.bottom;
 		    const mapEleBottomResult = Math.floor(mapEleBottom);
-		    const windowHeight = window.innerHeight; //176
-		    const windowMobileBreakHeight = window.innerHeight - 176;
-		    const windowTabletBreakHeight = window.innerHeight - 200;
+		    const windowMobileBreakHeight = windowHeight - 176;
+		    const windowTabletBreakHeight = windowHeight - 200;
         	
 	        if(currentY > startY) {
 	            if(mapEleBottomResult < windowHeight) {
@@ -39,27 +56,18 @@ surveyMap = (maplon, maplat, mapMeters) => {
 				mapElements.style.height = mapEleSize;
 	        }
 	        
-	        setTimeout(() => {
-	        	mapgl.resize();
-	        }, 200);
+	        /*setTimeout(() => {
+	        }, 200);*/
+	        
+        	mapgl.resize();
 	        
 	        //조사정보 touchScroll max,min height
-		    let windowMobileBreakMinHeight = window.innerHeight - 524;
-		    let windowTabletBreakMinHeight = window.innerHeight - 556;
-	        const surveyItem = document.querySelectorAll('.survey-item');
-	        surveyItem.forEach(item => {
-		        if(item.classList.contains('survey-direction')){
-					windowMobileBreakMinHeight = window.innerHeight - 586;
-			    	windowTabletBreakMinHeight = window.innerHeight - 609;
-				}
-			})
-		    
 	        if(document.body.classList.contains('mobile')){
 		        mapElements.style.maxHeight = windowMobileBreakHeight + 'px';
-		        mapElements.style.minHeight = windowMobileBreakMinHeight + 'px';
+		        mapElements.style.minHeight = totalHeight + 'px';
 			} else {
 				mapElements.style.maxHeight = windowTabletBreakHeight + 'px';
-		        mapElements.style.minHeight = windowTabletBreakMinHeight + 'px';
+		        mapElements.style.minHeight = totalHeight + 'px';
 			}
 	        
 	    })
@@ -67,7 +75,7 @@ surveyMap = (maplon, maplat, mapMeters) => {
 	    //touchend 지점에 따른 클래스 추가
 	    targetElements.addEventListener('touchend', (event) => {
 			const endY = event.changedTouches[0].clientY;
-			const screenHeight = window.innerHeight * 0.7;
+			const screenHeight = windowHeight * 0.7;
 			if(endY >= screenHeight) {
 				mapElements.classList.remove('map-down');
 				mapElements.classList.add('map-up');
@@ -155,95 +163,85 @@ function impossible(){
 }
 
 //조사화면에서 다음 버튼
-window.addEventListener('load', () => {
-	const nextButton = document.getElementById('headerNextButton')
-	const header = document.getElementById('headerContainer');
+function saveInvstRsltSave(){
+	
+	let tlRsltSaveDTO = new Object();
 	const pageName = document.getElementById('pageName');
-	 
-	if(header){
-		nextButton.addEventListener('click', () => {
-			
-			
-			let tlRsltSaveDTO = new Object();
-			
-			//조사 타입 traffic(MCC,TM)/survey(OD,AXLELOAD,LABORSIDE)
-			const exmnType = document.getElementById('exmnType').value;
-			const exmnstartDt = document.getElementById('exmnstartDt').value;
-			const exmnendDt = document.getElementById('exmnendDt').value;
-			const exmnLc = document.getElementById('exmnLc').dataset.exmnLc;
-			const exmnmngId = pageName.dataset.exmnmngId;
-			const exmnrsltId = pageName.dataset.exmnrsltId;
-			
-			tlRsltSaveDTO.pollsterLc 	= exmnLc;
-			tlRsltSaveDTO.exmnmngId 	= exmnmngId;
-			tlRsltSaveDTO.exmnrsltId 	= exmnrsltId;
-			tlRsltSaveDTO.exmnstartDt 	= exmnstartDt;
-			tlRsltSaveDTO.exmnendDt 	= exmnendDt;
-			tlRsltSaveDTO.type 			= exmnType;
-			
-			if(exmnType === 'traffic'){
-				
-				//현재위치
-				const myLocation = [lon, lat];
-				//현재위치와 조사반경비교
-				const circlecUserinOutCheck = turf.booleanPointInPolygon(myLocation, turfJs);
-				
-				//조사불가능 사유
-				const lcchgRsn = document.getElementById('lcchgRsn').value;
+	//조사 타입 traffic(MCC,TM)/survey(OD,AXLELOAD,LABORSIDE)
+	const exmnType = document.getElementById('exmnType').value;
+	const exmnstartDt = document.getElementById('exmnstartDt').value;
+	const exmnendDt = document.getElementById('exmnendDt').value;
+	const exmnLc = document.getElementById('exmnLc').dataset.exmnLc;
+	const exmnmngId = pageName.dataset.exmnmngId;
+	const exmnrsltId = pageName.dataset.exmnrsltId;
+	
+	tlRsltSaveDTO.pollsterLc 	= exmnLc;
+	tlRsltSaveDTO.exmnmngId 	= exmnmngId;
+	tlRsltSaveDTO.exmnrsltId 	= exmnrsltId;
+	tlRsltSaveDTO.exmnstartDt 	= exmnstartDt;
+	tlRsltSaveDTO.exmnendDt 	= exmnendDt;
+	tlRsltSaveDTO.type 			= exmnType;
+	
+	if(exmnType === 'traffic'){
+		
+		//현재위치
+		const myLocation = [lon, lat];
+		//현재위치와 조사반경비교
+		const circlecUserinOutCheck = turf.booleanPointInPolygon(myLocation, turfJs);
+		
+		//조사불가능 사유
+		const lcchgRsn = document.getElementById('lcchgRsn').value;
 
-				if(!circlecUserinOutCheck){
-					//조사 불가능 사유가 없거나, 위치반경안에 없을때
-					if(lcchgRsn == ''){
-						new ModalBuilder().init().alertBody("반경 내에서 등록해주세요.<br>반경 내 진입 불가 시 사유를 입력하세요.").footer(4,'확인',function(button, modal){
-							modal.close();
-							impossible();
-						}).open();
-						return false;
-					}
-
-				}
-
-				//조사방향
-				const exmndrctId = document.querySelector('#exmndrctId');
-				const startlcNm = exmndrctId.options[exmndrctId.selectedIndex].dataset.startlcNm;
-				const endlcNm = exmndrctId.options[exmndrctId.selectedIndex].dataset.endlcNm;
-				
-				tlRsltSaveDTO.pollsterLat 	= lat;
-				tlRsltSaveDTO.pollsterLon 	= lon;
-				tlRsltSaveDTO.startlcNm 	= startlcNm;
-				tlRsltSaveDTO.endlcNm 		= endlcNm;
-
-				tlRsltSaveDTO.lcchgRsn 		= lcchgRsn;
-
+		/*if(!circlecUserinOutCheck){
+			//조사 불가능 사유가 없거나, 위치반경안에 없을때
+			if(lcchgRsn == ''){
+				new ModalBuilder().init().alertBody("반경 내에서 등록해주세요.<br>반경 내 진입 불가 시 사유를 입력하세요.").footer(4,'확인',function(button, modal){
+					modal.close();
+					impossible();
+				}).open();
+				return false;
 			}
-			
-			fetch(__contextPath__+"/invstmng",{
-				method: "POST",
-				headers: {
-					'Content-Type': 'application/json;charset=utf-8'
-				},
-				body: JSON.stringify(tlRsltSaveDTO)
-			})
-			.then(response => response.json())
-			.then(result => {
-				if(result.code == '200'){
-					const trfvlOrSrvyRsltId = result.data.trfvlOrSrvyRsltId;
-					if(exmnType === 'traffic'){
-						window.location.href = __contextPath__+"/invstmng/"+trfvlOrSrvyRsltId+"/counting";
-					}else{
-						window.location.href = __contextPath__+"/invstmng/"+trfvlOrSrvyRsltId+"/question";
-					}
-				}else if(result.code == '2002'){
-					//2002 등록된 조사 불가 사유가 존재
-					new ModalBuilder().init().alertBody(result.message).footer(4,'확인',function(button, modal){
-						window.location.href = __contextPath__+"/main";
-						modal.close();
-					}).open();
-				}
-			})
-		})
+		}*/
+
+		//조사방향
+		const exmndrctId = document.querySelector('#exmndrctId');
+		const startlcNm = exmndrctId.options[exmndrctId.selectedIndex].dataset.startlcNm;
+		const endlcNm = exmndrctId.options[exmndrctId.selectedIndex].dataset.endlcNm;
+		
+		tlRsltSaveDTO.pollsterLat 	= lat;
+		tlRsltSaveDTO.pollsterLon 	= lon;
+		tlRsltSaveDTO.startlcNm 	= startlcNm;
+		tlRsltSaveDTO.endlcNm 		= endlcNm;
+
+		tlRsltSaveDTO.lcchgRsn 		= lcchgRsn;
+
 	}
-})
+	
+	fetch(__contextPath__+"/invstmng",{
+		method: "POST",
+		headers: {
+			'Content-Type': 'application/json;charset=utf-8'
+		},
+		body: JSON.stringify(tlRsltSaveDTO)
+	})
+	.then(response => response.json())
+	.then(result => {
+		if(result.code == '200'){
+			const trfvlOrSrvyRsltId = result.data.trfvlOrSrvyRsltId;
+			if(exmnType === 'traffic'){
+				window.location.href = __contextPath__+"/invstmng/"+trfvlOrSrvyRsltId+"/counting";
+			}else{
+				window.location.href = __contextPath__+"/invstmng/"+trfvlOrSrvyRsltId+"/question";
+			}
+		}else if(result.code == '2002'){
+			//2002 등록된 조사 불가 사유가 존재
+			new ModalBuilder().init().alertBody(result.message).footer(4,'확인',function(button, modal){
+				window.location.href = __contextPath__+"/main";
+				modal.close();
+			}).open();
+		}
+	})
+}
 
 //카운팅 조사 저장
 function saveTrafficCounting(trfvlmexmnId){
@@ -292,22 +290,160 @@ function saveTrafficCounting(trfvlmexmnId){
 			}
 		})
 	}, delay);
-
 }
 
 function invstQuestionSave(trfvlmexmnId){
-	alert(trfvlmexmnId)
+	
+	//validation
+	// 주관식
+	const subjectiveInput = document.querySelectorAll('.qtc001');
+	let validationItem = [];
+	subjectiveInput.forEach(item => validationItem.push(item.value));
+	
+	let validationCheck = [];
+	validationCheck.push(validationItem.some(item => item === ''
+	 /*|| isNaN(Number(item)) 숫자 체크 일단 보류*/
+	 ));
+	
+	validationItem = [];
+	// 날짜
+	const dateInput = document.querySelectorAll('.qtc007');
+	dateInput.forEach(item => validationItem.push(item.value));
+	
+	validationCheck.push(validationItem.some(item => item === ''));
+	
+	validationItem = [];
+	// 위치
+	const locationInput = document.querySelectorAll('.qtc005');
+	locationInput.forEach(item => validationItem.push(item.value));
+	
+	validationCheck.push(validationItem.some(item => item === ''));
+	
+	if(validationCheck.some(item => item == true)) {
+		new ModalBuilder().init().alertBody('조사 문항을 모두 입력해주세요.').footer(4,'확인',function(button, modal){modal.close();}).open();
+		return false;
+	}
+	
+	const survyQuestionWrap = document.getElementsByClassName('survy-question-wrap');
+	let tlSrvyAnsList = new Array(); 
+	
+	for(let survyQuestionElelment of survyQuestionWrap){
+		let surveyQuestionTitle = survyQuestionElelment.querySelector('.survey-question-title');
+		let sectType 			= surveyQuestionTitle.dataset.sectType;
+		 
+		let surveyInfoWrap = survyQuestionElelment.getElementsByClassName('survey-info-wrap');
+		
+		for(let surveyInfoElement of surveyInfoWrap){
+			let tlSrvyAns 	= new Object();
+			let qstnInfo 	= surveyInfoElement.querySelector('.survey-sub-question-title'); 
+			let qstnTitle 	= qstnInfo.dataset.qstnTitle;
+			let qstnType 	= qstnInfo.dataset.qstnType;
+			let qstnSqno 	= qstnInfo.dataset.qstnSqno;
+			let ansCnts		= "";
+			
+			tlSrvyAns.srvyrsltId 	= srvyrsltId;
+			tlSrvyAns.sectType 		= sectType;
+			tlSrvyAns.qstnTitle 	= qstnTitle;
+			tlSrvyAns.qstnType 		= qstnType;
+			tlSrvyAns.qstnSqno 		= qstnSqno;
+			
+			
+			if(qstnType === 'QTC003'){ //체크박스 값 여러개
+				let selectedValues = surveyInfoElement.querySelectorAll('.check-img-on');
+					for(selectedValue of selectedValues){
+						tlSrvyAns 	= new Object();
+						
+						tlSrvyAns.srvyrsltId 	= srvyrsltId;
+						tlSrvyAns.sectType 		= sectType;
+						tlSrvyAns.qstnTitle 	= qstnTitle;
+						tlSrvyAns.qstnType 		= qstnType;
+						tlSrvyAns.qstnSqno 		= qstnSqno;
+						tlSrvyAns.ansCnts 		= selectedValue.dataset.ansCnts;
+						tlSrvyAnsList.push(tlSrvyAns);
+					}
+			}else{
+				//값 1개인경우
+				if(qstnType === 'QTC001' || qstnType === 'QTC005' || qstnType === 'QTC007'){
+					ansCnts = surveyInfoElement.querySelector('input[name="ansCnts"]').value;
+					console.log(ansCnts)
+				}else if(qstnType === 'QTC002'){ //라디오
+					ansCnts = surveyInfoElement.querySelector('.check-img-on').dataset.ansCnts;
+				}else if(qstnType === 'QTC006'){ //드롭다운
+					ansCnts = surveyInfoElement.querySelector('select[name="ansCnts"]').value;
+				}else if(qstnType === 'QTC004'){ //시간
+					let hour = surveyInfoElement.querySelector('.select-hour').value;
+					let minute = surveyInfoElement.querySelector('.select-minute').value;
+					ansCnts = hour+":"+minute
+				}
+				
+				tlSrvyAns.srvyrsltId 	= srvyrsltId;
+				tlSrvyAns.sectType 		= sectType;
+				tlSrvyAns.qstnTitle 	= qstnTitle;
+				tlSrvyAns.qstnType 		= qstnType;
+				tlSrvyAns.qstnSqno 		= qstnSqno;
+				tlSrvyAns.ansCnts 		= ansCnts;
+				tlSrvyAnsList.push(tlSrvyAns);
+			}
+		}
+	}
+	
+	fetch(__contextPath__+"/invstmng/question",{
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8'
+			},
+			body: JSON.stringify(tlSrvyAnsList)
+		})
+		.then(response => response.json())
+		.then(result => {
+			if(result.code == '200'){
+				new ModalBuilder().init().alertBody(result.message).footer(4,'확인',function(button, modal){
+					window.location.href = __contextPath__+"/main";
+					modal.close();
+				}).open();
+			}else{
+				new ModalBuilder().init().alertBody(result.message).footer(4,'확인',function(button, modal){
+					modal.close();
+				}).open();
+			}
+		})
+	
 }
+
 //조사 5분전 알림
 function fiveMinutesAgo() {
 	const checkMinutes = [10, 25, 40, 55];
 	const now = new Date();
-	
+	const nowMinutes = now.getMinutes();
+	const pushHTML = document.getElementById('fiveMinutesAgoBox');
+	const startTime = document.getElementById('fiveStartTime');
+	const endTime = document.getElementById('fiveEndTime');
 	let delay = getNextCheckTime(now,checkMinutes) - now;
 	
+	
 	setTimeout(() => {
-		new ModalBuilder().init().alertBody('조사 종료 5분전 입니다.').footer(4,'확인',function(button, modal){modal.close();}).open();
+		pushHTML.classList.add('active');
 		fiveMinutesAgo();
+		
+		if(0 < nowMinutes && nowMinutes <= 15){
+			startTime.textContent = '00';
+			endTime.textContent = '15';
+		} else if(16 < nowMinutes && nowMinutes <= 30) {
+			startTime.textContent = '15';
+			endTime.textContent = '30';
+		} else if(31 < nowMinutes && nowMinutes <= 45) {
+			startTime.textContent = '30';
+			endTime.textContent = '45';
+		} else if(46 < nowMinutes && nowMinutes <= 59) {
+			startTime.textContent = '45';
+			endTime.textContent = '60';
+		}
+		
+		//푸시 5초 후 제거 
+		setTimeout(() => {
+			pushHTML.classList.remove('active');
+		}, 5000)
+		
 	}, delay);
 }
 

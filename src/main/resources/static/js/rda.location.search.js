@@ -1,6 +1,21 @@
+//locationModal, Value Add
+function locationSave(_this){
+	const locationValueSave = _this.closest('.survey-location-box').querySelector('.locationSave');
+	new ModalBuilder().init('주소 찾기').ajaxBody("/invstmng/location/save").footer(3,'확인',function(button, modal){
+		const locationValue = document.querySelector('.surveyLocationValue').value;
+		locationValueSave.value = locationValue;
+		modal.close();
+	}, '취소', function(button, modal){
+		locationValueSave.value = "";
+		modal.close();		
+	}).open();
+}
+
+
+//locationList
 function locationSearch(selectContainerClassName){
 	let selectContainer = document.querySelector('.'+selectContainerClassName);
-	let locationInputSave = document.querySelector('.'+selectContainerClassName+'~ div .locationSave');
+	let locationInputSave = document.querySelector('.surveyLocationValue');
 	let selectTwoElement = null;
 	let selectThreeElement = null;
 	let locations;

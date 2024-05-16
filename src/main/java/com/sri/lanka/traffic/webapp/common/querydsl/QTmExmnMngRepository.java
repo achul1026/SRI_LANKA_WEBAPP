@@ -50,6 +50,7 @@ public class QTmExmnMngRepository {
 																	LoginExmnDTO.class, 
 																	tmExmnMng.exmnmngId, 
 																	tmExmnMng.exmnNm, 
+																	tmExmnMng.srvyId, 
 																	tmExmnMng.partcptCd,
 																	tmExmnMng.exmnType,
 																	tmExmnMng.exmnDiv,

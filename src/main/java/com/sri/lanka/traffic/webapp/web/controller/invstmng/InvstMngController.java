@@ -15,17 +15,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sri.lanka.traffic.webapp.common.dto.common.LoginExmnDTO;
 import com.sri.lanka.traffic.webapp.common.dto.invst.TlExmnRsltDetailSaveDTO;
 import com.sri.lanka.traffic.webapp.common.dto.invst.TlExmnRsltHistoryDTO;
 import com.sri.lanka.traffic.webapp.common.dto.invst.TlExmnRsltHistorySearchDTO;
 import com.sri.lanka.traffic.webapp.common.dto.invst.TmSrvySectDetailDTO;
 import com.sri.lanka.traffic.webapp.common.entity.TlExmnRslt;
+import com.sri.lanka.traffic.webapp.common.entity.TlSrvyAns;
 import com.sri.lanka.traffic.webapp.common.entity.TlTrfvlInfo;
 import com.sri.lanka.traffic.webapp.common.entity.TmExmnDrct;
 import com.sri.lanka.traffic.webapp.common.entity.TmExmnMng;
 import com.sri.lanka.traffic.webapp.common.enums.code.MvmnmeanTypeCd;
 import com.sri.lanka.traffic.webapp.common.querydsl.QTlTrfvlRsltRepository;
 import com.sri.lanka.traffic.webapp.common.querydsl.QTmExmnMngRepository;
+import com.sri.lanka.traffic.webapp.common.repository.TlSrvyAnsRepository;
 import com.sri.lanka.traffic.webapp.common.repository.TlTrfvlInfoRepository;
 import com.sri.lanka.traffic.webapp.common.repository.TmExmnDrctRepository;
 import com.sri.lanka.traffic.webapp.common.util.CommonUtils;
@@ -50,7 +53,10 @@ public class InvstMngController {
 	
 	@Autowired
 	TlTrfvlInfoRepository tlTrfvlInfoRepository;
-
+	
+	@Autowired
+	TlSrvyAnsRepository tlSrvyAnsRepository;
+	
 	@Autowired
 	InvstMngService invstMngService;
 	/**
@@ -185,34 +191,69 @@ public class InvstMngController {
 	@PostMapping("/counting")
 	public @ResponseBody CommonResponse<?> invstCountingSave(@RequestBody List<TlTrfvlInfo> tlTrfvlInfoList) {
 		try {
-			tlTrfvlInfoRepository.saveAll(tlTrfvlInfoList);
+			invstMngService.saveInvstCountingOrQuestion(tlTrfvlInfoList, null, "traffic");
 		}catch (Exception e) {
 			return CommonResponse.ResponseCodeAndMessage(HttpStatus.INTERNAL_SERVER_ERROR, "DB 정보 등록에 실패했습니다. 관리자에게 문의해주세요.");
 		}
-		return CommonResponse.ResponseCodeAndMessage(HttpStatus.OK, "");
+		LoginExmnDTO exmnInfo = LoginUtils.getInvstInfo();
+		return CommonResponse.ResponseCodeAndMessage(HttpStatus.OK, exmnInfo.getExmnTypeNm() + "가 등록 되었습니다.");
+	}
+	
+	/**
+	 * @Method Name : invstQuestionSave
+	 * @작성일 : 2024. 4. 15.
+	 * @작성자 : NK.KIM
+	 * @Method 설명 : 설문형 데이터 저장
+	 * @param tlSrvyAnsList
+	 * @return
+	 */
+	@PostMapping("/question")
+	public @ResponseBody CommonResponse<?> invstQuestionSave(@RequestBody List<TlSrvyAns> tlSrvyAnsList) {
+		try {
+			invstMngService.saveInvstCountingOrQuestion(null, tlSrvyAnsList, "survey");
+		}catch (Exception e) {
+			return CommonResponse.ResponseCodeAndMessage(HttpStatus.INTERNAL_SERVER_ERROR, "DB 정보 등록에 실패했습니다. 관리자에게 문의해주세요.");
+		}
+		LoginExmnDTO exmnInfo = LoginUtils.getInvstInfo();
+		return CommonResponse.ResponseCodeAndMessage(HttpStatus.OK, exmnInfo.getExmnTypeNm() + "가 등록 되었습니다.");
 	}
 	
 	/**
 	  * @Method Name : invstCountingSavePage
 	  * @작성일 : 2024. 4. 9.
 	  * @작성자 : NK.KIM
-	  * @Method 설명 : 카운트 조사 화면
+	  * @Method 설명 : 설문 조사 화면
 	  * @param trfvlmexmnId
 	  * @param model
 	  * @return
 	  */
-	@GetMapping("/{trfvlmexmnId}/question")
-	public String invstQuestionSavePage(@PathVariable String trfvlmexmnId, Model model) {
+	@GetMapping("/{srvyrsltId}/question")
+	public String invstQuestionSavePage(@PathVariable String srvyrsltId, Model model) {
 		
-		String exmnmngId = LoginUtils.getExmnmngId();
+		LoginExmnDTO exmnInfo = LoginUtils.getInvstInfo();
 		
 		//설문 정보 호출
-		TmSrvySectDetailDTO tmSrvySectDetailDTO = invstMngService.getSrvySectInfo(exmnmngId);
+		TmSrvySectDetailDTO tmSrvySectDetailDTO = invstMngService.getSrvySectInfo(exmnInfo.getSrvyId());
 		
 		model.addAttribute("exmnMngSrvyList", tmSrvySectDetailDTO.getTmSrvySectList());
 		model.addAttribute("pageType", "QUESTION");
-		model.addAttribute("trfvlmexmnId", trfvlmexmnId);
+		model.addAttribute("srvyrsltId", srvyrsltId);
 		
 		return "views/invstmng/invstQuestionSave";
 	}
+	
+	
+	/**
+	 * @Method Name : location
+	 * @작성일 : 2024. 5. 2
+	 * @작성자 : TY.LEE
+	 * @Method 설명 : locationSave
+	 * @param model
+	 * @return
+	 */
+
+	@GetMapping("/location/save")
+	public String locationSave(Model model) {
+		return "views/invstmng/modal/invstLocationSave";
+	}	
 }

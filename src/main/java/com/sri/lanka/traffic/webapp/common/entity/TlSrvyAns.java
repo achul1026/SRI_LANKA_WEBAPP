@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.sri.lanka.traffic.webapp.common.util.CommonUtils;
+
 import lombok.Data;
 
 @Entity
@@ -12,7 +14,7 @@ import lombok.Data;
 public class TlSrvyAns {
 
     @Id
-    private String srvyansId; //설문 답변 아이디
+    private String srvyansId = CommonUtils.getUuid(); //설문 답변 아이디
 
     private String srvyrsltId; //설문 결과 아이디
     
@@ -20,8 +22,10 @@ public class TlSrvyAns {
     
     private String qstnTitle; //질문 제목
     
-    private BigDecimal qstnSqno; //질문 순서
+    private String qstnType; //질문 유형
     
+    private BigDecimal qstnSqno; //질문 순서
+
     private String ansCnts; //답변 내용
 
 }

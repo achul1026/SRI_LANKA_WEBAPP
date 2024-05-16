@@ -7,7 +7,7 @@
 			<div id="headerContainer">
 				<div id="headerItem">
 					<a th:href="@{/main}" id="headerPrevButton"><img th:src="@{/images/back_arrow.png}" alt="back"></a>
-					<a href="javascript:void(0)" id="headerNextButton" class="none">다음</a>
+					<a href="javascript:void(0)" id="headerNextButton" class="headerNextButton none">다음</a>
 				</div>
 				<div id="headerPageName">
 					<h1 id="pageName" th:data-page-type="${pageType eq null ? @loginUtils.getExmnmngTypeCd() : pageType}" th:data-exmnmng-id="${@loginUtils.getExmnmngId()}"

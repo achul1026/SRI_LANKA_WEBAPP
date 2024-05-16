@@ -36,4 +36,7 @@
 <script th:inline="javascript">
 	document.body.classList.add('hidden');
 	document.getElementById('headerNextButton').classList.remove('none');
+	
+	const headerNextButton = document.getElementById('headerNextButton');
+	headerNextButton.setAttribute('onclick', "saveInvstRsltSave()");
 </script>

@@ -16,5 +16,5 @@ public interface TmSrvySectRepository extends JpaRepository<TmSrvySect, String>{
 	  * @param exmnmngId
 	  * @return
 	  */
-	List<TmSrvySect> findAllByExmnmngIdOrderBySectSqnoAsc(String exmnmngId);
+	List<TmSrvySect> findAllBySrvyIdOrderBySectSqnoAsc(String exmnmngId);
 }

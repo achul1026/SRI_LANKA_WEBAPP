@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/login")
 public class LoginController {
-	
 	/**
 	 * @Method Name : loginCode
 	 * @작성일 : 2024. 2. 14

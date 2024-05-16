@@ -19,26 +19,6 @@ window.addEventListener('load', () => {
 	selectMinuteSet();
 	weatherButton();
 	
-	
-	const surveyRadioButton = document.querySelectorAll('.radio-checked');
-	surveyRadioButton.forEach(function(radio) {
-		radio.addEventListener('change', function(_this){
-			let target = _this.target;
-			const isBox = target.closest('.is-box');
-			const textInput = isBox.querySelectorAll('.survey-input-direct');
-			textInput.forEach(function(input){
-				input.readOnly = true;
-				input.value = '';
-			})
-			if(target.classList.contains('direct-check')){
-				const directInput = target.parentElement.querySelector('.survey-input-direct');
-				if(directInput) {
-					directInput.readOnly = false;
-				}
-			}
-		})
-	})
-	
 	$('.radio-checked').on('change', function(){
         $(this).closest('li').siblings().find('.check-img').removeClass('check-img-on');
         $(this).siblings('.check-img').addClass('check-img-on');
@@ -50,24 +30,6 @@ window.addEventListener('load', () => {
 })
 isNull = function(value) {
     return (value === undefined || value === null || value === '') ? true : false;
-}
-//sideMenu open/remove
-sideMenuOpen = () => {
-	sideBg.classList.remove('none');
-	sideWrap.classList.add('active');
-	document.body.classList.add('scroll-hidden');
-}
-sideMenuRemove = () => {
-	sideBg.classList.add('none');
-	sideWrap.classList.remove('active');
-	document.body.classList.remove('scroll-hidden');
-}
-// 2depth
-sideDepthToggle = (_this) => {
-	$(_this).parent().siblings().removeClass('active');
-	$(_this).parent().toggleClass('active');
-    $(_this).parent().siblings().find(".depth2-wrap").stop().slideUp(300);
-    $(_this).next().stop().slideToggle(300);
 }
 // view resize
 viewSize = () => {

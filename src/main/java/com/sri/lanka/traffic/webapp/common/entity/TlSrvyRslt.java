@@ -1,7 +1,5 @@
 package com.sri.lanka.traffic.webapp.common.entity;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;

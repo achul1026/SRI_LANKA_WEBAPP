@@ -14,6 +14,7 @@ public class LoginExmnDTO {
 	
 	private String exmnmngId;
 	private String exmnNm;
+	private String srvyId;
 	private String partcptCd;
 	private ExmnTypeCd exmnType;
 	private String exmnTypeNm;

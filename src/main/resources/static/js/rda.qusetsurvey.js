@@ -1,11 +1,13 @@
-function TransferSurvey(locationClassName){
+function TransferSurvey(){
 	const surveyWrap = document.getElementById('surveyWrap');
 	const boxHtml = `
 					<div class="transfer-wrap">
 						<div class="is-box">
 							<h3 class="survey-sub-question-title"><span>Q1-2.</span>환승지 주소</h3>
-							<div class="survey-loaction-search-box ${locationClassName}"></div>
-							<div><input type="text" class="div-input wd100 locationSave" readonly/></div>
+							<div class="survey-location-box">	
+								<input type="text" class="div-input wd100 locationSave" readonly/>
+								<input type="button" class="is-key-button" onclick="locationSave(this);" value="찾기"/>
+							</div>
 						</div>			
 						<div class="is-box">
 							<h3 class="survey-sub-question-title"><span>Q2-2.</span>출발시간</h3>
@@ -39,7 +41,6 @@ function TransferSurvey(locationClassName){
 		transferWrap.classList.add(`transferBox${index+1}`);
 	})
 	
-	locationSearch(locationClassName);
 	selectMinuteSet();
 	
 	// 환승wrapRemove, 환승buttonAdd&Remove

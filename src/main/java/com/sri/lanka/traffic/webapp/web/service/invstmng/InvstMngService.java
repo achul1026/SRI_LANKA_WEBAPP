@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +24,9 @@ import com.sri.lanka.traffic.webapp.common.dto.invst.TmSrvySectDetailDTO;
 import com.sri.lanka.traffic.webapp.common.dto.invst.TmSrvySectDetailDTO.TmSrvySectInfo;
 import com.sri.lanka.traffic.webapp.common.dto.invst.TmSrvySectDetailDTO.TmSrvySectInfo.TmSrvyQstnInfo;
 import com.sri.lanka.traffic.webapp.common.entity.TlExmnRslt;
+import com.sri.lanka.traffic.webapp.common.entity.TlSrvyAns;
 import com.sri.lanka.traffic.webapp.common.entity.TlSrvyRslt;
+import com.sri.lanka.traffic.webapp.common.entity.TlTrfvlInfo;
 import com.sri.lanka.traffic.webapp.common.entity.TlTrfvlRslt;
 import com.sri.lanka.traffic.webapp.common.entity.TmExmnDrct;
 import com.sri.lanka.traffic.webapp.common.entity.TmExmnMng;
@@ -32,7 +36,9 @@ import com.sri.lanka.traffic.webapp.common.entity.TmSrvySect;
 import com.sri.lanka.traffic.webapp.common.enums.code.ExmnSttsCd;
 import com.sri.lanka.traffic.webapp.common.enums.code.QstnTypeCd;
 import com.sri.lanka.traffic.webapp.common.repository.TlExmnRsltRepository;
+import com.sri.lanka.traffic.webapp.common.repository.TlSrvyAnsRepository;
 import com.sri.lanka.traffic.webapp.common.repository.TlSrvyRsltRepository;
+import com.sri.lanka.traffic.webapp.common.repository.TlTrfvlInfoRepository;
 import com.sri.lanka.traffic.webapp.common.repository.TlTrfvlRsltRepository;
 import com.sri.lanka.traffic.webapp.common.repository.TmExmnDrctRepository;
 import com.sri.lanka.traffic.webapp.common.repository.TmExmnMngRepository;
@@ -40,6 +46,7 @@ import com.sri.lanka.traffic.webapp.common.repository.TmSrvyAnsRepository;
 import com.sri.lanka.traffic.webapp.common.repository.TmSrvyQstnRepository;
 import com.sri.lanka.traffic.webapp.common.repository.TmSrvySectRepository;
 import com.sri.lanka.traffic.webapp.common.util.CommonUtils;
+import com.sri.lanka.traffic.webapp.common.util.LoginExmnUtils;
 import com.sri.lanka.traffic.webapp.common.util.LoginUtils;
 import com.sri.lanka.traffic.webapp.support.exception.CommonException;
 import com.sri.lanka.traffic.webapp.support.exception.ErrorCode;
@@ -77,6 +84,12 @@ public class InvstMngService {
 	
 	@Autowired
 	TmSrvyAnsRepository tmSrvyAnsRepository;
+	
+	@Autowired
+	TlSrvyAnsRepository tlSrvyAnsRepository;
+	
+	@Autowired
+	TlTrfvlInfoRepository tlTrfvlInfoRepository;
 	
     /**
       * @Method Name : saveInvstRsltInfo
@@ -119,8 +132,16 @@ public class InvstMngService {
       * @param tlExmnRsltDetailSaveDTO
       */
     public void saveInvstTrfvlOrSrvyRsltInfo(TlExmnRsltDetailSaveDTO tlExmnRsltDetailSaveDTO){
+    	
     	Optional<TmExmnMng> invstInfo = tmExmnMngRepository.findById(tlExmnRsltDetailSaveDTO.getExmnmngId());
+    	//조사 테이블
 		if(!invstInfo.isPresent()) {
+			
+		}
+		
+		//조사 결과 테이블 
+		Optional<TlExmnRslt> tlExmnRslt = tlExmnRsltRepository.findById(tlExmnRsltDetailSaveDTO.getExmnrsltId());
+		if(!tlExmnRslt.isPresent()) {
 			
 		}
 		
@@ -133,8 +154,20 @@ public class InvstMngService {
 
 			}else {
 			//설문형 결과 db 저장
-				TlSrvyRslt tlSrvyRslt = tlExmnRsltDetailSaveDTO.toTlSrvyRslt();
-				tlSrvyRsltRepository.save(tlSrvyRslt);
+			//당일 데이터는 당일에 1개씩만 insert 
+				String exmnrsltId = tlExmnRsltDetailSaveDTO.getExmnrsltId();
+				LocalDateTime exmnstartDt = tlExmnRsltDetailSaveDTO.getExmnstartDt();
+				LocalDateTime exmnendDt = tlExmnRsltDetailSaveDTO.getExmnendDt();
+				
+				Optional<TlSrvyRslt> dbTlSrvyRslt = tlSrvyRsltRepository.findOneByExmnrsltIdAndExmnstartDtAndExmnendDt(exmnrsltId,exmnstartDt,exmnendDt);
+				//당일 데이터가 없을때만 insert
+				if(!dbTlSrvyRslt.isPresent()) {
+					TlSrvyRslt tlSrvyRslt = tlExmnRsltDetailSaveDTO.toTlSrvyRslt();
+					tlSrvyRsltRepository.save(tlSrvyRslt);
+				}else {
+					//존재할경우 SET srvyrsltId
+					tlExmnRsltDetailSaveDTO.setTrfvlOrSrvyId(dbTlSrvyRslt.get().getSrvyrsltId());
+				}
 			}
 			
 			//조사 상태 값 진행중으로 변경 
@@ -219,9 +252,9 @@ public class InvstMngService {
 	  * @param exmnmngId
 	  * @return
 	  */
-	public TmSrvySectDetailDTO getSrvySectInfo(String exmnmngId){
+	public TmSrvySectDetailDTO getSrvySectInfo(String srvyId){
 		TmSrvySectDetailDTO tmSrvySectDetailDTO = new TmSrvySectDetailDTO();
-		List<TmSrvySect> dbTmSrvySectList = tmSrvySectRepository.findAllByExmnmngIdOrderBySectSqnoAsc(exmnmngId);
+		List<TmSrvySect> dbTmSrvySectList = tmSrvySectRepository.findAllBySrvyIdOrderBySectSqnoAsc(srvyId);
 		//설문 항목 목록 호출
 		if(!CommonUtils.isNull(dbTmSrvySectList)) {
 			
@@ -243,7 +276,7 @@ public class InvstMngService {
 					for(TmSrvyQstnInfo tmSrvyQstnInfo : tmSrvySectInfo.getTmSrvyQstnList()) {
 						QstnTypeCd qstnTypeCd = tmSrvyQstnInfo.getQstnTypeCd();
 						//답변은 RADIO or CHECKBOX
-						if(QstnTypeCd.RADIO.equals(qstnTypeCd) || QstnTypeCd.CHECKBOX.equals(qstnTypeCd)) {
+						if(QstnTypeCd.RADIO.equals(qstnTypeCd) || QstnTypeCd.CHECKBOX.equals(qstnTypeCd) || QstnTypeCd.SELECTBOX.equals(qstnTypeCd)) {
 							//설문 답변 목록 호출
 							List<TmSrvyAns> dbTmSrvyAnsList = tmSrvyAnsRepository.findAllByQstnIdOrderByAnsSqnoAsc(tmSrvyQstnInfo.getQstnId());
 							if(!CommonUtils.isNull(dbTmSrvyAnsList)) {
@@ -255,6 +288,28 @@ public class InvstMngService {
 			}
 		}
 		return tmSrvySectDetailDTO;
+	}
+
+	/**
+	  * @Method Name : saveInvstQuestion
+	  * @작성일 : 2024. 5. 14.
+	  * @작성자 : SM.KIM
+	  * @Method 설명 : 설문 답변 저장
+	  * @param tlSrvyAnsList
+	  */
+	@Transactional
+	public void saveInvstCountingOrQuestion(List<TlTrfvlInfo> tlTrfvlInfoList, List<TlSrvyAns> tlSrvyAnsList, String type) {
+		if (type == "traffic") {
+			tlTrfvlInfoRepository.saveAll(tlTrfvlInfoList);
+		} else {
+			tlSrvyAnsRepository.saveAll(tlSrvyAnsList);
+		}
+		
+		String exmnmngId = LoginExmnUtils.getExmnmngId();
+		TmExmnMng tmExmnMng = tmExmnMngRepository.findById(exmnmngId).get();
+		
+		tmExmnMng.setSttsCd(ExmnSttsCd.INVEST_COMPLETE);
+		tmExmnMngRepository.save(tmExmnMng);
 	}
 	
 }

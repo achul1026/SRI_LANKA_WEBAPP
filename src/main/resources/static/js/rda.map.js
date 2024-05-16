@@ -13,11 +13,41 @@ function mapboxGl(mapLon = 0, mapLat = 0, meters = 0){
 	    const map = window.map = new mapboxgl.Map({
 	        container: 'map',
 	        style:  'mapbox://styles/mapbox/streets-v12',
-	        minZoom:12,
-	        maxZoom:18,
+	        /*minZoom:12,*/
+	        /*maxZoom:18,*/
 	        center: [mapLon, mapLat],
 	        pitch: 0,
 	    });
+	    
+	const test = [[10.093696579427188, 82.15808049665151],
+		[5.1552312930991775, 79.4658304435232]]
+	
+	    
+    map.on('load', () => {
+        map.addSource('rda-location', {
+            'type': 'geojson',
+            'data': '/js/rda.tazs.geojson'
+        });
+
+        map.addLayer({
+            'id': 'rda-location',
+            'type': 'fill',
+            'source': 'rda-location',
+            'paint': {
+                'fill-color': 'rgba(0, 0, 0, 0.4)',
+                'fill-outline-color': 'red'
+            }
+        });
+
+        map.on('click', 'rda-location', (e) => {
+            new mapboxgl.Popup()
+                .setLngLat(e.lngLat)
+                .setHTML(e.features[0].properties.TAZ_name)
+                .addTo(map);
+        });
+    });
+	    
+	    
 	    
 		//조사해야할곳 위치
 		const el = document.createElement('img')

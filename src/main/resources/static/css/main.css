@@ -26,14 +26,12 @@
     justify-content:space-between;
     align-items:center;
 }
+#userBox {
+	font-size:14px;
+}
 #surveyTitle {
     font-size:18px;
     font-weight: 600;
-}
-.survey-start {
-	display:block;
-	margin:24px 0 10px 0;
-	text-align:center;
 }
 .surveyor-box {
 	max-height:216px;
@@ -43,6 +41,7 @@
 	display:flex;
     flex-wrap: wrap;
     padding:6px 0;
+    font-size:14px;
     border-bottom:1px solid var(--gray);
 }
 .surveyor-name-box {
@@ -167,12 +166,16 @@
 	align-items:center;
 	justify-content: space-between;
 	padding-bottom:16px;
+	font-size:14px;
 }
 .notice-box:nth-last-child(1) .notice-item {
 	padding-bottom:0;
 }
 .notice-wrap .notice-item {
 	padding-bottom:0;
+}
+.notice-item > span {
+	flex:1;
 }
 /* .notice-type {
 	padding:3px 12px;

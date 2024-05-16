@@ -27,6 +27,8 @@ public class TmExmnMng extends CreateEntity{
 
     private String exmngrpId; //조사 그룹 아이디
 
+    private String srvyId; //설문 정보 아이디
+    
     private String usermngId; //관리자 아이디
 
     private String exmnNm; //조사 명

@@ -3,8 +3,6 @@ package com.sri.lanka.traffic.webapp.common.entity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.sri.lanka.traffic.webapp.common.util.CommonUtils;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

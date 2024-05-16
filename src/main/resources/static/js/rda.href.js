@@ -11,14 +11,6 @@ window.addEventListener('load', () => {
 		switch(pageType) {
 			case 'counting':
 			case 'question':
-				const headerButton = document.getElementById('headerNextButton');
-				let onclickName = "invstCountingSave(\'"+exmmngId+"'\)";
-				if(pageType === 'question'){
-					onclickName = "invstQuestionSave(\'"+exmmngId+"'\)";
-				}
-				headerButton.setAttribute('onclick', onclickName);
-				prevButton.href="javascript:history.back()";
-			break;
 			case 'detail':
 				prevButton.href="javascript:history.back()";
 			break;

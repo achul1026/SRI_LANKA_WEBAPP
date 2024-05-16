@@ -3,9 +3,6 @@ package com.sri.lanka.traffic.webapp.common.dto.invst;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.sri.lanka.traffic.webapp.common.dto.invst.TmSrvySectDetailDTO.TmSrvySectInfo;
-import com.sri.lanka.traffic.webapp.common.dto.invst.TmSrvySectDetailDTO.TmSrvySectInfo.TmSrvyQstnInfo;
-import com.sri.lanka.traffic.webapp.common.dto.invst.TmSrvySectDetailDTO.TmSrvySectInfo.TmSrvyQstnInfo.TmSrvyAnsInfo;
 import com.sri.lanka.traffic.webapp.common.entity.TmSrvyAns;
 import com.sri.lanka.traffic.webapp.common.entity.TmSrvyQstn;
 import com.sri.lanka.traffic.webapp.common.entity.TmSrvySect;
@@ -24,7 +21,7 @@ public class TmSrvySectDetailDTO {
 		
 		private String sectId; //부문 아이디
 		
-		private String exmnmngId; //조사 아이디
+		private String srvyId; //조사명
 		
 		private String sectTitle; //부문 제목
 		
@@ -77,9 +74,10 @@ public class TmSrvySectDetailDTO {
 			}
 			
 		}
+		
 		public TmSrvySectInfo(TmSrvySect tmSrvySect) {
 			this.sectId 		= tmSrvySect.getSectId();
-			this.exmnmngId 		= tmSrvySect.getExmnmngId();
+			this.srvyId 		= tmSrvySect.getSrvyId();
 			this.sectTitle 		= tmSrvySect.getSectTitle();
 			this.sectSubtitle 	= tmSrvySect.getSectSubtitle();
 			this.sectType 		= tmSrvySect.getSectType();
@@ -94,8 +92,6 @@ public class TmSrvySectDetailDTO {
 		}
 	}
 	
-
-
 	public void setTmSrvySectList(List<TmSrvySect> tmSrvySectList) {
 		this.tmSrvySectList = tmSrvySectList.stream()
                 .map(x -> new TmSrvySectInfo(x))
