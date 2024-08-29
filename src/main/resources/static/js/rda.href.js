@@ -12,10 +12,9 @@ window.addEventListener('load', () => {
 			case 'counting':
 			case 'question':
 			case 'detail':
-				prevButton.href="javascript:history.back()";
-			break;
 			case 'inquiry':
-				title.textContent = titleLocation[5].toUpperCase();
+			case 'notice':
+				prevButton.href="javascript:history.back()";
 			break;
 		}
 	}

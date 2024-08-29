@@ -1,7 +1,7 @@
 package com.sri.lanka.traffic.webapp.config.authentication;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.Locale;
 
 import javax.servlet.ServletException;
@@ -41,9 +41,12 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         }
 
 
-        response.setContentType("text/html; charset=UTF-8");
+        /*response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
         out.println("<script>alert('"+error+"'); location.href='"+request.getContextPath()+"/login';</script>");
-        out.flush();
+        out.flush();*/
+        // URL 리디렉션
+        String redirectUrl = String.format("%s/login?error=%s", request.getContextPath(), URLEncoder.encode(error, "UTF-8"));
+        response.sendRedirect(redirectUrl);
     }
 }

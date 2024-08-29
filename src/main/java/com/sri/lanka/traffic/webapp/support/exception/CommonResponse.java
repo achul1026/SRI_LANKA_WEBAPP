@@ -58,7 +58,7 @@ public class CommonResponse<T> {
 		return new CommonResponse<>(code, message);
 	}
 	public static <T> CommonResponse<T> ResponseCodeAndMessage(HttpStatus httpStatus , String message, T data){
-		return new CommonResponse<>(HttpStatus.OK, message, data);
+		return new CommonResponse<>(httpStatus, message, data);
 	}
 	public static <T> CommonResponse<T> ResponseCodeAndMessageAndSuccessUrl(HttpStatus httpStatus , String message , String successUrl){
 		return new CommonResponse<>(httpStatus, message, successUrl);

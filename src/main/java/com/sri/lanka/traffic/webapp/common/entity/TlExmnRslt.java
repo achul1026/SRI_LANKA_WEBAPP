@@ -3,9 +3,11 @@ package com.sri.lanka.traffic.webapp.common.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.sri.lanka.traffic.webapp.common.enums.code.ExmnSttsCd;
 import org.locationtech.jts.geom.Geometry;
 
 import com.sri.lanka.traffic.webapp.common.enums.code.ExmnTypeCd;
@@ -31,6 +33,7 @@ public class TlExmnRslt{
 
     private Geometry exmnGis; //조사 gis
 
+    @Convert(converter = ExmnTypeCd.Converter.class)
     private ExmnTypeCd exmnType; //조사 유형
     
     private String exmnmngId; //조사 관리 아이디
@@ -41,12 +44,29 @@ public class TlExmnRslt{
     
     private String exmnDiv; //조사 구분
 
-    private String sttsCd; //조사 결과 상태
+    @Convert(converter = ExmnSttsCd.Converter.class)
+    private ExmnSttsCd sttsCd; //상태 코드
 
     private String exmnRange = "0"; //조사 범위
     
     private BigDecimal goalCnt = BigDecimal.ZERO; //조사 목표 개수
     
+    private String dsdCd; //스리랑카사무국코드
+
+    private String gnCd; //스리랑카지방사무국코드
+    
+    private String tazCd;
+    
+    private String cordonLine; //코든 라인
+    
+    private String tollBooth; //고속도로 나들목
+    
+    private String screenLine; //스크린 라인
+    
+    private String cstmYn = "N"; // 커스텀 여부
+    
     private LocalDateTime registDt;
+    
+    private String exmnDistance; // 조사지역
     
 }

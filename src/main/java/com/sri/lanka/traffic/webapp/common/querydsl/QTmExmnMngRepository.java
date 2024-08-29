@@ -1,12 +1,5 @@
 package com.sri.lanka.traffic.webapp.common.querydsl;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-
-import org.springframework.stereotype.Repository;
-
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.DateTimePath;
@@ -15,14 +8,19 @@ import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sri.lanka.traffic.webapp.common.dto.common.LoginExmnDTO;
 import com.sri.lanka.traffic.webapp.common.dto.invst.TmExmnMngDTO;
-import com.sri.lanka.traffic.webapp.common.entity.QTcCdInfo;
-import com.sri.lanka.traffic.webapp.common.entity.QTcUserMng;
-import com.sri.lanka.traffic.webapp.common.entity.QTmExmnMng;
-import com.sri.lanka.traffic.webapp.common.entity.QTmExmnPollster;
-import com.sri.lanka.traffic.webapp.common.entity.TmExmnMng;
+import com.sri.lanka.traffic.webapp.common.entity.*;
 import com.sri.lanka.traffic.webapp.common.enums.code.ExmnSttsCd;
-
+import com.sri.lanka.traffic.webapp.common.enums.code.ExmnTypeCd;
+import com.sri.lanka.traffic.webapp.common.util.CommonUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -45,7 +43,17 @@ public class QTmExmnMngRepository {
 	 * @return
 	 */
 	public LoginExmnDTO getInvstInfoByPartcptCd(String partcptCd) {
-		
+		LocalDateTime startOfToday = CommonUtils.getStartOfDay(LocalDate.now());
+		LocalDateTime endDt =  CommonUtils.getStartOfDay(LocalDate.now());
+
+		TmExmnMng tmExmnMngInfo = queryFactory.selectFrom(tmExmnMng).where(tmExmnMng.partcptCd.eq(partcptCd)).fetchOne();
+		if(CommonUtils.isNull(tmExmnMngInfo)) throw new UsernameNotFoundException("Please check the participation code information and the survey schedule.");
+
+		if("traffic".equals(tmExmnMngInfo.getExmnType().getType())) {
+			startOfToday = LocalDateTime.now().plusMinutes(10);
+			endDt = LocalDateTime.now().minusMinutes(1);
+		}
+
 		LoginExmnDTO result = queryFactory.select(Projections.bean(
 																	LoginExmnDTO.class, 
 																	tmExmnMng.exmnmngId, 
@@ -60,19 +68,21 @@ public class QTmExmnMngRepository {
 																	tmExmnMng.goalCnt,
 																	tmExmnMng.lat,
 																	tmExmnMng.lon,
+																	tmExmnMng.exmnRange,
+																	tmExmnMng.registId,
 																	tmExmnMng.startDt,
 																	tmExmnMng.endDt)
 																	)
 											.from(tmExmnMng)
-											.where(tmExmnMng.partcptCd.eq(partcptCd)
-											.and(queryFactory.select(tmExmnPollster.pollsterId.countDistinct()).from(tmExmnPollster).where(tmExmnPollster.exmnmngId.eq(tmExmnMng.exmnmngId)).eq(tmExmnMng.exmnNop.longValue()))
-											.and(tmExmnMng.startDt.loe(LocalDateTime.now()).and(tmExmnMng.endDt.goe(LocalDateTime.now())))
-											.and(compareExmnTime(tmExmnMng.startDt))
-											.and(compareExmnTime(tmExmnMng.endDt))
-											.and(tmExmnMng.sttsCd.ne(ExmnSttsCd.INVEST_WRITING)))
+											.where(tmExmnMng.exmnmngId.eq(tmExmnMngInfo.getExmnmngId())
+											.and(queryFactory.select(tmExmnPollster.pollsterId.countDistinct()).from(tmExmnPollster).where(tmExmnPollster.exmnmngId.eq(tmExmnMng.exmnmngId)).gt(0L))
+													//.and(queryFactory.select(tmExmnPollster.pollsterId.countDistinct()).from(tmExmnPollster).where(tmExmnPollster.exmnmngId.eq(tmExmnMng.exmnmngId)).eq(tmExmnMng.exmnNop.longValue()))
+											.and(tmExmnMng.startDt.loe(startOfToday).and(tmExmnMng.endDt.goe(endDt)))
+											.and(compareExmnTime(tmExmnMng.startDt,tmExmnMng.endDt,tmExmnMngInfo.getExmnType()))
+											.and(tmExmnMng.sttsCd.notIn(ExmnSttsCd.INVEST_WRITING,ExmnSttsCd.INVEST_COMPLETE)))
 											.groupBy(tmExmnMng.exmnmngId)
 											.fetchOne();
-		
+
 		return result;
 	}
 	
@@ -84,18 +94,25 @@ public class QTmExmnMngRepository {
 	 * @param exmmngId
 	 * @return
 	 */
-	public TmExmnMng getInvstInfoByExmnmngId(String exmnmngId) {
-		
+	public TmExmnMng getInvstInfoByExmnmngId(String exmnmngId,ExmnTypeCd exmnTypeCd) {
+
+		LocalDateTime startOfToday = CommonUtils.getStartOfDay(LocalDate.now());
+		LocalDateTime endDt =  CommonUtils.getStartOfDay(LocalDate.now());
+
+		if("traffic".equals(exmnTypeCd.getType())) {
+			startOfToday = LocalDateTime.now().plusMinutes(10);
+			endDt = LocalDateTime.now().minusMinutes(1);
+		}
+
 		TmExmnMng result = queryFactory.selectFrom(tmExmnMng)
 										.where(tmExmnMng.exmnmngId.eq(exmnmngId)
-												.and(queryFactory.select(tmExmnPollster.pollsterId.countDistinct()).from(tmExmnPollster).where(tmExmnPollster.exmnmngId.eq(tmExmnMng.exmnmngId)).eq(tmExmnMng.exmnNop.longValue()))
-												.and(tmExmnMng.startDt.loe(LocalDateTime.now()).and(tmExmnMng.endDt.goe(LocalDateTime.now())))
-												.and(compareExmnTime(tmExmnMng.startDt))
-												.and(compareExmnTime(tmExmnMng.endDt))
-												.and(tmExmnMng.sttsCd.ne(ExmnSttsCd.INVEST_WRITING)))
+												.and(queryFactory.select(tmExmnPollster.pollsterId.countDistinct()).from(tmExmnPollster).where(tmExmnPollster.exmnmngId.eq(tmExmnMng.exmnmngId)).gt(0L))
+//												.and(queryFactory.select(tmExmnPollster.pollsterId.countDistinct()).from(tmExmnPollster).where(tmExmnPollster.exmnmngId.eq(tmExmnMng.exmnmngId)).eq(tmExmnMng.exmnNop.longValue()))
+												.and(tmExmnMng.startDt.loe(startOfToday).and(tmExmnMng.endDt.goe(endDt)))
+												.and(compareExmnTime(tmExmnMng.startDt,tmExmnMng.endDt,exmnTypeCd))
+												.and(tmExmnMng.sttsCd.notIn(ExmnSttsCd.INVEST_WRITING,ExmnSttsCd.INVEST_COMPLETE)))
 										.groupBy(tmExmnMng.exmnmngId)
 										.fetchOne();
-		
 		return result;
 	}
 	
@@ -114,7 +131,7 @@ public class QTmExmnMngRepository {
 																		TmExmnMngDTO.class, 
 																		tmExmnMng.exmnmngId, 
 																		tmExmnMng.usermngId,
-																		tcCdInfo.cdNm.as("mngrDept"), 
+																		QRepositorySupport.getCodeInfoNamePath(tcCdInfo).as("mngrDept"), 
 																		tmExmnMng.exmnpicId, 
 																		tmExmnMng.exmnNm, 
 																		tmExmnMng.exmnType,
@@ -139,40 +156,51 @@ public class QTmExmnMngRepository {
 		
 		return result;
 	}
-	
-	
+
+
 	/**
-	  * @Method Name : compareExmnTime
-	  * @작성일 : 2024. 4. 15.
-	  * @작성자 : NK.KIM
-	  * @Method 설명 : 조사 시간 체크
-	  * @param dateTimePath
-	  * @return
-	  */
-	private BooleanExpression compareExmnTime(DateTimePath<LocalDateTime> dateTimePath) {
+	 * @param startDt
+	 * @param endDt
+	 * @param exmnType
+	 * @return
+	 * @Method Name : compareExmnTime
+	 * @작성일 : 2024. 4. 15.
+	 * @작성자 : NK.KIM
+	 * @Method 설명 : 조사 시간 체크
+	 */
+	private BooleanExpression compareExmnTime(DateTimePath<LocalDateTime> startDt, DateTimePath<LocalDateTime> endDt, ExmnTypeCd exmnType) {
 
 		BooleanExpression result = null;
-		
-		// DateTimeFormatter 준비
-		DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
-		// 현재 시간 포맷
-		String currentTimeFormat = LocalTime.now().format(timeFormat);
-		
-		StringTemplate exmnTimeFormat = Expressions.stringTemplate(
-			    "TO_CHAR({0}, 'HH24:MI')",
-			    dateTimePath
-			);
-		
 
-		if (dateTimePath == tmExmnMng.startDt) {
-			BooleanExpression startExpression = exmnTimeFormat.loe(currentTimeFormat);
-			result = (result != null) ? result.and(startExpression) : startExpression;
-		}
+		if(exmnType.equals(ExmnTypeCd.TM) || exmnType.equals(ExmnTypeCd.MCC)){
+			// DateTimeFormatter 준비
+			DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+			
+			// 현재 시간 포맷
+			String currentTimeFormat = LocalTime.now().format(timeFormat);
+			// 시작 10분 전 로그인 가능
+			String startTimeFormat = LocalTime.now().plusMinutes(10).format(timeFormat);
+			if (!CommonUtils.isNull(startDt)) {
+				StringTemplate exmnStarTimeFormat = Expressions.stringTemplate(
+						"TO_CHAR({0}, 'HH24:MI')",
+						startDt
+				);
+				//tmExmnMng.exmnType.eq(ExmnTypeCd.TM).isTrue().
+				BooleanExpression startExpression = exmnStarTimeFormat.loe(startTimeFormat);
+				result = (result != null) ? result.and(startExpression) : startExpression ;
+			}
 
-		if (dateTimePath == tmExmnMng.endDt) {
-			BooleanExpression endExpression = exmnTimeFormat.goe(currentTimeFormat);
-			result = (result != null) ? result.and(endExpression) : endExpression;
+			if (!CommonUtils.isNull(endDt)) {
+				StringTemplate exmnEndTimeFormat = Expressions.stringTemplate(
+						"TO_CHAR({0}, 'HH24:MI')",
+						endDt
+				);
+				BooleanExpression endExpression = exmnEndTimeFormat.goe(currentTimeFormat);
+				result = (result != null) ? result.and(endExpression) : endExpression;
+			}
 		}
 		return result;
 	}
+
+
 }

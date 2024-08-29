@@ -1,62 +1,68 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
-      
-	<th:block layout:fragment="content">
-		<div id="surveyMapContainer" class="directionNone">
-			<div id="map"></div>
-	    	<div id="mapControl">
-		    	<div id="currentLocation"><img th:src="@{/images/current_location.png}" alt="현재위치"/></div>
-		    	<div id="zoomBox">
-			    	<div id="zoomIn"><img th:src="@{/images/zoom_in.png}" alt="확대"/></div>
-			    	<div id="zoomOut"><img th:src="@{/images/zoom_out.png}" alt="축소"/></div>
-		    	</div>
-	    	</div>			
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+
+<th:block layout:fragment="content">
+	<div id="surveyMapContainer" class="directionNone">
+		<div id="map"></div>
+		<div id="mapControl">
+			<div id="currentLocation"><img th:src="@{/images/current_location.png}" alt="현재위치" /></div>
+			<div id="zoomIn"><img th:src="@{/images/zoom_in.png}" alt="확대" /></div>
+			<div id="zoomOut"><img th:src="@{/images/zoom_out.png}" alt="축소" /></div>
 		</div>
-		<div id="surveyContent">
-			<form id="invstSaveForm">
-				<div class="content-wrap">
-					<div id="top-line"></div>
-					<div id="surveyInner">
-						<div>
-							<div class="survey-location">조사위치</div>
-							<div th:text="${invstRsltInfo.exmnLc}"></div>
+	</div>
+	<div id="surveyContent">
+		<form id="invstSaveForm">
+			<div class="content-wrap">
+				<div id="top-line"></div>
+				<div id="surveyInner">
+					<div>
+						<div class="survey-location" th:text="#{common.table.invest.location}">조사위치</div>
+						<div th:text="${invstRsltInfo.exmnLc}"></div>
+					</div>
+					<div class="is-box mt8">
+						<div class="survey-item">
+							<div class="survey-title" th:text="#{common.table.invest.time}">조사일시</div>
+							<div class="survey-text"><span
+									th:text="|${#temporals.format(#temporals.createNow(), 'yyyy.MM.dd')} ${@commonUtils.formatLocalDateTime(invstRsltInfo.startDt,'HH:mm')} ~ ${@commonUtils.formatLocalDateTime(invstRsltInfo.endDt,'HH:mm')} |"></span>
+							</div>
 						</div>
-						<div class="is-box mt8">
-							<div class="survey-item">
-								<div class="survey-title">조사일시</div>
-								<div class="survey-text"><span th:text="|${#temporals.format(#temporals.createNow(), 'yyyy.MM.dd')} ${@commonUtils.formatLocalDateTime(invstRsltInfo.startDt,'HH:mm')} ~ ${@commonUtils.formatLocalDateTime(invstRsltInfo.endDt,'HH:mm')} |"></span></div>
+						<div class="survey-item">
+							<div class="survey-title" th:text="#{invest.common.exmnDiv}">근무형태</div>
+							<div class="survey-text" th:text="${invstRsltInfo.exmnDiv}"></div>
+						</div>
+						<div class="survey-item survey-direction">
+							<div class="survey-title" th:text="#{invest.common.invest.direction}">조사방향</div>
+							<select class="select-list-box" id="exmndrctId">
+								<th:block th:each="item : ${exmnDrctList}">
+									<option th:text="|${item.startlcNm} -> ${item.endlcNm}"
+										th:value="${item.exmndrctId}"></option>
+								</th:block>
+							</select>
+						</div>
+						<div class="mt16">
+							<button type="button" id="impossibleButton" onclick="impossible();"
+								class="is-key-button wd100" th:text="#{invest.invstTrafficSave.not.able.reason}">조사 불가
+								사유</button>
+							<div id="impossibleBox" class="none">
+								<input type="text" id="impossibleText" class="is-input"
+									th:placeholder="#{invest.invstTrafficSave.placeholder.not.able.reason}" />
+								<input type="button" class="is-key-button" th:value="#{common.button.cancel}" />
 							</div>
-							<div class="survey-item">
-								<div class="survey-title">근무형태</div>
-								<div class="survey-text" th:text="${invstRsltInfo.exmnDiv}"></div>
-							</div>
-							<div class="survey-item survey-direction">
-								<div class="survey-title">조사방향</div>
-								<select class="select-list-box" id="exmndrctId">
-									<th:block th:each="item : ${exmnDrctList}">
-										<option th:text="|${item.startlcNm} -> ${item.endlcNm}" th:value="${item.exmndrctId}"></option>
-									</th:block>
-								</select>
-							</div>
-							<div class="mt16">
-								<button type="button" id="impossibleButton" onclick="impossible();" class="is-key-button wd100">조사 불가 사유</button>
-								<div id="impossibleBox" class="none">
-									<input type="text" id="impossibleText" class="is-input"  placeholder="조사 불가능 사유를 입력해주세요."/>
-								</div>
-							</div>					
 						</div>
 					</div>
 				</div>
-			</form>
-		</div>			
-	</th:block>
+			</div>
+		</form>
+	</div>
+</th:block>
 </html>
 <script th:inline="javascript">
+	document.getElementById('footerContainer').classList.add('none');
+	document.querySelector('.ft-invst').classList.add('on');
 	const invstLat = /*[[${invstRsltInfo.exmnLat}]]*/ 
 	const invstLon = /*[[${invstRsltInfo.exmnLon}]]*/ 
 	const invstExmnRange = /*[[${invstRsltInfo.exmnRange}]]*/
-	 
-	surveyMap(126.9398451833124, 37.54304970328016, 10);
+	
+	surveyMap(invstLon, invstLat, invstExmnRange);
 </script>

@@ -10,7 +10,7 @@ public enum SectTypeCd implements CommonEnumType<String> {
 	FURNITURE("STC001","가구 실태 조사"),
 	INDIVIDUAL("STC002","개인 실태 조사"),
 	TRAFFIC("STC003","통행 실태 조사"),
-	LABORSIDE("STC004","노측 면접 조사"),
+	ROADSIDE("STC004","노측 면접 조사"),
 	AXLELOAD("STC005","AXLE LOAD 조사"),
 	;
 	

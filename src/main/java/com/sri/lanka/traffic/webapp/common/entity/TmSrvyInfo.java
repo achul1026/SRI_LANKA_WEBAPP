@@ -21,7 +21,9 @@ public class TmSrvyInfo extends CreateEntity{
     private String srvyTitle; //설문명
 
     private String srvyType; //조사 종류
-
+    
+    private String cstmYn; //커스텀 여부
+    
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startDt; //시작 일시
     

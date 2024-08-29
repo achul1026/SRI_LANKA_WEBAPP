@@ -6,14 +6,20 @@
 	<th:block layout:fragment="content">
 		<section id="sectionWrap">
 			<div class="is-box">
-				<a th:href="@{/setting/report/inquiry}" class="setting-box"><span>신고 문의</span><span><img th:src="@{/images/intro_arrow.png}" alt="바로가기"></span></a>			
+				<a th:href="@{/setting/report/inquiry}" class="setting-box">
+					<span th:text="#{main.setting.report}">신고 문의</span>
+					<span><img th:src="@{/images/intro_arrow.png}" alt="바로가기" class="st-img"></span>
+				</a>			
 			</div>
-			<div id="logOut">
-				<a href="/logout" id="sideLogOut">
-					<span><img src="/images/logout.png" alt="로그아웃"></span>
-					<span>로그아웃</span>
+			<div id="logOut" class="is-box">
+				<a href="/logout" id="sideLogOut" class="setting-box">
+					<span th:text="#{main.setting.logout}">로그아웃</span>
+<!--					<span><img src="/images/logout.png" th:alt="#{main.setting.logout}" class="logout-img"></span>-->
 				</a>
 			</div>			
 		</section>
 	</th:block>
 </html>
+<script th:inline="javascript">
+	document.querySelector('.ft-setting').classList.add('on');
+</script>

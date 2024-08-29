@@ -1,46 +1,197 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
-      
-	<th:block layout:fragment="content">
-		<section id="sectionWrap">
-			<div id="countWrap">
-				<div class="count-flex-box">
-					<th:block th:each="item : ${mvmnmeanTypeCd}">
-						<div class="is-box box-counting">
-							<div class="counting-item">
-								<span th:text="${item.name}">MCL</span>
-								<input type="text" class="is-input-reset counting-value" name="countingInfo" th:data-type="${item}" value="0" readonly/>
-							</div>
-						</div>
-					</th:block>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+
+<th:block layout:fragment="content">
+	<section id="sectionWrap">
+		<input type="hidden" id="startlcNm" th:value="${tlTrfvlRslt.startlcNm}" />
+		<input type="hidden" id="endlcNm" th:value="${tlTrfvlRslt.endlcNm}" />
+		<div id="countWrap">
+			<div class="is-box mb10">
+				<div class="count-info-head">
+					<div id="countInfoTitleWrap">
+						<h3 class="count-info-title" th:text="#{common.table.invest.info}">조사 정보</h3>
+						<img th:src="@{/images/invst_car_info_img.png}" alt="물음표" class="cm-info-img" onclick="carInfoToggle()"/>
+					</div>
+					<img th:src="@{/images/count_arrow.png}" alt="인포 화살표" class="cm-arrow-img" onclick="slideToogle()"/>
+				</div>
+				<div class="count-info-wrap">
+					<ul>
+						<li><span th:text="#{common.table.invest.name}" class="conunt__info_list_title">조사명</span> :
+							<span th:text="${@loginUtils.getInvstInfo().getExmnNm()}"></span>
+						</li>
+						<li><span th:text="#{common.table.invest.date}" class="conunt__info_list_title">조사시간</span> :
+							<span
+								th:text="|${@commonUtils.formatLocalDateTime(tlTrfvlRslt.exmnstartDt,'HH:mm')} ~ ${@commonUtils.formatLocalDateTime(tlTrfvlRslt.exmnendDt,'HH:mm')}|"></span>
+						</li>
+						<li><span th:text="#{invest.common.invest.direction}"
+								class="conunt__info_list_title">조사방향</span> : <span
+								th:text="|${tlTrfvlRslt.startlcNm} -> ${tlTrfvlRslt.endlcNm}|"></span></li>
+					</ul>
+				</div>
+
+				<div id="carNameInfoWrap">
+					<h3 id="carNameInfoTitle" th:text="#{invest.invstCountingSave.vehicle.info}">차량 정보</h3>
+					<div class="car-list" th:each="item : ${mvmnmeanTypeCd}">
+						<div th:text="${item}" class="car-title"></div> : 
+						<div th:text="${item.name}"></div>
+					</div>
 				</div>
 			</div>
-		</section>
-		<div id="fiveMinutesAgoBox">
-			<div id="fiveMinutesFlexBox">
-				<span id="fiveMinutesImg"><img th:src="@{/images/time.png}" alt="TIME"></span>
-				<div>
-					<div>저장 <span id="fiveTime">5분전</span> 입니다.</div>
-					<div>곧 <span id="fiveStartTime"></span>분 ~ <span id="fiveEndTime"></span>분 조사 개수가 저장 됩니다.</div>
+
+			<div id="countContent" class="count-flex-box none">
+				<th:block th:each="item : ${mvmnmeanTypeCd}">
+					<div class="is-box box-counting" oncontextmenu="return false;">
+						<div class="counting-item">
+							<div class="count-item-list">
+								<div class="count-title">
+									<span th:text="${item}">MCL</span>
+									<input type="text" class="is-input-reset counting-value" name="countingInfo"
+										th:data-type="${item}" value="0" readonly />
+								</div>
+								<img th:src="@{${item.imgPath}}" class="counting-item-img" alt="카운트별 이미지">
+							</div>
+						</div>
+					</div>
+				</th:block>
+			</div>
+			<div id="countTimer" class="none">
+				<div id="tiemrImg"><img th:src="@{/images/timer.png}" alt="time" /></div>
+				<div id="tiemrContent">
+					<div th:text="#{invest.invstCountingSave.tiemrContent}">조사 시간이 아닙니다.</div>
+					<div th:text="#{invest.invstCountingSave.tiemrContent.sub}">조사 시작 시간이되면 조사가 진행됩니다.</div>
 				</div>
-			</div>  
+			</div>
 		</div>
-	</th:block>
+	</section>
+	<div id="fiveMinutesAgoBox">
+		<div id="fiveMinutesFlexBox">
+			<span id="fiveMinutesImg"><img th:src="@{/images/survey_check.png}" alt="TIME"></span>
+			<div>
+				<!-- TODO:: fiveTime에 들어가는 텍스트 확인해서 다국어 처리 -->
+				<div>
+					<span th:text="#{invest.invstCountingSave.imminent.save.prefix}">저장</span>
+					<span id="fiveTime" th:text="#{invest.invstCountingSave.imminent.save.five}">5분전</span> <span
+						th:text="#{invest.invstCountingSave.imminent.save.subfix}">입니다.</span>
+				</div>
+				<div>
+					<span th:text="#{invest.invstCountingSave.imminent.save.time.prefix}">곧</span>
+					<span id="fiveStartTime"></span>
+					<span th:text="#{invest.invstCountingSave.imminent.save.time.minute}">분 ~ </span>
+					<span id="fiveEndTime"></span>
+					<span th:text="#{invest.invstCountingSave.imminent.save.time.subfix}">분 조사 개수가 저장 됩니다.</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="countingSaveBox">
+		<div id="countingSaveFlexBox">
+			<div id="countingSaveImg"><img th:src="@{/images/survey_check.png}" alt="check"></div>
+			<div th:text="#{invest.invstCountingSave.save.complete}">조사하신 정보가 자동 저장이 완료 되었습니다.</div>
+		</div>
+	</div>
+	<div id="btnFooterWrap">
+		<a href="javascript:void(0)" id="headerNextButton" class="none is-fix-key-button"
+			th:text="#{common.button.next}">다음</a>
+	</div>
+</th:block>
+
 </html>
 <script th:inline="javascript">
-	suryerCounting('/invstmng/counting/update');
+
+	//document.querySelector('.ft-invst').classList.add('on');
+
+	function slideToogle() {
+		const countInfo = document.querySelector('.count-info-wrap');
+		const arrowInfo = document.querySelector('.cm-arrow-img');
+
+		if (countInfo.style.maxHeight) {
+			arrowInfo.classList.remove('on')
+			countInfo.style.maxHeight = null;
+			setTimeout(function () {
+				countInfo.style.marginTop = '0';
+			}, 160);
+		} else {
+			arrowInfo.classList.add('on')
+			countInfo.style.maxHeight = countInfo.scrollHeight + 'px';
+			countInfo.style.marginTop = "16px";
+		}
+	}
+	
+	function carInfoToggle() {
+		const infoBtn = document.getElementById('carNameInfoWrap');
+		
+		if(infoBtn.style.display === "block") {
+			infoBtn.style.display="none";
+		} else {
+			infoBtn.style.display="block";
+		}
+	}
+
+	/*$('.count-info-head').click(function () {
+		$('#countInfoListWrap').slideToggle();
+	})*/
+	document.getElementById('footerContainer').classList.add('none');
+	const trfvlmexmnId =  /*[[${trfvlmexmnId}]]*/
+
+	//조사 10분전, 조사 시작 view
+	const startTime =  /*[[${@commonUtils.formatLocalDateTime(tlTrfvlRslt.exmnstartDt,'HH:mm')}]]*/
+	const countEl = document.getElementById('countContent');
+	const timerEl = document.getElementById('countTimer');
+	function checkTime() {
+		let dateNow = new Date();
+		let hours = dateNow.getHours();
+		let minutes = dateNow.getMinutes();
+		let formattedTime = [hours, minutes].map(num => num.toString().padStart(2, '0')).join(':');
+
+		if (formattedTime >= startTime) {
+			//5분알림
+			fiveMinutesAgo();
+			
+			//00,15,30,45분 데이터 저장
+			headerNextButton.classList.remove('none')
+			headerNextButton.setAttribute('onclick', "invstCountingSave(\'" + trfvlmexmnId + "'\)");
+			saveTrafficCounting(trfvlmexmnId);
+
+			timerEl.classList.add('none');
+			countEl.classList.remove('none');
+			clearInterval(timer);
+		} else if (formattedTime < startTime) {
+			timerEl.classList.remove('none')
+			headerNextButton.classList.add('none')
+			
+		}
+	}
+	let timer = setInterval(checkTime, 1000);
+
+
+	const exmnmngId = document.getElementById('pageName').dataset.exmnmngId;
+	const startlcNm = document.getElementById('startlcNm').value;
+	const endlcNm = document.getElementById('endlcNm').value;
+	const checkMinutes = [00, 15, 30, 45];
+	const now = new Date();
+	let nextTime = getNextCheckTime(now, checkMinutes);
+
+	//rda.survey.js 전역변수 세팅
+	paramCountingInfo.exmnmngId = exmnmngId;
+	paramCountingInfo.startlcNm = startlcNm;
+	paramCountingInfo.endlcNm = endlcNm;
+	paramCountingInfo.mvmnmeanTypeCd = /*[[${mvmnmeanTypeCd}]]*/;
+
+	removeExpireLocalStorage();
+	//로컬스토리지 저장
+	if (checkLocalStorage(nextTime)) {
+		setLocalStorage(nextTime)
+	} else {
+		setCountingData(nextTime);
+	}
+
+	//touch long event
+	suryerCounting('/invstmng/counting/update', exmnmngId, nextTime);
+
+	//확인 버튼
 	const headerNextButton = document.getElementById('headerNextButton');
 	headerNextButton.classList.remove('none');
-	headerNextButton.innerText = '확인';
-	
-	//5분알림
-	fiveMinutesAgo();
-	
-	//00,15,30,45분 데이터 저장
-	const trfvlmexmnId =  /*[[${trfvlmexmnId}]]*/ 
-	headerNextButton.setAttribute('onclick', "invstCountingSave(\'"+trfvlmexmnId+"'\)");
-	saveTrafficCounting(trfvlmexmnId);
-	
+	headerNextButton.innerText = message.common.button_save;
+
 </script>

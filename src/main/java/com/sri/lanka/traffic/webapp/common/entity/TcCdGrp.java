@@ -19,5 +19,7 @@ public class TcCdGrp extends CreateEntity{
     private String grpcdNm; //그룹 코드 명
 
     private String grpcdDescr; //그룹 코드 설명
+    
+    private String useYn; //사용 여부
 
 }

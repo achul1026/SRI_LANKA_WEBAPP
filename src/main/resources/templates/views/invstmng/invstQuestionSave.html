@@ -1,102 +1,673 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}">
-      
-	<th:block layout:fragment="content">
-		<section id="surveyWrap">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+
+<th:block layout:fragment="content">
+	<section id="surveyWrap">
+		<div id="surveyContent">
+			<input type="hidden" id="startlcNm" th:value="${tmExmnDrct?.startlcNm}">
+			<input type="hidden" id="endlcNm" th:value="${tmExmnDrct?.endlcNm}">
+			<input type="hidden" id="pollsterLc" th:value="${@loginUtils.getInvstInfo().getExmnLc()}">
+			<input type="hidden" id="exmnstartDt"
+				th:value="|${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}T${@commonUtils.formatLocalDateTime(@loginUtils.getInvstInfo().getStartDt(),'HH:mm:ss')}">
+			<input type="hidden" id="exmnendDt"
+				th:value="|${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}T${@commonUtils.formatLocalDateTime(@loginUtils.getInvstInfo().getEndDt(),'HH:mm:ss')}">
 			<th:block th:each="item,status : ${exmnMngSrvyList}">
-				<div th:classappend="${status.index > 0} ? 'mt16' : ''" class="survy-question-wrap">
-					<div class="is-box">
-						<h2 class="survey-question-title" th:text="|${item.sectSqno}.${item.sectTitle}|" th:data-sect-type="${item.sectType.getCode()}"></h2>
-						<div class="survey-question-description" th:text="${item.sectSubtitle}"></div>
+				<div th:classappend="${status.index > 0} ? 'mt16' : ''" class="survy-question-wrap" th:data-sect-type="${item.sectType.getCode()}" data-sect-sqno="1">
+					<div class="is-box survey-question-title-box" th:onclick="qusListToggle(this);">
+						<h2 class="survey-question-title"
+							th:data-sect-type="${item.sectType.getCode()}">
+							<span th:text="${item.sectTitle}" class="surveyInTitle" style="font-weight:inherit;color:inherit;"></span>
+							<th:block th:if="${item.sectType.getCode() eq 'STC003'}">
+								<span class="tripBehaviorCount" style="font-weight:inherit;color:inherit;"></span>
+								<a href="javascript:void(0)" onclick="removeQuestionWrap(this)" class="remove-question-button is-button is-color-white" th:text="#{common.button.remove}">Remove</a>
+							</th:block>
+						</h2>
+						<img th:src="@{/images/ques_arrow.png}" alt="arrow" class="arrow-cm-img">
 					</div>
-					<th:block th:each="qstnItem : ${item.tmSrvyQstnList}">
-			  			<div class="is-box survey-info-wrap">
-							<h3 class="survey-sub-question-title" th:text="|Q${qstnItem.qstnSqno}.${qstnItem.qstnTitle}|" th:data-qstn-title="${qstnItem.qstnTitle}" th:data-qstn-type="${qstnItem.qstnTypeCd.getCode()}" th:data-qstn-sqno="${qstnItem.qstnSqno}"></h3>
-							<!-- 주관식 -->
-							<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC001'}">
-								<div class="survey-ans-wrap"><input type="text" name="ansCnts" class="is-input wd100 qtc001"/></div>
-							</th:block>
-							<!-- 라디오 or 체크박스 -->
-							<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC002' or qstnItem.qstnTypeCd.getCode() eq 'QTC003'}">
-								<ul class="survey-question-option-box survey-ans-wrap">
-									<th:block th:each="ansItem,ansStatus : ${qstnItem.tmSrvyAnsList}">
-										<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC002'}">
-											<li>
-												<label>
-													<input type="radio" name="ansCnts" class="radio-checked" th:checked="${ansStatus.index eq 0}">
-													<i class="check-img" th:classappend="${ansStatus.index eq 0}? 'check-img-on'" th:data-ans-cnts="${ansItem.ansCnts}"></i>
-													<span th:text="${ansItem.ansCnts}"></span>
-												</label>
-											</li>
+	
+					<div class="invst-slide-wrap">
+						<th:block th:each="qstnItem : ${item.tmSrvyQstnList}">
+							<div class="transfer-exposure-box" onclick="exposureTransferQuestions(this, 0)" data-transfer-type="0" data-transfer="N" th:if="${qstnItem.srvyMetadataCd eq 'SMD027'}" >
+								<span th:text="#{invest.invstQuestionSave.transfer.add.first}">첫번째 환승 질문 보기</span>
+							</div>
+							<div class="transfer-exposure-box" onclick="exposureTransferQuestions(this, 1)" data-transfer-type="1" data-transfer="N" th:if="${qstnItem.srvyMetadataCd eq 'SMD031'}">
+								<span th:text="#{invest.invstQuestionSave.transfer.add.second}">두번째 환승 질문 보기</span>
+							</div>
+							<div class="transfer-exposure-box" onclick="exposureTransferQuestions(this, 2)" data-transfer-type="2" data-transfer="N" th:if="${qstnItem.srvyMetadataCd eq 'SMD035'}" >
+								<span th:text="#{invest.invstQuestionSave.transfer.add.third}">세번째 환승 질문 보기</span>
+							</div>
+							<div class="transfer-exposure-box" onclick="exposureTransferQuestions(this, 3)" data-transfer-type="3" data-transfer="N" th:if="${qstnItem.srvyMetadataCd eq 'SMD039'}" >
+								<span th:text="#{invest.invstQuestionSave.transfer.add.fourth}">네번째 환승 질문 보기</span>
+							</div>
+							<div class="transfer-exposure-box" onclick="exposureTransferQuestions(this, 4)" data-transfer-type="4" data-transfer="N" th:if="${qstnItem.srvyMetadataCd eq 'SMD043'}" >
+								<span th:text="#{invest.invstQuestionSave.transfer.add.fifth}">다섯번째 환승 질문 보기</span>
+							</div>
+							<div class="survey-info-wrap is-box"
+								 th:data-qstn-type="${qstnItem.qstnTypeCd.getCode()}"
+								 th:data-box-metadata="${qstnItem.srvyMetadataCd}"
+								 th:style="${#arrays.contains(transferArrays, qstnItem.srvyMetadataCd) ? 'display:none' : ''}"
+								>
+								<h3 class="survey-sub-question-title" th:data-qstn-title="${qstnItem.qstnTitle}"
+									th:data-metadata="${qstnItem.srvyMetadataCd}" th:data-qstn-sqno="${qstnItem.qstnSqno}">
+									<span class="question-number" th:text="|Q${qstnItem.qstnSqno}.|"></span>
+									<span class="question-title" th:text="|${qstnItem.qstnTitle}|"></span>
+								</h3>
+								<!-- 주관식 -->
+								<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC001'}">
+									<div class="survey-ans-wrap">
+										<input type="text" name="ansCnts"
+											th:data-optional="${#lists.contains(optionalMetadatas, qstnItem.srvyMetadataCd)}"
+											th:classappend="${#lists.contains(optionalMetadatas, qstnItem.srvyMetadataCd)} == true ? '' : 'validation-tag'"
+											class="is-input invs-input-value wd100 qtc001" oninput="inputOnlyNumber(this);"
+											onkeyup="valid(this); setQuestStorageData(this);" th:data-type-validation="${qstnItem.srvyMetadataCd}"/>
+									</div>
+								</th:block>
+								<!-- 라디오 or 체크박스 -->
+								<th:block
+									th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC002' or qstnItem.qstnTypeCd.getCode() eq 'QTC003'}">
+									<ul class="survey-question-option-box survey-ans-wrap"
+										th:classappend="${#lists.contains(optionalMetadatas, qstnItem.srvyMetadataCd)} ? 'radioDefalut' : 'validation-tag'"
+										data-validation="radioCheckbox" th:data-type-validation="${qstnItem.srvyMetadataCd}">
+										<th:block th:each="ansItem,ansStatus : ${qstnItem.tmSrvyAnsList}">
+											<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC002'}">
+												<li class="survey-radio-checkbox-box">
+													<label>
+														<input type="radio" th:name="${qstnItem.srvyMetadataCd}"
+														 class="radio-checked surver-radio-checked survey-check invs-input-value" th:data-etc-yn="${ansItem.etcYn}" th:data-value="${ansItem.ansCnts}" onchange="setQuestStorageData(this, 'radio');">
+														<i class="check-img" th:data-ans-cnts="${ansItem.ansCnts}"
+															th:data-etc-yn="${ansItem.etcYn}"></i>
+														<span th:text="${ansItem.ansCnts}"></span>
+														<th:block th:if="${ansItem.etcYn eq 'Y'}">
+															<input type="text" class="survey-input-direct" onkeyup="setQuestStorageData(this)"
+																 readonly />
+														</th:block>
+													</label>
+												</li>
+											</th:block>
+											<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC003'}">
+												<li class="survey-radio-checkbox-box">
+													<label>
+														<input type="checkbox" name="ansCnts" onchange="setQuestStorageData(this, 'checkbox');"
+															class="checkbox-checked survey-checkbox-checked survey-check invs-input-value" th:data-ans-cnts="${ansItem.ansCnts}" th:data-etc-yn="${ansItem.etcYn}">
+														<i class="check-img" th:data-ans-cnts="${ansItem.ansCnts}"
+															th:data-etc-yn="${ansItem.etcYn}"></i>
+														<span th:text="${ansItem.ansCnts}"></span>
+														<th:block th:if="${ansItem.etcYn eq 'Y'}">
+															<input type="text" class="survey-input-direct" onkeyup="setQuestStorageData(this)" th:data-ans-cnts="${ansItem.ansCnts}" readonly />
+														</th:block>
+													</label>
+												</li>
+											</th:block>
 										</th:block>
-										<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC003'}">
-											<li>
-												<label>
-													<input type="checkbox" name="ansCnts" class="checkbox-checked">
-													<i class="check-img" th:data-ans-cnts="${ansItem.ansCnts}"></i>
-													<span class="survey-span-direct" th:text="${ansItem.ansCnts}"></span>
-												</label>
-											</li>
-										</th:block>
-									</th:block>
-								</ul>
-							</th:block>	
-							<!-- 시간 타입 -->
-							<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC004'}">	
-								<div class="select-time-box">
-									<select class="select-list-box select-hour"></select>
-									<select class="select-list-box select-minute"></select>
-								</div>
-							</th:block>
-							<!-- 주소 타입 -->	
-							<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC005'}">	
-								<div class="survey-location-box">
-									<input type="text" class="div-input wd100 locationSave qtc005" name="ansCnts" placeholder="위치를 검색해주세요." readonly/>
-									<input type="button" class="is-key-button" onclick="locationSave(this);" value="찾기"/>
-								</div>
-							</th:block>
-							<!-- 셀렉트박스 -->
-							<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC006'}">
-								<select class="select-list-box wd100 scroll" name="ansCnts">
-									<th:block th:each="ansItem : ${qstnItem.tmSrvyAnsList}">
-										<option th:value="${ansItem.ansCnts}" th:text="${ansItem.ansCnts}"></option>
-									</th:block>	
-								</select>
-							</th:block>
-							<!-- 날짜 -->
-							<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC007'}">
-								<div class="survey-ans-wrap"><input type="text" class="startPicker is-input wd100 qtc007" name="ansCnts" placeholder="날짜를 선택해주세요."/></div>
-							</th:block>
+									</ul>
+								</th:block>
+								<!-- 시간 타입 -->
+								<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC004'}">
+									<div class="select-time-box">
+										<div>
+											<input type="text" class="datePicker is-input invs-input-value wd100" th:classappend="${#lists.contains(optionalMetadatas, qstnItem.srvyMetadataCd)} == true ? '' : 'validation-tag'" 
+											placeholder="Select Date" style="padding:13px;" onchange="setDateTimeValid(this), setQuestStorageData(this, 'date'), valid(this)" readonly/>
+										</div>
+										<div class="select-div-box">
+											<select class="select-list-box select-hour" th:classappend="${#lists.contains(optionalMetadatas, qstnItem.srvyMetadataCd)} == true ? '' : 'validation-tag'" 
+											 data-validation="select" th:data-type-validation="${qstnItem.srvyMetadataCd}" onchange="setQuestStorageData(this, 'select'), setDateTimeValid(this)">
+											</select>
+											<img class="select-arrow" th:src="@{/images/join_select_arrow.png}" alt="arrow">
+										</div>
+										<div class="select-div-box">
+											<select class="select-list-box select-minute" th:classappend="${#lists.contains(optionalMetadatas, qstnItem.srvyMetadataCd)} == true ? '' : 'validation-tag'"  
+											data-validation="select" th:data-type-validation="${qstnItem.srvyMetadataCd}" onchange="setQuestStorageData(this, 'select'), setDateTimeValid(this)">
+											</select>
+											<img class="select-arrow" th:src="@{/images/join_select_arrow.png}" alt="arrow">
+										</div>
+										<input type="hidden" class="dateTimeData"/>
+									</div>
+								</th:block>
+								<!-- 주소 타입 -->
+								<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC005'}">
+									<div class="survey-location-box">
+										<input type="text" class="div-input wd100 locationSave qtc005"
+											th:classappend="${#lists.contains(optionalMetadatas, qstnItem.srvyMetadataCd)} == true ? '' : 'validation-tag'"
+											th:data-optional="${#lists.contains(optionalMetadatas, qstnItem.srvyMetadataCd)}"
+											name="ansCnts" th:placeholder="#{invest.invstQuestionSave.placeholder.gps}"
+											th:data-type-validation="${qstnItem.srvyMetadataCd}" oninput="setQuestStorageData(this)"
+											readonly />
+									</div>
+								</th:block>
+								<!-- 셀렉트박스 -->
+								<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC006'}">
+									<div class="select-div-box">
+										<select class="select-list-box wd100 scroll validation-tag" data-validation="select"
+											name="ansCnts" onchange="setQuestStorageData(this, 'select')" th:data-type-validation="${qstnItem.srvyMetadataCd}">
+											<option value="" th:text="#{common.select.select}">선택</option>
+											<th:block th:each="ansItem : ${qstnItem.tmSrvyAnsList}">
+												<option th:value="${ansItem.ansCnts}" th:text="${ansItem.ansCnts}"></option>
+											</th:block>
+										</select>
+										<img class="select-arrow" th:src="@{/images/join_select_arrow.png}" alt="arrow">
+									</div>
+								</th:block>
+								<!-- 날짜 -->
+								<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC007'}">
+									<div class="survey-ans-wrap"><input type="text"
+											class="startPicker is-input wd100 qtc007 validation-tag"
+											th:data-optional="${#lists.contains(optionalMetadatas, qstnItem.srvyMetadataCd)}"
+											name="ansCnts" th:placeholder="#{invest.invstQuestionSave.placeholder.date}" onkeyup="valid(this);"/></div>
+								</th:block>
+								<!-- GPS -->
+								<th:block th:if="${qstnItem.qstnTypeCd.getCode() eq 'QTC008'}">
+									<div class="survey-location-box gps-box">
+										<input type="text" class="div-input wd100 gpsLocation"
+											th:classappend="${#lists.contains(optionalMetadatas, qstnItem.srvyMetadataCd)} == true ? '' : 'validation-tag'"
+											th:placeholder="#{invest.invstQuestionSave.placeholder.location}"
+											th:data-optional="${#lists.contains(optionalMetadatas, qstnItem.srvyMetadataCd)}"
+											th:data-type-validation="${qstnItem.srvyMetadataCd}"
+											readonly oninput="setQuestStorageData(this)"/>
+										<input type="hidden" class="gpsLng"
+											th:data-optional="${#lists.contains(optionalMetadatas, qstnItem.srvyMetadataCd)}" />
+										<input type="hidden" class="gpsLat"
+											th:data-optional="${#lists.contains(optionalMetadatas, qstnItem.srvyMetadataCd)}" />
+										<button type="button" id="investigatoBtn" class="modal-find-img"
+											onclick="gpsSave(this);">
+											<img src="/images/search.png" class="cm-find-img" alt="검색">
+										</button>
+									</div>
+								</th:block>
+							</div>
 						</div>
-					<th:block>	
-				</div>
+					</div>
 			</th:block>
-		</section>
-	</th:block>
+		</div>
+		<div th:if="${hasTrafficBool}" id="surveyAddBtnWrap">
+			<a href="javascript:void(0)" onclick="addTransferSurvey()" class="is-button" style="width:100%;display:block;" th:text="#{invest.invstQuestionSave.survey.sheet.add}">실태조사 추가</a>
+		</div>
+		<div id="surveyConfirm"></div>
+	</section>
+</th:block>
+
 </html>
 
 <script th:inline="javascript">
 	
-	const headerNextButton = document.getElementById('headerNextButton');
-	headerNextButton.classList.remove('none');
-	headerNextButton.innerText = '확인';
-	const srvyrsltId =  /*[[${srvyrsltId}]]*/ 
-	headerNextButton.setAttribute('onclick', "invstQuestionSave(\'"+srvyrsltId+"'\)");
-	/* 
-	const transferAdd = document.querySelector('.transferAddButton');
-	const transferCheckBox = document.querySelector('.transferCheckBox');
-	const transferWrap = document.querySelector('.transfer-add-wrap');
+	const exmnmngId = document.getElementById('pageName').dataset.exmnmngId;
+	paramQuestionInfo.pollsterNm = /*[[${tlSrvyRsltPollsterInfoSaveDTO.pollsterNm}]]*/;
+	paramQuestionInfo.pollsterTel = /*[[${tlSrvyRsltPollsterInfoSaveDTO.pollsterTel}]]*/;
+	paramQuestionInfo.exmnmngId = exmnmngId;
 	
-	if(trasnferAdd) {
-		transferAdd.addEventListener('change', () => {
-			const transferButtonChecked = transferCheckBox.checked;
-			if(transferButtonChecked === true){
-				TransferSurvey();
-				transferWrap.classList.add('none');
+	const loading = new setLoading().start();
+	
+	let stc003Container = document.querySelector(".survy-question-wrap[data-sect-type='STC003']");
+	let transferClone = null;
+	let addedTripCount =  localStorage.getItem(paramQuestionInfo.pollsterTel+"_trip_count");
+	let addedIdx = addedTripCount ? parseInt(addedTripCount) :  1;
+	if(stc003Container) {
+		transferClone = document.querySelector(".survy-question-wrap[data-sect-type='STC003']").cloneNode(true);
+	}
+	function addTransferSurvey(){
+		let copy = transferClone.cloneNode(true);
+		copy.classList.add("is-copy");
+
+		copy.querySelectorAll("input[type='radio']").forEach(elem => {
+			let origin = elem.getAttribute("name");
+			elem.setAttribute("name",origin+"_"+addedIdx);
+		})
+		document.getElementById("surveyContent").appendChild(copy);
+		resetTripBehaviorCount();
+		init();
+		selectMinuteSet(copy);
+		datePickerSet();
+		addedIdx++;
+	}
+	function removeQuestionWrap(_this) {
+		_this.closest(".survy-question-wrap").remove();
+		resetTripBehaviorCount()
+	}
+	function resetTripBehaviorCount(){
+		let idx = 1;
+		document.querySelectorAll(".tripBehaviorCount").forEach(elem => {
+			elem.innerText = " ["+idx+"]";
+			idx++;
+		});
+		let sectSqno = 1;
+		document.querySelectorAll(".survy-question-wrap[data-sect-type='STC003']").forEach(elem => {
+			elem.setAttribute('data-sect-sqno',sectSqno)
+			sectSqno++;
+		});
+	}
+	resetTripBehaviorCount();
+	
+
+	function init(){
+		const radioCheckedItem = document.querySelectorAll('.surver-radio-checked');
+		radioCheckedItem.forEach(checked => {
+			const inputOnItem = checked.closest('label').querySelector('.survey-input-direct');
+			const inputOffItem = checked.closest('.survey-question-option-box').querySelector('.survey-input-direct');
+			if (inputOffItem) {
+				checked.addEventListener('change', () => {
+					if (inputOnItem) {
+						inputOnItem.readOnly = false;
+						inputOnItem.classList.add('validation-tag');
+					} else if (inputOffItem.classList.contains('validation-tag')) {
+						inputOffItem.value = '';
+						inputOffItem.readOnly = true;
+						inputOffItem.classList.remove('validation-tag');
+					}
+				})
 			}
 		})
-	} */
+
+		const checkboxCheckedItem = document.querySelectorAll('.survey-checkbox-checked');
+		checkboxCheckedItem.forEach(checked => {
+			const inputItem = checked.closest('label').querySelector('.survey-input-direct');
+			const inputOffItem = checked.closest('.survey-question-option-box').querySelector('.survey-input-direct');
+			if (inputOffItem) {
+				checked.addEventListener('change', () => {
+					if (inputItem) {
+						if (checked.checked == true) {
+							inputItem.readOnly = false;
+							inputItem.classList.add('validation-tag');
+						} else if (inputOffItem) {
+							inputItem.value = '';
+							inputItem.readOnly = true;
+							inputItem.classList.remove('validation-tag');
+						}
+					}
+				})
+			}
+		})
+		//환승 라디오버튼 취소
+		const radioBox = document.querySelectorAll('.radioDefalut');
+		radioBox.forEach(box => {
+			const radio = box.querySelectorAll('.radio-checked');
+			radio.forEach(x => {
+				x.classList.add("added-event");
+				x.addEventListener('click', (e) => {
+					const _this = e.target;
+					_this.closest('ul').querySelectorAll('.check-img').forEach(img => img.classList.remove('check-img-on'));
+					if(_this === this.lastClicked) {
+						_this.checked = false;
+						this.lastClicked = null;
+						_this.removeAttribute('checked');
+						_this.nextElementSibling.classList.remove('check-img-on');
+						setQuestStorageData(_this, 'radio')
+					} else {
+						_this.setAttribute('checked', true);
+						_this.nextElementSibling.classList.add('check-img-on');
+						setQuestStorageData(_this, 'radio')
+						this.lastClicked = _this;
+					}
+				})
+			})
+		});
+	}
 	
+	init();
+	
+	document.getElementById('footerContainer').classList.add('none');
+	
+	/* 가구주 이름, 전화번호 validation Remove, inputTextOn */
+	const metaSMD001 = document.querySelector('[data-type-validation="SMD001"]');
+	const metaSMD002 = document.querySelector('[data-type-validation="SMD002"]');
+	const metaSMD014 = document.querySelector('[data-type-validation="SMD014"]');
+	if(metaSMD001) {
+		metaSMD001.classList.remove('validation-tag');
+		metaSMD001.setAttribute('oninput', '');
+		//metaSMD001.style = 'padding:20px 8px';
+	}
+	if(metaSMD002) metaSMD002.classList.remove('validation-tag');
+	if(metaSMD014) {
+		metaSMD014.setAttribute('oninput', '');
+		//metaSMD014.style = 'padding:20px 8px';
+	}
+
+
+
+	const headerNextButton = document.getElementById('headerNextButton');
+	headerNextButton.classList.remove('none');
+	headerNextButton.innerText = message.common.button_confirm;
+	//document.getElementById('footerContainer').classList.add('none');
+	const srvyrsltId =  /*[[${srvyrsltId}]]*/;
+	const exmnrsltId =  /*[[${exmnrsltId}]]*/;
+	headerNextButton.setAttribute('onclick', "invstQuestionSave(\'" + exmnrsltId + "'\,\'" + srvyrsltId + "'\)");
+
+	let isCounted = false;
+	
+
+	function gpsSave(_this) {
+		
+		let tazDataCode = '';
+		const validation = _this.closest('.gps-box').querySelector('.validation');
+		const parentDataType = _this.closest('.survey-info-wrap').querySelector('.survey-sub-question-title').dataset.metadata;
+
+		if (validation) validation.classList.remove('validation');
+		new ModalBuilder().init(message.invest.invstQuestionSave_gps_search).ajaxBody("/invstmng/gps/save").footer(3, message.common.button_save, function (button, modal) {
+			const container = _this.closest('.survy-question-wrap');
+			const parent = _this.closest('.gps-box');
+			const modalGpsInput = document.getElementById('modalGpsLocation');
+			
+			if(modalGpsInput.value == '') {
+				alert(message.invest.invstQuestionSave_gps_map_select);
+				return
+			}
+			
+			if(parentDataType == 'SMD003') {
+				tazDataCode = 'SMD054';
+			} else if(parentDataType == 'SMD021') {
+				tazDataCode = 'SMD055';
+			} else if(parentDataType == 'SMD027') {
+				tazDataCode = 'SMD056';
+			} else if(parentDataType == 'SMD031') {
+				tazDataCode = 'SMD057';
+			} else if(parentDataType == 'SMD035') {
+				tazDataCode = 'SMD058';
+			} else if(parentDataType == 'SMD039') {
+				tazDataCode = 'SMD059';
+			} else if(parentDataType == 'SMD043') {
+				tazDataCode = 'SMD060';
+			} else if(parentDataType == 'SMD047') {
+				tazDataCode = 'SMD061'
+			}
+			
+			
+			const tazEl = container.querySelector(`[data-type-validation='${tazDataCode}']`);
+			tazEl.value = gpsTaz;
+			parent.querySelector('.gpsLocation').value = gpsLocation;
+			parent.querySelector('.gpsLng').value = gpsLng;
+			parent.querySelector('.gpsLat').value = gpsLat;
+			
+			parent.querySelector('.gpsLocation').dispatchEvent(new Event('input', { bubbles: true }));
+			tazEl.dispatchEvent(new Event('input', { bubbles: true }));
+			
+			modal.close();
+		}, message.common.button_cancel, function (button, modal) {
+			modal.close();
+		}).open();
+		
+		
+	}
+	
+
+	function qusListToggle(_this) {
+		let parent = _this.closest(".survy-question-wrap");		
+		let invstWrap = parent.querySelector(".invst-slide-wrap");
+		let arrowBtn = parent.querySelector('.arrow-cm-img');
+		if (parent.classList.contains('on')) {
+			parent.classList.remove('on');
+			arrowBtn.classList.remove('on');
+			invstWrap.classList.remove('on');
+		} else {
+			parent.classList.add('on');
+			arrowBtn.classList.add('on');
+			invstWrap.classList.add('on');
+		}
+	}
+	
+	//세대주 전화번호
+	const surveyInfoWrap = document.querySelectorAll('.survey-info-wrap');
+	surveyInfoWrap.forEach(el => {
+		const dataType = el.querySelector('.survey-sub-question-title').dataset.metadata;
+		if(dataType == 'SMD002' || dataType == 'SMD015') {
+			const input = el.querySelector('.invs-input-value')
+			input.setAttribute('maxlength', '10');
+		}
+	})
+	
+
+	let transferCodes = [
+		['SMD027','SMD028','SMD029','SMD030','SMD056'],
+		['SMD031','SMD032','SMD033','SMD034','SMD057'],
+		['SMD035','SMD036','SMD037','SMD038','SMD058'],
+		['SMD039','SMD040','SMD041','SMD042','SMD059'],
+		['SMD043','SMD044','SMD045','SMD046','SMD060']
+	];
+	function exposureTransferQuestions(_this, index){
+		// let nextTransfer = document.querySelector(".transfer-exposure-box[data-transfer-type='"+(index+1)+"']");
+		for(const code of transferCodes[index]){
+			let box = _this.closest(".survy-question-wrap").querySelector(".survey-info-wrap[data-box-metadata='"+code+"']");
+			if(box.style.display === "none") {
+				_this.dataset.transfer = 'Y';
+				const parent = _this.closest('.invst-slide-wrap');
+				const transferBeforeEl = parent.querySelector(`[data-transfer-type="${index-1}"]`);
+				
+				if(!index-1) {
+					if(transferBeforeEl.dataset.transfer === 'Y') {
+						const transferValid = box.querySelector(`[data-type-validation="${code}"]`);
+						box.style.display = "block";
+						transferValid.classList.add('validation-tag');
+						if(transferValid.closest('.select-time-box')) {
+							transferValid.closest('.select-time-box').querySelector('.select-minute').classList.add('validation-tag');
+							transferValid.closest('.select-time-box').querySelector('.datePicker').classList.add('validation-tag');
+						}
+					} else {
+						_this.dataset.transfer = 'N';
+						new MsgModalBuilder().init().alertBody(message.survey.survey_js_transfer_before).footer(4,message.common.button_confirm,function(button, modal){
+							modal.close();
+						}).open();						
+						return
+					}
+				} else {
+					const transferValid = box.querySelector(`[data-type-validation="${code}"]`);
+					box.style.display = "block";
+					transferValid.classList.add('validation-tag');
+					if(transferValid.closest('.select-time-box')) {
+						transferValid.closest('.select-time-box').querySelector('.select-minute').classList.add('validation-tag');
+						transferValid.closest('.select-time-box').querySelector('.datePicker').classList.add('validation-tag');
+					}
+				}
+				
+			} else {
+				const transferValid = box.querySelector(`[data-type-validation="${code}"]`);
+				const parent = _this.closest('.invst-slide-wrap');
+				const transferAfterEl = parent.querySelector(`[data-transfer-type="${index+1}"]`);
+				
+				if(transferAfterEl.dataset.transfer != 'Y') {
+					box.style.display = "none";
+					_this.dataset.transfer = 'N';
+					if(transferValid.classList.contains('select-list-box')){
+						const selectTime = transferValid.closest('.select-time-box').querySelectorAll('.select-list-box');
+						const date = transferValid.closest('.select-time-box').querySelector('.datePicker');
+						selectTime.forEach(select => {
+							select.classList.remove('validation-tag')
+							select.querySelectorAll('option').forEach(option => {
+								if(option.value == '') {
+									option.selected = true;
+								}
+							})
+						})
+						date.classList.remove('validation-tag');
+						date.value = '';
+					}
+					if(transferValid.classList.contains('radioDefalut')) {
+						transferValid.querySelectorAll('.radio-checked').forEach(radio => radio.checked = false);
+						transferValid.querySelectorAll('.check-img').forEach(img => {
+							if(img.classList.contains('check-img-on')) img.classList.remove('check-img-on');
+						})
+					}
+					transferValid.value = '';
+					transferValid.classList.remove('validation-tag');
+				} else {
+					new MsgModalBuilder().init().alertBody(message.survey.survey_js_transfer_after).footer(4,message.common.button_confirm,function(button, modal){
+						modal.close();
+					}).open();
+					return
+				}
+			}
+		}
+		
+		
+		/*
+		차례대로 보여주기위한 기능
+		if(nextTransfer) {
+			nextTransfer.style.display="block";
+		}*/
+	}
+	
+    const main = document.querySelector('main');
+	const localStorageData = localStorage.getItem(paramQuestionInfo.pollsterTel)
+	if(localStorageData) {
+		new MsgModalBuilder().init().alertBody(message.invest.invstQuestionSave_back_up).footer(3,message.common.button_confirm,function(button, modal){
+		    main.innerHTML = localStorageData;
+		    init();
+		    datePickerSet();
+		    document.querySelectorAll('.datePicker').forEach(x => {
+		    	setDateTimeValid(x)
+		    })
+			modal.close();
+		}, message.common.button_cancel, function(button, modal){
+			localStorage.removeItem(paramQuestionInfo.pollsterTel)
+			selectMinuteSet();
+			modal.close();
+		}).open();	    
+	} else {
+		selectMinuteSet();
+	}		
+	
+	//최초 위치 getCurrentPosition
+	window.modalMapMaker = null;
+	navigator.geolocation.getCurrentPosition(function(position) {
+		window.lng = position.coords.longitude;
+		window.lat = position.coords.latitude;
+        const el = document.createElement('img')
+		el.src = RDA_ENV.MARKERS[0].userUrl
+		el.style.width = '20px'
+		el.style.height = '20px'
+		window.modalMapMaker = new mapboxgl.Marker(el)
+		.setLngLat([window.lng, window.lat]);
+
+	}, (error) => {
+		console.error(error);
+	}, {
+	    enableHighAccuracy: true,
+	    maximumAge: 0,
+	    timeout: 27000		
+	});
+	
+	//실시간 위치 감지 watchPosition
+	navigator.geolocation.watchPosition(function(position) {
+        window.lng = position.coords.longitude;
+        window.lat = position.coords.latitude;
+		if(window.modalMapMaker) window.modalMapMaker.setLngLat([window.lng, window.lat]);
+		
+	}, (error) => {
+		console.error(error)
+	}, {
+	    enableHighAccuracy: true,
+	    maximumAge: 0,
+	    timeout: 27000
+	});
+	
+	loading.end();
+	
+	
+/* 	let changeOption = () => {
+		const inputRadio = document.querySelectorAll('.radio-checked');
+		inputRadio.forEach(radio => {
+			radio.addEventListener('change', (e) => {
+				const _thisEl = e.target;
+				const _thisSiblings = _thisEl.closest('.survey-question-option-box').querySelectorAll('input[name^="SMD050"]');
+				const parent = _thisEl.closest('.invst-slide-wrap');
+				const changeRadioBox = parent.querySelector('[data-type-validation="SMD048"]');
+				if(changeRadioBox) {
+					const changeRadio = changeRadioBox.querySelector('[data-value="Home"]');
+					const changeImg = changeRadioBox.querySelector('[data-ans-cnts="Home"]');
+					const disabledRadio = changeRadioBox.querySelectorAll('input[type="radio"]');
+					
+					if(_thisEl.dataset.value === 'Going home') {
+	 					const changeEvt = new Event('change', {
+							bubbles:true,
+							cancelable:true
+						})
+	 					
+						changeRadio.dispatchEvent(changeEvt)
+						changeRadio.checked = true;
+						disabledRadio.forEach(radio => radio.disabled = true);
+					} else {
+						 _thisSiblings.forEach(siblings => {
+							if(siblings.dataset.value != 'Going home') {
+								if(changeRadio.checked === true) {
+									//clonenode 때문에 attrbute랑 checked 2중으로 주었음
+									changeRadio.setAttribute('checked', false);
+									changeRadio.checked = false;
+									disabledRadio.forEach(radio => radio.disabled = false);
+									if(changeImg.classList.contains('check-img-on')) changeImg.classList.remove('check-img-on');
+								}
+							}
+						})
+					}
+				}
+			})
+		})
+	}
+	
+	changeOption(); */
+	
+	let dataTimeObj = {};
+	let setDateTimeValid = (_this) => {
+		const parent = _this.closest('.survey-info-wrap');
+		const parentCode = parent.dataset.boxMetadata;
+		const parentIndex = _this.closest('.survy-question-wrap').dataset.sectSqno;
+		const dateValue = parent.querySelector('.datePicker').value;
+		const hourValue = parent.querySelector('.select-hour option:checked').value;
+		const minuteValue = parent.querySelector('.select-minute option:checked').value;
+		
+		if(dateValue != '' && hourValue != '' && minuteValue != '') {
+			if (!dataTimeObj[parentIndex]) dataTimeObj[parentIndex] = {};
+	        dataTimeObj[parentIndex][parentCode] = `${dateValue} ${hourValue}:${minuteValue}`;
+		}
+	}
+	
+	let setDateTimeValidCheck = () => {
+	    let success = true;
+	    
+	    for (const [parentIndex, codes] of Object.entries(dataTimeObj)) {
+	        const sortedEntries = Object.entries(codes).sort((a, b) => {
+	            let numA = parseInt(a[0].replace('SMD', ''), 10);
+	            let numB = parseInt(b[0].replace('SMD', ''), 10);
+	            return numA - numB;
+	        });
+
+	        for (let i = 0; i < sortedEntries.length - 1; i++) {
+	            const [currentCode, currentDatetime] = sortedEntries[i];
+	            const [nextCode, nextDatetime] = sortedEntries[i + 1];
+	            const currentDate = new Date(currentDatetime);
+	            const nextDate = new Date(nextDatetime);
+	            
+	            const alertStartText = alertText(currentCode);
+	            const alertEndText = alertText(nextCode);
+
+	            if (currentDate > nextDate) {
+	            	const modalContainer = document.querySelector('.modal-container');
+	            	if(!modalContainer) {
+		                new ModalBuilder().init().alertBody(message.invest.invstQuestionSave_cant_faster(alertStartText,alertEndText)).footer(4, message.common.button_confirm, function (button, modal) {
+		                    modal.close();
+		                }).open();
+	            	}
+	                success = false;
+	            }
+	        }
+	    }
+
+	    return success; 	    
+
+	}
+	
+	const alertText = (code) => {
+	    switch (code) {
+	        case 'SMD028':
+	            return message.invest.invstQuestionSave_first_transfer_arrival_time;
+	        case 'SMD032':
+	            return message.invest.invstQuestionSave_second_transfer_arrival_time;
+	        case 'SMD036':
+	            return message.invest.invstQuestionSave_third_transfer_arrival_time;
+	        case 'SMD040':
+	            return message.invest.invstQuestionSave_fourth_transfer_arrival_time;
+	        case 'SMD044':
+	            return message.invest.invstQuestionSave_fifth_transfer_arrival_time;
+	        case 'SMD049':
+	        	return message.invest.invstQuestionSave_final_arrival_time;
+	        default:
+	            return message.invest.invstQuestionSave_departure_time;
+	    }
+	};
 </script>

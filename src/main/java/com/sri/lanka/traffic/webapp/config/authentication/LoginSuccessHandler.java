@@ -1,14 +1,15 @@
 package com.sri.lanka.traffic.webapp.config.authentication;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.WebAttributes;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.WebAttributes;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
     @Override
@@ -20,6 +21,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         // 로그인 성공시 보내는 주소
         String redirectUrl = "/main";
         getRedirectStrategy().sendRedirect(request,response,redirectUrl);
+
 
     }
 

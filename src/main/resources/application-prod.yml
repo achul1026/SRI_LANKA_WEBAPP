@@ -1,0 +1,60 @@
+###### spring ######
+spring:
+ thymeleaf:
+  cache: false
+ web:
+  resources:
+   cache:
+    cachecontrol:
+     no-cache: true
+
+###### 운영/개발 환경 분리 ######
+ config:
+  activate:
+   on-profile: prod
+
+###### Database ###### 
+ datasource:
+  driver-class-name: org.postgresql.Driver
+  url: jdbc:postgresql://172.168.10.41:25432/LKDB
+  username: lkdb
+  password: "@2SrLk1!"
+
+###### jpa properties ######
+ jpa:
+  #hibernate:
+   #ddl-auto: update
+  show-sql: true
+  properties:
+   hibernate:
+    default_schema: srlk
+    format_sql: true # SQL문 정렬하여 출력
+  database: postgresql
+  database-platform: com.sri.lanka.traffic.webapp.config.postgres.PostgresSqlDialectConfig
+  open-in-view: false
+  generate-ddl: false
+
+
+
+###### server ######
+server:
+ port: 8081
+ servlet:
+  session:
+   persistent: false
+   cookie:
+    name: SRLKWAID
+   
+###### srilanka ######
+srilanka:
+ auth:
+  mngr: 
+   role: mngr
+  user: 
+   role: user
+  code: 
+   role: code
+ messages:
+  basename: messages/login/login,messages/common/common,messages/main/main,messages/invest/invest,messages/enums/enums
+  encoding: UTF-8
+  

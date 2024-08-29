@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -18,6 +19,7 @@ import com.querydsl.core.types.dsl.EntityPathBase;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.StringPath;
+import com.sri.lanka.traffic.webapp.common.entity.QTcCdInfo;
 
 public class QRepositorySupport {
 
@@ -75,5 +77,25 @@ public class QRepositorySupport {
 			return null;
 		}
 		return dateTimePath.loe(dateTime);	
+	}
+	
+	/**
+	  * @Method Name : getCodeInfoNamePath
+	  * @작성일 : 2024. 6. 3.
+	  * @작성자 : SM.KIM
+	  * @Method 설명 : 언어별 코드명 컬럼 이름 반환
+	  * @param request
+	  * @param tcCdInfo
+	  * @return
+	  */
+	public static StringPath getCodeInfoNamePath(QTcCdInfo tcCdInfo) {
+
+		String lang = "kor";
+//				LocaleContextHolder.getLocale().toString();
+   	
+		if 		("eng".equals(lang)) 	return tcCdInfo.cdnmEng;
+        else if ("kor".equals(lang)) 	return tcCdInfo.cdnmKor;
+        else if ("sin".equals(lang)) 	return tcCdInfo.cdnmSin;
+        else 							return tcCdInfo.cdnmEng;
 	}
 }

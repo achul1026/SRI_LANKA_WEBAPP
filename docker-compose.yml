@@ -1,0 +1,12 @@
+services:
+  sriwebapp:
+    container_name: sri_webapp
+    build: 
+      context : ../sriwas/
+    volumes:
+      - ../build/webapp/:/usr/local/tomcat/webapps/
+      - ../tomcat/was2/conf/:/usr/local/tomcat/conf/
+    expose:
+      - "8009"
+    ports:
+      - "9999:8080"

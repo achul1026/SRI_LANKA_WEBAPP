@@ -7,13 +7,11 @@ import lombok.Data;
 @Data
 public class TmExmnPollsterDTO {
 
-//    private String pollsterId;
-//    private String exmnmngId;
-//    private String mngrId;
+    private String pollsterId;
     private String pollsterNm;
     private String pollsterEmail;
     private PollsterTypeCd pollsterType;
     private String pollsterTel;
-//    private LocalDateTime registDt;
+
 
 }

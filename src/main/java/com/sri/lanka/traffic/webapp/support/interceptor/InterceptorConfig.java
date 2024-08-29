@@ -18,14 +18,16 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 public class InterceptorConfig implements WebMvcConfigurer {
 	
 	@Autowired
-	MenuInterceptor menuInterceptor;
+    MenuInterceptor menuInterceptor;
+
+	private final Locale DEFAULT_LOCALE = new Locale("eng");
 
     @Bean
     public LocaleResolver localeResolver() {
 
         CookieLocaleResolver resolver = new CookieLocaleResolver();
         resolver.setCookieName("lang");
-        resolver.setDefaultLocale(new Locale("eng"));
+        resolver.setDefaultLocale(DEFAULT_LOCALE);
         return resolver;
     }
 
@@ -35,6 +37,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
         interceptor.setParamName("lang");
         return interceptor;
     }
+    
 
     @Bean
     public MessageSource messageSource(
@@ -52,17 +55,17 @@ public class InterceptorConfig implements WebMvcConfigurer {
         registry.addInterceptor(localeChangeInterceptor());
         
         //사이드 메뉴관련 추가
-//		registry.addInterceptor(menuInterceptor)
-//		.addPathPatterns("/**")
-//		.excludePathPatterns("/intro.do")
-//		.excludePathPatterns("/login.do")
-//		.excludePathPatterns("/login.ajax")
-//		.excludePathPatterns("/joinUs.do")
-//		.excludePathPatterns("/joinUs.ajax")
-//		.excludePathPatterns("/error")
-//		.excludePathPatterns("/css/**")
-//		.excludePathPatterns("/fonts/**")
-//		.excludePathPatterns("/images/**")
-//		.excludePathPatterns("/js/**");
+		registry.addInterceptor(menuInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/intro.do")
+                .excludePathPatterns("/login")
+                .excludePathPatterns("/login.ajax")
+                .excludePathPatterns("/joinUs.do")
+                .excludePathPatterns("/joinUs.ajax")
+                .excludePathPatterns("/error")
+                .excludePathPatterns("/css/**")
+                .excludePathPatterns("/fonts/**")
+                .excludePathPatterns("/images/**")
+                .excludePathPatterns("/js/**");
     }
 }

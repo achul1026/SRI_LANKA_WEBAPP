@@ -4,12 +4,13 @@
       layout:decorate="~{layout/modalLayout}">
       
 	<th:block layout:fragment="modalContent">
-		<div class="survey-loaction-search-box surveyLocation"></div>
+		<div class="survey-location-search-box location-event survey-item"></div>
 		<div>
-			<input type="text" class="div-input wd100 surveyLocationValue" readonly/>
+			<input type="text" id="surveyLocation" class="div-input wd100" readonly/>
 		</div>
 	</th:block>
 </html>
 <script>
-	locationSearch('surveyLocation');
+	rdaLocation();
 </script>
+

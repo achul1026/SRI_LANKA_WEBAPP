@@ -1,14 +1,15 @@
 package com.sri.lanka.traffic.webapp.common.enums.code;
 
 import com.sri.lanka.traffic.webapp.common.converter.EnumConverter;
+import com.sri.lanka.traffic.webapp.common.util.CommonUtils;
 
 import lombok.Getter;
 
 @Getter
 public enum UserTypeCd implements CommonEnumType<String> {
 	
-	SUPER("UTC001","최고 관리자"),
-	GENERAL("UTC002","일반 관리자");
+	SUPER("UTC001","enums.UserTypeCd.SUPER"),
+	GENERAL("UTC002","enums.UserTypeCd.SUPER");
 	
 	private String code; 
 	private String name;
@@ -25,7 +26,7 @@ public enum UserTypeCd implements CommonEnumType<String> {
 	
 	@Override
 	public String getName() {
-		return name;
+		return CommonUtils.getMessage(name);
 	}
 	
 	public static class Converter extends EnumConverter<UserTypeCd, String> {

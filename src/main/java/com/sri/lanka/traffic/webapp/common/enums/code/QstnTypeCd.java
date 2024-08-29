@@ -8,14 +8,14 @@ import lombok.Getter;
 @Getter
 public enum QstnTypeCd implements CommonEnumType<String> {
 	
-	SUBJECTIVE("QTC001","주관식","SINGLE","/images/quest_text.png","주관식 답변란"),
-	RADIO("QTC002","라디오","MULTIPLE",null,null),
-	CHECKBOX("QTC003","체크박스","MULTIPLE",null,null),
-	TIME("QTC004","시간","SINGLE","/images/quest_time.png","Time"),
-	LOCATION("QTC005","위치","SINGLE","/images/quest_location.png","Location"),
-	SELECTBOX("QTC006","드롭다운","MULTIPLE",null,null),
-	DATE("QTC007","날짜","SINGLE","/images/quest_date.png","YYYY-MM-DD"),
-//	SEARCH("QTC008","검색","SINGLE","/images/quest_date.png","search"),
+	SUBJECTIVE("QTC001","enums.QstnTypeCd.SUBJECTIVE","SINGLE","/images/quest_text.png","enums.QstnTypeCd.SUBJECTIVE.desc"),
+	RADIO("QTC002","enums.QstnTypeCd.RADIO","MULTIPLE",null,null),
+	CHECKBOX("QTC003","enums.QstnTypeCd.CHECKBOX","MULTIPLE",null,null),
+	TIME("QTC004","enums.QstnTypeCd.TIME","SINGLE","/images/quest_time.png","enums.QstnTypeCd.TIME.desc"),
+	LOCATION("QTC005","enums.QstnTypeCd.LOCATION","SINGLE","/images/quest_location.png","enums.QstnTypeCd.LOCATION.desc"),
+	SELECTBOX("QTC006","enums.QstnTypeCd.SELECTBOX","MULTIPLE",null,null),
+	DATE("QTC007","enums.QstnTypeCd.DATE","SINGLE","/images/quest_date.png","enums.QstnTypeCd.DATE.desc"),
+	GPS("QTC008","enums.QstnTypeCd.GPS","SINGLE","/images/quest_location.png","enums.QstnTypeCd.GPS.desc"),
 	;
 	
 	private String code; 
@@ -39,7 +39,11 @@ public enum QstnTypeCd implements CommonEnumType<String> {
 	
 	@Override
 	public String getName() {
-		return name;
+		return CommonUtils.getMessage(name);
+	}
+	
+	public String getDesc() {
+		return CommonUtils.getMessage(desc);
 	}
 
 	public static QstnTypeCd getEnums(String code) {

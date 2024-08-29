@@ -40,6 +40,7 @@ public class TmSrvySectDetailDTO {
 			private String qstnTitle;
 			private QstnTypeCd qstnTypeCd;
 			private Integer qstnSqno;
+			private String srvyMetadataCd;
 			private List<TmSrvyAnsInfo> tmSrvyAnsList;
 			
 			@Data
@@ -47,12 +48,14 @@ public class TmSrvySectDetailDTO {
 				private String ansId;
 				private String qstnId;
 				private String ansCnts;
+				private String etcYn;
 				private Integer ansSqno;
 				
 				public TmSrvyAnsInfo(TmSrvyAns tmSrvyAns) {
 					this.ansId 			= tmSrvyAns.getAnsId();
 					this.qstnId 		= tmSrvyAns.getQstnId();
 					this.ansCnts 		= tmSrvyAns.getAnsCnts();
+					this.etcYn 			= tmSrvyAns.getEtcYn();
 					this.ansSqno 		= tmSrvyAns.getAnsSqno();
 				}
 				
@@ -64,7 +67,7 @@ public class TmSrvySectDetailDTO {
 				this.qstnTitle 		= tmSrvyQstn.getQstnTitle();
 				this.qstnTypeCd 	= tmSrvyQstn.getQstnType();
 				this.qstnSqno 		= tmSrvyQstn.getQstnSqno();
-				
+				this.srvyMetadataCd	= tmSrvyQstn.getSrvyMetadataCd();
 			}
 			
 			public void setTmSrvyAnsList(List<TmSrvyAns> tmSrvyAnsList) {

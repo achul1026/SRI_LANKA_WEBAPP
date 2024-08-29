@@ -3,122 +3,308 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/layout}">
 	<th:block layout:fragment="content">
-		<div id="headerWrap">
-		    <div id="headerLogo"><img th:src="@{/images/logo.png}" alt="logo"></div>
-		    <h1 class="header-title">RDA</h1>
-		</div>
-	    <section id="sectionWrap">
-        	<div class="box-title-more surverDetail">
-				<div class="box-title">조사 정보</div>
+		<div id="mainBg"></div>
+		<div id="mainSection">
+			<div id="mainHeaderWrap">
+			    <div><img th:src="@{/images/app_main_logo.png}" id="mainLogo" alt="logo"></div>
 			</div>
-	        <div id="userBox" class="is-box">
-	            <ul>
-	            	<li><span id="surveyTitle" th:text="${exmnInfo.exmnNm}"></span></li>
-<!--	            	<li><span>조사코드 : </span><span th:text="${exmnInfo.partcptCd}"></span></li>-->
-	            	<!-- <li><span id="surveyTitle" th:text="${exmnInfo.exmnNm}"></span></li>
-	            	<li><span>조사코드 : </span><span th:text="${exmnInfo.partcptCd}"></span></li> -->
-	            	<li><span>조사위치 : </span><span>colombo > colombo > colombo</span></li>	
-	            	<li><span>조사기간 : </span><span th:text="${@commonUtils.formatLocalDateTime(exmnInfo.startDt,'YYYY-MM-dd')} +' ~ '+ ${@commonUtils.formatLocalDateTime(exmnInfo.endDt,'YYYY-MM-dd')}"></span></li>	
-	            	<li><span>조사시간 : </span><span th:text="${@commonUtils.formatLocalDateTime(exmnInfo.startDt,'HH:mm')} +' ~ '+ ${@commonUtils.formatLocalDateTime(exmnInfo.endDt,'HH:mm')}"></span></li>
-	            </ul>
-	        </div>
-	        <div>
-	            <div id="allContainer">
-	            	<!-- 조사원 정보 -->
-	            	<div id="surveyorListBox">
-	            		<div id="surveyorListWrap">
-							<div class="box-title-more">
-								<div class="box-title">조사원 정보</div>
-							</div>
-	            			<ul class="is-box surveyor-box scroll">
-	            				<li class="surveyor-list" th:each="item:${pollsterInfo}">
-            						<span class="surveyor-name-box">
-            							<span th:text="${item.pollsterType.getName()}"></span>
-            							<span th:text="${item.pollsterNm}"></span>
-            						</span>
-            						<span>
-            							<span th:text="${item.pollsterTel}"></span>
-            							<span th:text="${item.pollsterEmail}"></span>
-            						</span>
-	            				</li>
-	            			</ul>
-	            		</div>
-	            	</div>
-	            	<!-- 조사원 정보 END -->
-					<div id="noticeWrap">
-            			<div class="box-title-more">
-			                <div class="box-title">알림</div>
-							<a th:href="@{/notice}" class="more-title">전체보기</a>
-			            </div>
-			            <div class="is-box">
-			            	<div class="notice-box" th:each="item : ${noticeList}" th:onclick="|location.href='@{/notice/detail/{bbsId}(bbsId=${item.bbsId})}'|">
-			            		<a href="#" class="notice-item">
-			            			<span>
-					            		<span class="notice-txt" th:text="${item.bbsTitle}">이 이야기는 전설적인 퇴마사 감옥지의 퇴마록 퇴마록 퇴마록 퇴마록 퇴마록</span>
-					            		<span class="notice-date" th:text="${@commonUtils.formatLocalDateTime(item.registDt, 'yyyy-MM-dd')}">2023.12.22</span>
-			            			</span>
-									<i class="notice-more-icon"></i>			            		
-			            		</a>
-			            	</div>
-			            </div>
-            		</div>
-	            </div>
-	        </div>
-	    </section>
-		<div id="mainFooter">
-			<div id="mainFooterWrap">
-				<div id="mainFooterLogoSiteInner">
-	    			<div id="mainFooterLogoBox">
-	    				<div id="mainFooterLogo"><img th:src="@{/images/logo.png}" alt="logo"></div>
-	    				<div>스리랑카 조사 앱</div>	
+			<div id="mainAboutText" th:utext="#{main.title}">
+				아래 조사 정보에 대한<br>
+				내용을 확인하세요.
+			</div>
+			<div class="main-con main-search-wrap">
+				<div class="main-search-list main-box">
+					<div class="main-search-list-con">
+						<img th:src="@{/images/main_search_img01.png}" class="main_search_icon" alt="조사명 아이콘">
 					</div>
-	                <div id="relevantSite">
-	                    <div id="siteWrap">
-	                        <a href="javascript:void(0)" id="siteLabel">관련 웹사이트</a>
-	                        <div id="siteItem">
-	                            <a href="javascript:void(0)">TEST</a>
-	                            <a href="javascript:void(0)">TEST</a>
-	                            <a href="javascript:void(0)">TEST</a>
-	                            <a href="javascript:void(0)">TEST</a>
-	                        </div>
-	                    </div>
-	                </div>		
+					<div class="main-search-list-con">
+						<h3 class="main-search-list-title" th:text="#{common.table.invest.name}">조사명</h3>
+						<div class="main-search-list-sub" th:text="${exmnInfo.exmnNm}">조사명</div>
+					</div>
 				</div>
-				<div id="mainFooterAddress">
-					<div>주소 : Sri Lanka, Colombo</div>
-					<div>대표전화 : 023-456-7891</div>
-					<div>대표 이메일 : email@gmail.com</div>
+				
+				<th:block th:if="${exmnInfo.exmnType.getType() eq 'survey'}">
+				<div class="main-search-list main-box">
+					<div class="main-search-list-con">
+						<img th:src="@{/images/main_search_img02.png}" class="main_search_icon" alt="조사형태 아이콘">
+					</div>
+					<div class="main-search-list-con">
+						<h3 class="main-search-list-title" th:text="#{common.table.invest.type}">조사형태</h3>
+						<div class="main-search-list-sub" th:text="${exmnInfo.exmnDiv}">조사형태명</div>
+					</div>
 				</div>
-				<div id="mainFooterCopyright">Copyright © Sri Lanka Colombo RDA</div>
+				</th:block>
+				
+				<div class="main-search-list main-box" th:if="${exmnInfo.exmnType.getType() eq 'traffic'}">
+					<div class="main-search-list-con">
+						<img th:src="@{/images/main_search_img03.png}" class="main_search_icon" alt="조사시간 아이콘">
+					</div>
+					<div class="main-search-list-con">
+						<h3 class="main-search-list-title" th:text="#{common.table.invest.time}">조사시간</h3>
+						<div class="main-search-list-sub" th:text="${@commonUtils.formatLocalDateTime(exmnInfo.startDt,'HH:mm')} +' ~ '+ ${@commonUtils.formatLocalDateTime(exmnInfo.endDt,'HH:mm')}">조사시간명</div>
+					</div>
+				</div>
+				
+				<div class="main-search-list main-box">
+					<div class="main-search-list-con">
+						<img th:src="@{/images/main_search_img05.png}" class="main_search_icon" alt="조사기간 아이콘">
+					</div>
+					<div class="main-search-list-con">
+						<h3 class="main-search-list-title" th:text="#{main.invest.period}">조사기간</h3>
+						<div class="main-search-list-sub" th:text="${@commonUtils.formatLocalDateTime(exmnInfo.startDt,'YYYY-MM-dd')} +' ~ '+ ${@commonUtils.formatLocalDateTime(exmnInfo.endDt,'YYYY-MM-dd')}">조사기간명</div>
+					</div>
+				</div>
+				
+				<th:block th:if="${exmnInfo.exmnType.getType() eq 'survey'}">
+				<div class="main-search-list main-box">
+					<div class="main-search-list-con">
+						<img th:src="@{/images/main_search_img04.png}" class="main_search_icon" alt="목표개수 아이콘">
+					</div>
+					<div class="main-search-list-con">
+						<h3 class="main-search-list-title" th:text="#{common.table.invest.goal.count}">목표개수</h3>
+						<div class="main-search-list-sub" th:text="${exmnInfo.goalCnt}">10개</div>
+					</div>
+				</div>
+				</th:block>
 			</div>
-		</div>		    
+			<div class="main-con">
+				<h2 class="main-con-title" th:text="#{common.table.invest.location}">조사위치</h2>
+				<div class="lc-list main-box">
+					<div class="lc-detail">
+						<span th:text="${exmnInfo.exmnLc}"></span>
+					</div>
+				</div>
+			</div>
+<!--			<div class="main-con">-->
+<!--				<h2 class="main-con-title" th:text="#{common.table.invest.select}">조사원 선택</h2>-->
+				
+<!--			</div>-->
+			<div class="main-con">
+				<h2 class="main-con-title" th:text="#{common.table.invest.list}">조사 리스트</h2>
+				<th:block th:if="${not #lists.isEmpty(exmnRsltList)
+				}">
+<!-- 				 and exmnInfo.exmnType.getType() eq 'survey' -->
+					<div id="mainSelectBox">
+						<select id="mainSelect" onchange="changeExmnRsltList(this);">
+							<option value="" data-startlc-nm="" data-endlc-nm="" th:text="#{common.select.select}">선택</option>
+							<th:block th:if="${exmnInfo.exmnType.getType() eq 'survey'}">
+								<option th:each="item : ${pollsterList}" th:value="${item}" th:text="${item}"></option>
+							</th:block>
+							<th:block th:unless="${exmnInfo.exmnType.getType() eq 'survey'}">
+								<option th:each="item : ${drctList}" th:data-startlc-nm="${item.startlcNm}" th:data-endlc-nm="${item.endlcNm}" th:text="|${item.startlcNm} > ${item.endlcNm}|"></option>
+							</th:block>
+						</select>
+						<img src="/images/blue_arrow.png" alt="화살표" class="cm-select-arrow">
+					</div>
+					<div id="mainSearchListWrap">
+						<th:block th:each="item : ${exmnRsltList}">
+							<div class="main-search-list main-box searchist-list-wrap">
+								<div class="main-search-info exmn-rslt-area" >
+									<div class="main-search-info-list search-name">
+										<th:block th:if="${exmnInfo.exmnType.getType() eq 'survey'}">
+											<div class="main-search-cm main-search-info-name">
+												<img th:src="@{/images/main_search.png}" class="main-search-cm-img" alt="조사원">
+												<span th:text="#{invest.pollsterSave.investigators.name}">조사원</span>
+												<span>:</span>
+												<span th:text="${item.pollsterNm}"></span>
+											</div>
+											<div class="main-search-cm main-search-info-name ans-info-name">
+												<img th:src="@{/images/main_ans.png}" class="main-search-cm-img" alt="응답자">
+												<th:block th:if="${exmnInfo.exmnType.getCode() eq 'ETC004'}">
+													<span th:text="#{main.respondent}">응답자</span>
+												</th:block>
+												<th:block th:if="${exmnInfo.exmnType.getCode() eq 'ETC003'}">
+													<span th:text="#{main.car.type}">차종 타입</span>
+												</th:block>
+												<!-- TODO AXLELOAD 일 경우 추가 -->
+												<span>:</span>
+												<span th:text="${item.ansCnts}"></span>
+											</div>
+										</th:block>
+										
+ 										<!-- traffic 추가 할 데이터 영역 -->
+										<th:block th:unless="${exmnInfo.exmnType.getType() eq 'survey'}">
+												<span th:text="#{invest.common.invest.direction}">조사 방향</span>
+												<span>:</span>
+												<span th:text="|${item.startlcNm} > ${item.endlcNm}|"></span>
+												<div>
+													<span th:text="#{invest.invstTrafficSave.not.able.reason}">조사 불가 사유</span>
+													<span>:</span>
+													<span th:text="${item.lcchgRsn}"></span>
+												</div>
+										</th:block>
+										
+										
+										<div class="main-search-cm search-date-wrap">
+											<img th:src="@{/images/main_time.png}" class="main-search-cm-img" alt="조사 날짜">
+											<span th:text="${item.registDt}">2023.08.13</span>
+											<span th:text="${item.registTime}">20:30</span>
+										</div>
+									</div>
+									<div class="main-search-info-list">
+										<img th:src="@{/images/main_check.png}" class="main-search-check" alt="조사 완료">
+									</div>
+								</div>
+							</div>
+						</th:block>
+					</div>
+				</th:block>
+				
+				
+<!-- 				<th:block th:if="${not #lists.isEmpty(exmnRsltList) and exmnInfo.exmnType.getType() eq 'traffic'}"> -->
+<!-- 					<div id="mainSelectBox"> -->
+<!-- 						<select id="mainSelect" onchange="changeExmnRsltList(this);"> -->
+<!-- 							<option value="">선택</option> -->
+<!-- 							<th:block th:each="item : ${pollsterList}"> -->
+<!-- 								<option th:value="${item}" th:text="${item}"></option> -->
+<!-- 							</th:block> -->
+<!-- 						</select> -->
+<!-- 						<img src="/images/blue_arrow.png" alt="화살표" class="cm-select-arrow"> -->
+<!-- 					</div> -->
+<!-- 					<th:block th:unless="${exmnInfo.exmnType.getType() eq 'survey'}"> -->
+<!-- 						<div th:each="item:${exmnRsltList}"> -->
+<!-- 						</div> -->
+<!-- 					</th:block> -->
+<!-- 				</th:block> -->
+				
+				
+				
+				<th:block th:if="${#lists.isEmpty(exmnRsltList)}">
+					<div class="cm-no-list">
+						<img th:src="@{/images/no_searchist.png}" class="no-cm-icon" alt="조사리스트 없습니다.">
+						<p class="cm-no-list-text" th:text="#{main.notExist.exmn}">조사 결과 목록이 없습니다.</p>
+					</div>
+				</th:block>
+			<div class="main-con">
+				<div id="mainAlarmHead">
+					<h2 class="main-con-title" th:text="#{main.title.alarm}">알림</h2>
+					<a th:href="@{/notice}" class="main-alarm-btn" th:if="${not #lists.isEmpty(noticeList)}">More <img th:src="@{/images/more_btn.png}" alt="더보기"></a>
+				</div>
+				<div id="mainAlarmListWrap">
+					<th:block th:if="${not #lists.isEmpty(noticeList)}">
+						<div id="mainAlarmListWrapSub">
+							<div class="main-alarm-list main-box" th:each="item:${noticeList}" th:onclick="|location.href='@{/notice/detail/{bbsId}(bbsId=${item.bbsId})}'|">
+								<h2 class="main-alarm-list-title" th:text="${item.bbsTitle}">알림 타이틀 입니다.</h2>
+								<div class="main-alarm-list-con" th:text="${item.bbsCnts}">
+								</div>
+								<div class="main-alarm-list-date" th:text="${@commonUtils.formatLocalDateTime(item.registDt, 'yyyy-MM-dd')}">
+								</div>
+							</div>
+						</div>
+					</th:block>
+					<!---알림 없을떄---->
+					<th:block th:unless="${not #lists.isEmpty(noticeList)}">
+						<div id="mainNoAlarm">
+							<img th:src="@{/images/no_alarm.png}" class="no-cm-icon" alt="알림없을때 아이콘">
+							<p class="cm-no-list-text" th:text="#{main.notExist.alarm}">알림이 없습니다.</p>
+						</div>
+					</th:block>
+				</div>
+			</div>
+			
+				
+		</div>
 	</th:block>
 </html>
 <script th:inline="javascript">
 	$('header').remove();
+	const exmnType =  /*[[${exmnInfo.exmnType.getType()}]]*/;
+	const exmnTypeCode =  /*[[${exmnInfo.exmnType.getCode()}]]*/;
+	document.querySelector('.ft-main').classList.add('on');
+
+	let changeExmnRsltList = (_this) =>{
+		const selectedVal = _this.value;
+		if (exmnType == 'survey') {
+			fetch(__contextPath__+"/main/exmnrslt/search?pollsterNm="+selectedVal)
+			.then(response => {
+				return response.json();
+			})
+			.then(result => {
+				const exmnRsltList = result.data;
+				const exmnRsltDiv = document.getElementById('mainSearchListWrap');
+				exmnRsltDiv.replaceChildren();
+				let html = "";
+				for(const item of exmnRsltList){
+					let ansCntTitle = message.main.respondent;
+					if(exmnTypeCode === 'ETC003'){
+						ansCntTitle = message.main.car_type;
+					}
+					html += `<div class="main-search-list main-box searchist-list-wrap">
+								<div class="main-search-info exmn-rslt-area" >
+									<div class="main-search-info-list search-name">`
+							if(exmnType === 'survey'){
+					html +=				`<div class="main-search-cm main-search-info-name">
+											<img src="/images/main_search.png" class="main-search-cm-img" alt="조사원">
+											<span>${message.main.investigator}</span>
+											<span>:</span>
+											<span>${item.pollsterNm}</span>
+										</div>
+										<div class="main-search-cm main-search-info-name ans-info-name">
+											<img src="/images/main_ans.png" class="main-search-cm-img" alt="응답자">
+												<span>
+													${ansCntTitle}
+												</span>
+												<span>:</span>
+												<span>${item.ansCnts}</span>
+										</div>`;
+							}
+					html +=				`<div class="main-search-cm search-date-wrap">
+												<img src="/images/main_time.png" class="main-search-cm-img" alt="조사 날짜">
+													<span>${item.registDt}</span>
+													<span>${item.registTime}</span>
+											</div>
+										</div>
+										<div class="main-search-info-list">
+											<img src="/images/main_check.png" class="main-search-check" alt="조사 완료">
+										</div>
+									</div>
+								</div>`;
+				}
+				exmnRsltDiv.innerHTML = html;
 	
-	//footer menu show/hide
-	document.getElementById('footerHomeItem').remove();
-	document.getElementById('footerSurveyStart').classList.remove('none');
-	
-	let today = new Date();   
-	let year = today.getFullYear(); 
-	let month = today.getMonth()+1;
-	let date = today.getDate();
-	const tcDate = document.getElementById('tcDate');
-	if(month <= 9 && date <= 9) {
-		tcDate.textContent = year+'-0'+month+'-0'+date;
-	} else if(month <= 9) {
-		tcDate.textContent = year+'-0'+month+'-'+date;
-	} else if(date <= 9){
-		tcDate.textContent = year+'-'+month+'-0'+date;
-	} else {
-		tcDate.textContent = year+'-'+month+'-'+date;
+			});
+		} else if(exmnType == 'traffic'){
+			const selectedOption = _this.options[_this.selectedIndex];
+		    const startlcNm = selectedOption.dataset.startlcNm;
+		    const endlcNm = selectedOption.dataset.endlcNm;
+			fetch(__contextPath__+"/main/exmnrslt/search?startlcNm="+startlcNm+"&endlcNm="+endlcNm)
+			.then(response => {
+				return response.json();
+			})
+			.then(result => {
+				const exmnRsltList = result.data;
+				const exmnRsltDiv = document.getElementById('mainSearchListWrap');
+				exmnRsltDiv.replaceChildren();
+				let html = "";
+				for(const item of exmnRsltList){
+					html += `<div class="main-search-list main-box searchist-list-wrap">
+								<div class="main-search-info exmn-rslt-area" >
+									<div class="main-search-info-list search-name">`
+							if(exmnType === 'traffic'){
+					html +=				`<span>${message.main.survey_direction}</span>
+						<span>:</span>
+						<span>${item.startlcNm} > ${item.endlcNm}</span>
+						<div>
+						<span>${message.main.survey_lcchgRsn}</span>
+						<span>:</span>
+						<span>${item.lcchgRsn}</span>
+						</div>`;
+							}
+					html +=				`<div class="main-search-cm search-date-wrap">
+												<img src="/images/main_time.png" class="main-search-cm-img" alt="조사 날짜">
+													<span>${item.registDt}</span>
+													<span>${item.registTime}</span>
+											</div>
+										</div>
+										<div class="main-search-info-list">
+											<img src="/images/main_check.png" class="main-search-check" alt="조사 완료">
+										</div>
+									</div>
+								</div>`;
+				}
+				exmnRsltDiv.innerHTML = html;
+			});
+		}
 	}
-	
-    document.getElementById('siteLabel').addEventListener('click', () => {
-    	document.getElementById('siteWrap').classList.toggle('active');
-    	return false;
-    })
-    
+
 </script>

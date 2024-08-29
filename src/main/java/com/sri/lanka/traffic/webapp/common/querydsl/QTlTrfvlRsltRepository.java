@@ -1,11 +1,9 @@
 package com.sri.lanka.traffic.webapp.common.querydsl;
 
-import com.querydsl.core.types.Projections;
-import com.sri.lanka.traffic.webapp.common.dto.invst.TlExmnRsltDetailSaveDTO;
-import com.sri.lanka.traffic.webapp.common.entity.TlTrfvlRslt;
 import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sri.lanka.traffic.webapp.common.dto.invst.TlExmnRsltDetailSaveDTO;
 import com.sri.lanka.traffic.webapp.common.entity.QTlTrfvlRslt;
 
 import lombok.RequiredArgsConstructor;

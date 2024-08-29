@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{layout/layout}">
+
+<th:block layout:fragment="content">
+	<div id="surveyContent" class="survey-content">
+		<div class="content-wrap">
+			<div id="surveyInner">
+				<div class="is-box">
+					<div class="survey-item" id="odType">
+						<div class="survey-title" th:text="#{invest.pollsterSave.investigators.location}">조사원 조사위치</div>
+						<div class="survey-location-search-box location-event">
+							<input type="hidden" id="exmnLc" th:value="${invstRsltInfo.exmnLc}">
+							<input type="hidden" id="dsdCd" th:value="${invstRsltInfo.dsdCd}">
+							<input type="hidden" id="gnCd" th:value="${invstRsltInfo.gnCd}">
+							<div class="select-div-box cm-select-wd" data-box="0" data-type="provinNm-box">
+								<select class="select-list-box scroll location-select table-select" data-idx="0" data-type="provinNm">
+									<option th:text="${locationInfo.provinNm}"></option>
+								</select>
+								<img src="/images/select_arrow2.png" alt="화살표" class="cm-bd-select-arrow">
+							</div>
+							<div class="select-div-box cm-select-wd" data-box="1" data-type="districtNm-box">
+								<select class="select-list-box scroll location-select table-select" data-idx="1" data-type="provinNm">
+									<option th:text="${locationInfo.districtNm}"></option>
+								</select>
+								<img src="/images/select_arrow2.png" alt="화살표" class="cm-bd-select-arrow">
+							</div>
+							<div class="select-div-box cm-select-wd" data-box="2" data-type="dsdNm-box">
+								<select class="select-list-box scroll location-select table-select" data-idx="2" data-type="dsdNm">
+									<option th:text="${locationInfo.dsdNm}"></option>
+								</select>
+								<img src="/images/select_arrow2.png" alt="화살표" class="cm-bd-select-arrow">
+							</div>
+							<div class="select-div-box cm-select-wd" data-box="3" data-type="gnNm-box">
+								<select class="select-list-box scroll location-select table-select" id="selectGnCd" data-idx="3" data-type="gnNm">
+									<option th:if="${#strings.isEmpty(invstRsltInfo.gnCd)}" value="" th:text="#{common.select.select}">선택</option>
+									<th:block th:each="item : ${locationInfo.gnInfoList}">
+										<option th:text="${item.gnNm}" th:value="${item.gnCd}"></option>
+									</th:block>
+								</select>
+								<img src="/images/select_arrow2.png" alt="화살표" class="cm-bd-select-arrow">
+							</div>
+						</div>
+					</div>
+					<div class="survey-item od-survey-item">
+						<div class="survey-title" th:text=#{invest.pollsterSave.investigators.name}>조사원명</div>
+						<div class="select-div-box cm-select-wd">
+							<select class="select-list-box survey-text" id="pollsterId">
+								<th:block th:each="item : ${pollsterList}">
+									<option th:text="|${item.pollsterNm}(${item.pollsterEmail})|" 
+									th:value="${item.pollsterId}" 
+									th:data-pollster-email="${item.pollsterEmail}"
+									th:selected="${item.pollsterId} == ${exmnInfo.pollsterId}"></option>
+								</th:block>
+							</select>
+							<img src="/images/select_arrow2.png" alt="화살표" class="cm-bd-select-arrow">
+						</div>
+					</div>
+					<div class="survey-item od-survey-item">
+						<div class="survey-title" th:text="#{invest.pollsterSave.investigators.contact}">조사원 핸드폰 번호</div>
+						<div><input type="text" class="is-input wd100 validation-tag" id="pollsterTel" oninput="inputOnlyNumber(this)" th:value="${exmnInfo.pollsterTel}"/></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!--	<div id="btnFooterWrap">-->
+<!--		<a href="javascript:void(0)" id="headerNextButton" class="is-fix-key-button" th:text="#{common.button.next}">다음</a>-->
+<!--	</div>-->
+</th:block>
+</html>
+<script th:inline="javascript">
+
+	document.getElementById('footerContainer').classList.add('none');
+	document.body.classList.add('hidden');
+	document.querySelector('.ft-invst').classList.add('on');
+	//document.getElementById('footerContainer').classList.add('none');
+	document.getElementById('headerNextButton').classList.remove('none');
+
+	const headerNextButton = document.getElementById('headerNextButton');
+	headerNextButton.setAttribute('onclick', "savePollsterInfo()");
+	
+	const setRoadSide = () => {
+		const container = document.querySelector('#odType');
+		const html =	`
+						<div class="survey-item" id="roadSideType">
+							<div class="survey-title">${message.invest.pollsterSave_location_point}</div>
+							<select class="select-list-box scroll" id="regionType" onchange='roadSideSelect(this);'>
+								<option value="">${message.common.select}</option>
+								<option value="RTC001" data-column="cordonLine">${message.invest.pollsterSave_cordon_line}</option>
+								<option value="RTC002" data-column="tollBooth">${message.invest.pollsterSave_toll_booth}</option>
+							</select>
+							<select class="select-list-box scroll validation-tag mt8" id="surveyRegion" data-validation="select">
+								<option value="">${message.common.select}</option>
+							</select>
+						</div>
+						`
+		container.insertAdjacentHTML('afterend', html)
+	}
+	
+	//od = roadside 설문방식
+	const pageName = document.getElementById('pageName');
+	const pageType = pageName.dataset.pageType;
+	if(pageType == 'ROADSIDE') {
+		setRoadSide();
+	}
+	
+	const roadSideSelect = (_this) => {
+		const selectEl = _this;
+		const nextSelectEl = document.getElementById('surveyRegion');
+		const regionType = document.getElementById('regionType');
+		const column = regionType.options[regionType.selectedIndex].dataset.column;
+		let option = '';
+		
+		if(selectEl.value == 'RTC001') {
+			nextSelectEl.name = column;
+			option = `
+					<option value="">${message.common.select}</option>
+					<option value="3,A1">3(A1)</option>
+					<option value="4,A1">4(A1)</option>
+					<option value="5,A2">5(A2)</option>
+					<option value="6,A3">6(A3)</option>
+					<option value="7,A4">7(A4)</option>
+					<option value="8,A7">8(A7)</option>
+					<option value="9,A8">9(A8)</option>
+					<option value="10,B114">10(B114)</option>
+					<option value="11,B158">11(B158)</option>
+					<option value="12,B322">12(B322)</option>
+					<option value="13,B356">13(B356)</option>
+					<option value="14,B363">14(B363)</option>
+					<option value="16,B421">16(B421)</option>
+					<option value="17,B445">17(B445)</option>
+					<option value="18,B456">18(B456)</option>
+					<option value="19,B503">19(B503)</option>	
+				 	`
+			
+		} else if(selectEl.value == 'RTC002') {
+			nextSelectEl.name = column;
+			option = `
+					<option value="">${message.common.select}</option>
+					<option value="1,Welipenna Interchange Toll Booth">1(Welipenna Interchange Toll Booth)</option>
+					<option value="2,Canowin Arcade Side A/B">2(Canowin Arcade Side A/B)</option>
+					<option value="3,Dodangoda Interchange Toll Booth">3(Dodangoda Interchange Toll Booth)</option>
+					<option value="4,Gelanigama Interchange Toll Booth">4(Gelanigama Interchange Toll Booth)</option>
+					<option value="5,Kahathuduwa Interchange Toll Booth">5(Kahathuduwa Interchange Toll Booth)</option>
+					<option value="6,Kottawa Interchange Toll Booth">6(Kottawa Interchange Toll Booth)</option>
+					<option value="7,Athurugiriya Interchange Toll Booth">7(Athurugiriya Interchange Toll Booth)</option>
+					<option value="8,Kaduwela Interchage Toll Booth">8(Kaduwela Interchage Toll Booth)</option>
+					<option value="9,Kadawatha Interchange Toll Booth">9(Kadawatha Interchange Toll Booth)</option>
+					<option value="10,Kerawalapitiya Interchange Toll Booth">10(Kerawalapitiya Interchange Toll Booth)</option>
+					<option value="11,Ja Ela Interchage Toll Booth">11(Ja Ela Interchage Toll Booth)</option>
+				 	`
+		} else {
+			nextSelectEl.name = "";
+		}
+		
+		nextSelectEl.innerHTML = option;
+	}
+</script>

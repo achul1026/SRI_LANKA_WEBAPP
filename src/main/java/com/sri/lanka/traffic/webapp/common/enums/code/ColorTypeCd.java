@@ -7,16 +7,16 @@ import lombok.Getter;
 @Getter
 public enum ColorTypeCd implements CommonEnumType<String> {
 	
-	RED("SBC001","#ff968a"),
-	LIGHT_SKY_BLUE("SBC002","#abdee6"),
-	PURPLE("SBC003","#cbaacb"),
-	YELLOW("SBC004","#f6eac2"),
-	LIGHT_ORANGE("SBC005","#ffccb6"),
-	PINK("SBC006","#f3b0c3"),
-	ORANGE("SBC007","#e99f48"),
-	DARK_BLUE("SBC008","#8a92ff"),
-	SKY_BLUE("SBC009","#699bed"),
-	GREEN("SBC010","#82df8f"),
+	RED("SBC001","#FFC2EE"),
+	LIGHT_SKY_BLUE("SBC002","#ABDEE6"),
+	PURPLE("SBC003","#FAD8FA"),
+	YELLOW("SBC004","#F6EAC2"),
+	LIGHT_ORANGE("SBC005","#FFCCB6"),
+	PINK("SBC006","#FFAEAE"),
+	ORANGE("SBC007","#FCD4A6"),
+	DARK_BLUE("SBC008","#CCCFFF"),
+	SKY_BLUE("SBC009","#A9DBFF"),
+	GREEN("SBC010","#A6FCB2"),
 	;
 	
 	private String code; 

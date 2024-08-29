@@ -21,5 +21,7 @@ public class TlBbsInfo extends BaseEntity{
     private String bbsCnts; //게시판 내용
 
     private String dspyYn; //표출 여부
+    
+    private int viewCnt = 0; //조회수
 
 }

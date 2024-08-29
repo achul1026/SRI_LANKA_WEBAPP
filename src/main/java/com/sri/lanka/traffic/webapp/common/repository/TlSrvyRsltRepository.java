@@ -21,4 +21,6 @@ public interface TlSrvyRsltRepository extends JpaRepository<TlSrvyRslt, String>{
 	  * @return
 	  */
 	Optional<TlSrvyRslt> findOneByExmnrsltIdAndExmnstartDtAndExmnendDt(String exmnrsltId,LocalDateTime exmnstartDt, LocalDateTime exmnendDt);
+
+	int countByExmnrsltId(String exmnrslt);
 }

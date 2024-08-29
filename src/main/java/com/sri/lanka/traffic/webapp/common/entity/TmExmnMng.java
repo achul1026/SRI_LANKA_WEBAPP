@@ -47,6 +47,8 @@ public class TmExmnMng extends CreateEntity{
     private BigDecimal lon; //경도
 
     private String exmnDiv; //조사 구분
+    
+    private String roadDescr; //도로명
 
     private BigDecimal exmnNop; //조사 인원수
 
@@ -67,5 +69,21 @@ public class TmExmnMng extends CreateEntity{
     private BigDecimal goalCnt = BigDecimal.ZERO; //조사 목표 개수
     
     private String partcptCd; //참가 코드
+    
+    private String dsdCd; //스리랑카사무국코드
+
+    private String gnCd; //스리랑카지방사무국코드
+    
+    private String tazCd;
+    
+    private String cordonLine; //코든 라인
+    
+    private String tollBooth; //고속도로 나들목
+    
+    private String screenLine; //스크린 라인
+    
+    private String cstmYn = "N"; // 커스텀 여부
+    
+    private String exmnDistance; //조사 위치
     
 }

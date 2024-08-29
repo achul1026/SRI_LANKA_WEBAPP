@@ -25,15 +25,20 @@ public class TmSrvyQstn{
 
     private Integer qstnSqno; //질문 순번
     
-    public TmSrvyQstn(){}
+    private String qstnctgrCd; //질문 카테고리 코드
+
+    private String srvyMetadataCd;
     
+    public TmSrvyQstn(){}
+
     @Builder
-	public TmSrvyQstn(String qstnId, String sectId, String qstnTitle, QstnTypeCd qstnTypeCd, Integer qstnSqno) {
-		this.qstnId 		= qstnId;
-		this.sectId 		= sectId;
-		this.qstnTitle 		= qstnTitle;
-		this.qstnType 		= qstnTypeCd;
-		this.qstnSqno 		= qstnSqno;
-		
-	}
+    public TmSrvyQstn(String qstnId, String sectId, String qstnTitle, QstnTypeCd qstnTypeCd, Integer qstnSqno, String qstnctgrCd, String srvyMetadataCd) {
+        this.qstnId 		= qstnId;
+        this.sectId 		= sectId;
+        this.qstnTitle 		= qstnTitle;
+        this.qstnType 		= qstnTypeCd;
+        this.qstnSqno 		= qstnSqno;
+        this.qstnctgrCd 	= qstnctgrCd;
+        this.srvyMetadataCd = srvyMetadataCd;
+    }
 }

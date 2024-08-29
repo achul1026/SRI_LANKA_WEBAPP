@@ -5,11 +5,32 @@
 	<footer id="footerContainer">
 		<div id="footerWrap">
 			<ul id="footerMenu">
-				<li><a th:href="@{/map}"><img th:src="@{/images/footer_menu_02.png}" alt="map"></a></li>
-				<li id="footerHomeItem"><a th:href="@{/main}"><img th:src="@{/images/footer_menu_03.png}" alt="home"></a></li>
-				<li><a th:href="@{/setting}"><img th:src="@{/images/footer_menu_05.png}" alt="setting"></a></li>
+				<li>
+					<a th:href="@{/map}" class="ft-btn ft-location">
+						<img th:src="@{/images/footer_menu_02.svg}" alt="map">
+						<span class="ft-menu-title" th:text="#{main.footer.button.invest.location}">위치</span>
+					</a>
+				</li>
+				<li>
+					<a th:href="@{/invstmng/{exmnmngId}(exmnmngId=${@loginUtils.getExmnmngId()})}" id="footerSurveyStart" class="ft-btn ft-invst">
+						<img th:src="@{/images/footer_menu_04.svg}" alt="survey">
+						<span class="ft-menu-title" th:text="#{main.footer.button.invest.start}">조사시작</span>
+					</a>
+				</li>
+				<li id="footerHomeItem">
+					<a th:href="@{/main}" class="ft-btn ft-main">
+						<img th:src="@{/images/footer_menu_03.svg}" alt="home">
+						<span class="ft-menu-title" th:text="#{main.footer.button.main}">메인페이지</span>
+					</a>
+				</li>
+				<li>
+					<a th:href="@{/setting}" class="ft-btn ft-setting">
+						<img th:src="@{/images/footer_menu_05.svg}" alt="setting">
+						<span class="ft-menu-title" th:text="#{main.footer.button.option}">옵션</span>
+					</a>
+				</li>
 			</ul>
-			<a th:href="@{/invstmng/{exmnmngId}(exmnmngId=${exmnmngId})}" id="footerSurveyStart" class="is-key-button survey-start none">Survey Start</a>
+<!--			<a th:href="@{/invstmng/{exmnmngId}(exmnmngId=${exmnmngId})}" id="footerSurveyStart" class="is-key-button survey-start none" th:text="#{main.footer.button.survey.start}">Survey Start</a>-->
 		</div>
 	</footer>
 </th:block>

@@ -27,6 +27,7 @@ public class TmSrvySect{
 
     private Integer sectSqno; //부문 순번
     
+    
     public TmSrvySect(){}
     
     @Builder
@@ -37,6 +38,5 @@ public class TmSrvySect{
 		this.sectSubtitle 	= sectSubtitle;
 		this.sectType 		= sectType;
 		this.sectSqno 		= sectSqno;
-		
 	}
 }

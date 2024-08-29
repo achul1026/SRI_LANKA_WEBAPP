@@ -26,7 +26,7 @@ public class QTcUserMngRepository {
 	 * @return
 	 */
 	public LoginMngrDTO getTcUserInfoByUserId(String userId) {
-		LoginMngrDTO result = queryFactory.select(Projections.bean(LoginMngrDTO.class, tcUserMng.usermngId, tcUserMng.authId,
+		LoginMngrDTO result = queryFactory.select(Projections.bean(LoginMngrDTO.class, tcUserMng.usermngId, tcUserMng.authgrpId,
 				tcUserMng.userId, tcUserMng.userPswd, tcUserMng.userAuth, tcUserMng.userType,
 				tcUserMng.athrztStts, tcUserMng.userNm)).from(tcUserMng).where(tcUserMng.userId.eq(userId))
 				.fetchOne();

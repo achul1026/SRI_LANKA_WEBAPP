@@ -25,7 +25,7 @@ public class TcUserMng extends BaseEntity{
     private String usermngId; //사용자 관리 아이디
     
     @Column(length = 32)
-    private String authId; //권한 아이디
+    private String authgrpId; //권한 아이디
     
     @Column(length = 32, nullable = false)
 	@NotBlank(message="validation.error.required")
@@ -61,6 +61,9 @@ public class TcUserMng extends BaseEntity{
 
     @Column(length = 50)
     private String userBffltd; //사용자 소속
+    
+    @Column(length = 50)
+    private String userDept; //사용자 부서
 
     @Column(length = 10)
 	@Convert(converter = AthrztSttsCd.Converter.class)
@@ -69,5 +72,8 @@ public class TcUserMng extends BaseEntity{
     @Column(length = 10)
 	@Convert(converter = UserTypeCd.Converter.class)
 	private UserTypeCd userType; //사용자 유형
+    
+    @Column(length = 1)
+    private String resetpswdYn = "N"; //비밀번호 초기화 여부
 
 }

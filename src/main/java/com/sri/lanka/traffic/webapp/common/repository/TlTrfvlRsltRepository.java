@@ -6,4 +6,6 @@ import com.sri.lanka.traffic.webapp.common.entity.TlTrfvlRslt;
 
 public interface TlTrfvlRsltRepository extends JpaRepository<TlTrfvlRslt, String>{
 
+	int countByExmnrsltId(String exmnrsltId);
+
 }

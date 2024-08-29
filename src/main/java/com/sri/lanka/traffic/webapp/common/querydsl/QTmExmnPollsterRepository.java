@@ -27,10 +27,13 @@ public class QTmExmnPollsterRepository {
 	  * @param exmnmngId
 	  * @return
 	  */
-	public List<TmExmnPollsterDTO> getPollsterInfo(String exmnmngId) {
+	public List<TmExmnPollsterDTO> getPollsterList(String exmnmngId) {
 		List<TmExmnPollsterDTO> result = queryFactory.select(Projections.bean(
 																	TmExmnPollsterDTO.class,
-																	tmExmnPollster.pollsterNm, tmExmnPollster.pollsterEmail, tmExmnPollster.pollsterTel,
+																	tmExmnPollster.pollsterId,
+																	tmExmnPollster.pollsterNm,
+																	tmExmnPollster.pollsterEmail,
+																	tmExmnPollster.pollsterTel,
 																	tmExmnPollster.pollsterType)
 																	)
 								.from(tmExmnPollster)

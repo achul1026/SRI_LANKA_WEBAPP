@@ -1,10 +1,10 @@
 package com.sri.lanka.traffic.webapp.web.controller.setting;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import groovyjarjarpicocli.CommandLine.Model;
 
 @Controller
 @RequestMapping("/setting")
@@ -35,6 +35,7 @@ public class SettingController {
 
 	@GetMapping("/report/inquiry")
 	public String settingReportInquiry(Model model) {
+		model.addAttribute("pageType","inquiry");
 		return "views/setting/reportInquiry";
 	}
 

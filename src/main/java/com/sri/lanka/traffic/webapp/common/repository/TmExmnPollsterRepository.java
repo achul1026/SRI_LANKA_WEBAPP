@@ -6,4 +6,5 @@ import com.sri.lanka.traffic.webapp.common.entity.TmExmnPollster;
 
 public interface TmExmnPollsterRepository extends JpaRepository<TmExmnPollster, String>{
 
+    TmExmnPollster findOneByPollsterIdAndPollsterTel(String pollsterId, String pollstertel);
 }

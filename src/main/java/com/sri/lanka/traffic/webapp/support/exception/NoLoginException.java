@@ -18,6 +18,10 @@ public class NoLoginException extends RuntimeException{
 		this.errorCode = errorCode;
 		this.message = errorCode.getMessage();
 	}
+	public NoLoginException(String errorMessage) {
+		super();
+		this.message = errorMessage;
+	}
 
 	public NoLoginException(ErrorCode errorCode, String message) {
 		super();

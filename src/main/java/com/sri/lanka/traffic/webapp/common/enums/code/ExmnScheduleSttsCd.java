@@ -8,12 +8,12 @@ import lombok.Getter;
 @Getter
 public enum ExmnScheduleSttsCd implements CommonEnumType<String> {
 	
-	NOT_YET_PROGRESS("SSC001","진행예정",true),
-	NOT_PROGRESS("SSC002","미진행",true),
-	NOT_YET_INVESTIGATOR("SSC003","조사원 미등록",true),
-	PROGRESSING("SSC004","진행중",true),
-	PROGRESS_COMPLETE("SSC005","진행완료",true),
-	NO_MATCH_TYPE("SSC006","noMathType",false),
+	NOT_YET_PROGRESS("SSC001","enums.ExmnScheduleSttsCd.NOT_YET_PROGRESS",true),
+	NOT_PROGRESS("SSC002","enums.ExmnScheduleSttsCd.NOT_PROGRESS",true),
+	NOT_YET_INVESTIGATOR("SSC003","enums.ExmnScheduleSttsCd.NOT_YET_INVESTIGATOR",true),
+	PROGRESSING("SSC004","enums.ExmnScheduleSttsCd.PROGRESSING",true),
+	PROGRESS_COMPLETE("SSC005","enums.ExmnScheduleSttsCd.PROGRESS_COMPLETE",true),
+	NO_MATCH_TYPE("SSC006","enums.ExmnScheduleSttsCd.NO_MATCH_TYPE",false),
 	;
 	
 	private String code; 
@@ -33,7 +33,7 @@ public enum ExmnScheduleSttsCd implements CommonEnumType<String> {
 	
 	@Override
 	public String getName() {
-		return name;
+		return CommonUtils.getMessage(name);
 	}
 	
 	public static class Converter extends EnumConverter<ExmnScheduleSttsCd, String> {

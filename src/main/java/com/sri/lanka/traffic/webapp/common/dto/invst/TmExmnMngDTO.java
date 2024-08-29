@@ -29,12 +29,12 @@ public class TmExmnMngDTO {
 	private String registId;
 	private String exmnLc;
 	
-	public void setExmnType(ExmnTypeCd exmnType) {
-		if(!CommonUtils.isNull(exmnType)) {
-			this.exmnTypeNm = exmnType.getName();
-		}
-		this.exmnType = exmnType;
-	}
+//	public void setExmnType(ExmnTypeCd exmnType) {
+//		if(!CommonUtils.isNull(exmnType)) {
+//			this.exmnTypeNm = exmnType.getName();
+//		}
+//		this.exmnType = exmnType;
+//	}
 	
 	public void setSttsCd(ExmnSttsCd sttsCd) {
 		if(!CommonUtils.isNull(sttsCd)) {

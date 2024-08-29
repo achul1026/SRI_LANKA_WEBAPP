@@ -56,6 +56,7 @@ public class NoticeController {
 		String formattedContent = findAlarm.getBbsCnts().replace("\n", "<br>");
 	    findAlarm.setBbsCnts(formattedContent);
 		model.addAttribute("notice", findAlarm);
+		model.addAttribute("pageType","notice");
 		return "views/notice/noticeDetail";
 	}
 }

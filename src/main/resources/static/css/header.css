@@ -1,9 +1,16 @@
 @charset "UTF-8";
+header {
+	position:sticky;
+	top:0;
+	border-bottom: 1px solid #efefef;
+/*	box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);*/
+	z-index:9998;
+}
 
 #headerContainer {
+	padding:16px;
 	position:relative;
-	padding:16px 24px;
-    border-bottom: 1px solid var(--gray);
+	background-color:var(--white);
 }
 #headerItem {
 	display:flex;
@@ -18,15 +25,19 @@
 }
 #pageName {
 	font-size:20px;
-	font-weight:700;
-	color:var(--key-color);
+	font-weight:400;
+	color:#3271D1;
 }
 .headerNextButton {
 	padding:4px 8px;
 	font-size:14px;
 	color:var(--white);
-	border-radius:4px;
-	background-color:var(--key-color);
+	border-radius:6px;
+	background-color:#3271D1;
+}
+.header-home-img {
+	width: 20px;
+	display: block;
 }
 
 @media screen and (min-width: 768px) {

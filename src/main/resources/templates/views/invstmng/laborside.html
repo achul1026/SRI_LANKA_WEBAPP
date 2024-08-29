@@ -4,6 +4,67 @@
       layout:decorate="~{layout/layout}">
       
 	<th:block layout:fragment="content">
+		<div class="is-box">
+			<div class="infoTableWrap">
+				<table class="infoTable">
+					<colgroup>
+						<col width="15%">
+						<col width="35%">
+						<col width="15%">
+						<col width="35%">
+					</colgroup>
+					<tr>
+						<th th:text="#{common.table.subject}">제목</th>
+						<td>
+							<div th:text="${tlBbsInfo.bbsTitle}"></div>
+						</td>
+						<th th:text="#{common.table.class}">분류</th>
+						<td>
+							<div th:text="${tlBbsInfo.bbsType}"></div>
+						</td>
+					</tr>
+					<tr>
+						<th th:text="#{common.table.registDate}">작성일</th>
+						<td>
+							<div th:text="${@commonUtils.formatLocalDateTime(tlBbsInfo.registDt, 'yyyy-MM-dd')}"></div>
+						</td>
+						<th th:text="#{common.table.writer}">작성자</th>
+						<td>
+							<div th:text="${tlBbsInfo.registId}"></div>
+						</td>
+					</tr>
+					<tr>
+						<th th:text="#{board.file}">첨부파일</th>
+						<td>
+							<div th:each="item, status : ${tlBbsFile}">
+								<span th:text="${item.orgFilenm}"></span>
+								<!-- 						<button type="button" -->
+								<!-- 							th:onclick="deleteFileData([[${item.fileId}]], [[${tlBbsInfo.bbsId}]])">X</button> -->
+								<!-- 									<button type="button" th:onclick="download([[${item.fileId}]])">다운로드(테스트)</button> -->
+							</div>
+							<div id="fileList"></div>
+						</td>
+						<th th:text="#{common.table.writer}">노출 여부</th>
+						<td>
+							<div class="select-div-box">
+								<div th:text="${tlBbsInfo.dspyYn}"></div>
+								<!-- 					<select class="select-list-box modal-select" name="dspyYn"> -->
+								<!-- 						<option value="Y" th:text="#{common.option.dspyYn.y}">노출</option> -->
+								<!-- 						<option value="N" th:text="#{common.option.dspyYn.n}">미노출</option> -->
+								<!-- 					</select> -->
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th th:text="#{common.table.content}">내용</th>
+						<td colspan="3">
+							<textarea class="modal-textarea validation-tag" name="bbsCnts" th:text="${tlBbsInfo.bbsCnts}"
+					th:placeholder="#{common.search.placeholder.content}" readonly></textarea>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
 		<div id="surveyMapContainer" class="directionNone">
 			<div id="map"></div>
 	    	<div id="mapControl">
@@ -54,5 +115,6 @@
 	</th:block>
 </html>
 <script>
+	document.querySelector('.ft-invst').classList.add('on');
 	surveyMap(126.9423889029348, 37.54162975284942, 100);
 </script>

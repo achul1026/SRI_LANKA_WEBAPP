@@ -33,7 +33,7 @@ public class CodeAuthenticationService implements UserDetailsService {
         	codeAuthenticationEntity.setUserPswd(result.getPartcptCd());
         	
         }else{
-            throw new UsernameNotFoundException("참여코드 정보 및 조사 일정을 확인해주세요.");
+            throw new UsernameNotFoundException(CommonUtils.getMessage("login.fail.user.notFound"));
         }
         return codeAuthenticationEntity;
     }

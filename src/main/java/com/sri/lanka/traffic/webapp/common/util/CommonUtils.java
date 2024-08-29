@@ -2,14 +2,22 @@ package com.sri.lanka.traffic.webapp.common.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,6 +27,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CommonUtils {
 
 	private CommonUtils() {};
+	
+	private static MessageSource messageSource;
+
+    @Autowired
+    private MessageSource messageSourceAutowired;
+
+    @PostConstruct
+    public void init() {
+        messageSource = messageSourceAutowired;
+    }
 	
 	
 	/**
@@ -401,5 +419,45 @@ public class CommonUtils {
 		    e.printStackTrace();
 		}
 		return json;
+	}
+
+	/**
+	 * @Method Name : getStartOfDay
+	 * @작성일 : 2024. 4. 3.
+	 * @작성자 : NK.KIM
+	 * @Method 설명 : 오늘 시작 시간(00:00:00)
+	 * @return LocalDateTime
+	 */
+	public static LocalDateTime getStartOfDay(LocalDate currentDate) {
+
+		LocalDateTime startOfToday = LocalDateTime.of(currentDate, LocalTime.MIN);
+
+		return startOfToday;
+	}
+
+
+	/*public static ModelMapper converterModelMapper() {
+		ModelMapper modelMapper = new ModelMapper();
+		modelMapper.getConfiguration()
+				.setMatchingStrategy(MatchingStrategies.STRICT)
+				.setSkipNullEnabled(true)
+				.setFieldMatchingEnabled(true)
+				.setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE)
+		;
+		return modelMapper;
+	}*/
+	
+	/**
+	  * @Method Name : getMessage
+	  * @작성일 : 2024. 6. 10.
+	  * @작성자 : SM.KIM
+	  * @Method 설명 : 다국어 메시지 가져오기
+	  * @param messageKey
+	  * @param lang
+	  * @return
+	  */
+	public static String getMessage(String messageKey, String... args) {
+		String lang = LocaleContextHolder.getLocale().toString();
+		return messageSource.getMessage(messageKey, args, new Locale(lang));
 	}
 }

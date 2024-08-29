@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         
         //추후 수정
         http.authorizeRequests()
-                .antMatchers("/login/**","/common/**","/css/**","/js/**","/fonts/**","/images/**").permitAll()
+                .antMatchers("/login/**","/common/**","/css/**","/js/**","/fonts/**","/images/**","/error").permitAll()
                 .antMatchers("/**").hasAnyRole(AUTH_MNGR_ROLE,AUTH_CODE_ROLE)
                 .anyRequest().authenticated();
         
@@ -59,12 +59,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(successHandler())
                 .failureHandler(failureHandler())
                 .permitAll();
-        
 
         http.logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
                 .permitAll();
+
+        /*
+        중복 로그인 방지
+        http.sessionManagement()
+            .maximumSessions(1)
+            .maxSessionsPreventsLogin(true)
+            .expiredUrl("/login");*/
+        
+        http.exceptionHandling(exception -> exception
+                .accessDeniedPage("/error")
+            );
 
     }
 

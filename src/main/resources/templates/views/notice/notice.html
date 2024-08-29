@@ -8,7 +8,7 @@
 			<div class="is-box notice-wrap" th:each="item : ${noticeList}">
 				<a th:href="@{/notice/detail/{bbsId}(bbsId=${item.bbsId})}" class="notice-item">
 					<span>
-						<span class="notice-add-date" th:text="${@commonUtils.formatLocalDateTime(item.registDt, 'yyyy-MM-dd')}">2023-11-02</span>
+						<span class="notice-add-date main-alarm-list-date" th:text="${@commonUtils.formatLocalDateTime(item.registDt, 'yyyy-MM-dd')}">2023-11-02</span>
 						<span class="notice-add-date" th:text="${item.bbsTitle}">MCC 조사 일정 변동 안내</span>
 					</span>
 					<span>

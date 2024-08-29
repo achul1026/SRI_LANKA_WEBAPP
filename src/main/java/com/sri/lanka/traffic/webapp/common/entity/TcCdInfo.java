@@ -18,9 +18,17 @@ public class TcCdInfo extends CreateEntity{
 
     private String cd; //코드
 
-    private String cdNm; //코드 명
+    private String cdnmEng; //코드 명 eng
+    
+    private String cdnmKor; //코드 명 kor
+    
+    private String cdnmSin; //코드 명 sin
 
-    private String cdDescr; //코드 설명
+    private String cddescrEng; //코드 설명 eng
+    
+    private String cddescrKor; //코드 설명 kor
+    
+    private String cddescrSin; //코드 설명 sin
 
     private String useYn; //사용 여부
 

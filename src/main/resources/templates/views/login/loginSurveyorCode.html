@@ -1,63 +1,141 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link th:href="@{/images/favicon-16x16.png}" rel="icon">
-    <link th:href="@{/images/favicon-32x32.png}" rel="icon">
-    <link th:href="@{/css/style.css}" rel="stylesheet">
-    <script th:src="@{/js/jquery-1.12.4.min.js}"></script>
-    <script th:src="@{/js/common.js}"></script>
-    <title>SRILANKA</title>
-    <link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}"/>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<link th:href="@{/images/favicon-16x16.png}" rel="icon">
+	<link th:href="@{/images/favicon-32x32.png}" rel="icon">
+	<link th:href="@{/css/style.css}" rel="stylesheet">
+	<link th:href="@{/css/login.css}" rel="stylesheet">
+	<script th:src="@{/js/rda.modal.js}"></script>
+	<script th:src="@{/js/jquery-1.12.4.min.js}"></script>
+	<script th:src="@{/js/common.js}"></script>
+	<title>SRILANKA</title>
+	<link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}" />
 	<script type="text/javascript">
-	    var __contextPath__ = $('#contextPathHolder').attr('data-contextPath');
-	    if(isNull(__contextPath__)) __contextPath__ = '';  
+		var __contextPath__ = $('#contextPathHolder').attr('data-contextPath');
+		if (isNull(__contextPath__)) __contextPath__ = '';  
 	</script>
+	<script th:src="@{'/js/messages/message_' + ${lang} + '.js'}"></script>
 </head>
+
 <body>
-		<section id="login-container">
-		    <div class="rda-wrap">
-		        <div id="login-logo-box">
-		            <div id="login-logo"><img th:src="@{/images/logo.png}" alt="로고"></div>
-		            <h1 id="login-title">로그인</h1>
-		        </div>
-		        <div id="login-content-box">
-		            <form id="codeLoginForm">
-						<input type="hidden" name="loginType" value="code"/>
-						<input type="hidden" id="userPswd" name="userPswd" />
-		                <div>
-		                    <div class="login-input-box">
-		                        <label for="surveyorCodeLogin" class="login-input-title">조사코드</label>
-		                        <input type="text" id="userId" name="userId" placeholder="조사코드를 입력해주세요." class="login-input" required/>
-		                        <div class="error-message"></div>	
-		                    </div>
-		                </div>
-		                <div id="loginButtonBox">
-		                	<input type="button" class="login-button" value="확인" onclick="codeLoginConfirm();" />
-		                </div>
-		            </form>
-		        </div>
-		    </div>
-		</section>
-	</body>
+	<section id="loginContainer">
+		<div id="loginContainerSub">
+			<div id="loginTitle">
+				<img th:src="@{/images/app_login_logo.png}" class="login-logo" th:alt="#{common.logo}">
+			</div>
+			<div id="loginConWrap">
+				<form id="codeLoginForm">
+					<input type="hidden" name="loginType" value="code" />
+					<input type="hidden" id="userPswd" name="userPswd" />
+					<div id="loginCon">
+						<div class="login-con-list login-text-con">
+							<h3 class="login-title-text" th:text="#{login.loginSurveyorCode.title}">교통량 정보 조사</h3>
+							<p class="login-about-text" th:utext="#{login.loginSurveyorCode.about}">조사코드를 입력하여<br>교통량 정보 등록을
+								진행해주세요.</p>
+						</div>
+						<div class="login-con-list">
+							<input type="text" id="userId" name="userId"
+								th:placeholder="#{login.loginSurveyorCode.placeholder.invest.code}" class="login-input"
+								required />
+							<div class="error-message"></div>
+						</div>
+						<div class="login-con-list">
+							<input type="button" class="login-button" th:value="#{common.button.confirm}"
+								onclick="codeLoginConfirm();" />
+						</div>
+					</div>
+				</form>
+				
+				<div id="langSave" class="survey-item">
+					<div>
+						<span th:text="#{login.loginSurveyorCode.select.language}">언어 선택</span> : 
+					</div>
+					<div class="cm-select-box">
+						<select class="cm-table-select lang-check" onchange="setLangCookie()">
+							<option id="eng" name="lang" value="eng" th:selected="${lang == '' or lang == 'eng'}">Eng</option>
+							<option id="sinh" name="lang" value="sin" th:selected="${lang == 'sin'}">Sinh</option>
+							<option id="kor" name="lang" value="kor" th:selected="${lang == 'kor'}">Kor</option>
+						</select>
+						<img src="/images/select_arrow.png" alt="화살표" class="cm-select-img">
+					</div>
+					
+	<!--				<div>-->
+	<!--					<input type="radio" id="eng" class="lang-check" name="lang" value="eng" onclick="setLangCookie()"-->
+	<!--						th:checked="${lang == '' or lang == 'eng'}">-->
+	<!--					<label for="eng" class="lang-check-btn">Eng</label>-->
+	<!--				</div>-->
+	<!--				<div>-->
+	<!--					<input type="radio" id="sinh" class="lang-check" name="lang" value="sin" onclick="setLangCookie()"-->
+	<!--						th:checked="${lang == 'sin'}">-->
+	<!--					<label for="sinh" class="lang-check-btn">Sinh</label>-->
+	<!--				</div>-->
+	<!--				<div>-->
+	<!--					<input type="radio" id="kor" class="lang-check" name="lang" value="kor" onclick="setLangCookie()"-->
+	<!--						th:checked="${lang == 'kor'}">-->
+	<!--					<label for="kor" class="lang-check-btn">Kor</label>-->
+	<!--				</div>-->
+				</div>
+				<div id="loginCopyRight">
+					Copyright ⓒ Sri Lanka Colombo RDA
+				</div>
+			</div>
+		</div>
+	</section>
+</body>
+
 </html>
 <script th:inline="javascript">
-	$(function(){
+	window.onload = function () {
+		// URLSearchParams를 사용하여 쿼리스트링 파라미터를 추출합니다.
+		const urlParams = new URLSearchParams(window.location.search);
+		if (urlParams.has('error')) {
+			const error = urlParams.get('error');
+			// 에러 메시지를 alert으로 출력합니다.
+			//alert(decodeURIComponent(error));
+			new MsgModalBuilder().init().alertBody(error).footer(4, message.common.button_confirm, function (button, modal) {
+				modal.close();
+			}).open();
+		}
+
+		//언어 쿠키 세팅
+		let lang = getCookie("lang");
+		if (isNull(lang)) lang = 'eng';
+		document.getElementById('langSave').value = lang;
+		if (isNull(getCookie('lang'))) setCookie("lang", lang, 1);
+
+		const errorMsg = /*[[${errorMsg}]]*/;
+		if(!isNull(errorMsg)){
+			new MsgModalBuilder().init().alertBody(errorMsg).footer(4, message.common.button_confirm, function (button, modal) {
+				modal.close();
+			}).open();
+		}
+	};
+	$(function () {
 		$('header').remove();
 		$('footer').remove();
 	})
-	function codeLoginConfirm(){
+	
+	document.getElementById('codeLoginForm').addEventListener('keydown', function(event) {
+	    if (event.key === 'Enter') {
+	        event.preventDefault();
+	        codeLoginConfirm();
+	    }
+	});
+	
+	function codeLoginConfirm() {
 		const userId = document.getElementById('userId').value;
 		document.getElementById('userPswd').value = userId;
-		
+
 		const form = document.getElementById('codeLoginForm');
-		form.action = __contextPath__+'/login/surveyor/confirm';
+		form.action = __contextPath__ + '/login/surveyor/confirm';
 		form.method = 'POST';
-		
+
 		form.submit();
 	}
 </script>

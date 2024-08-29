@@ -4,17 +4,40 @@
       layout:decorate="~{layout/layout}">
 	<th:block layout:fragment="content">
     	<div id="mapContainer">
-	    	<div id="map" class="map"></div>
+	    	<div id="map" class="map survey-map"></div>
 	    	<div id="mapControl">
 		    	<div id="currentLocation"><img th:src="@{/images/current_location.png}" alt="현재위치"/></div>
-		    	<div id="zoomBox">
-			    	<div id="zoomIn"><img th:src="@{/images/zoom_in.png}" alt="확대"/></div>
-			    	<div id="zoomOut"><img th:src="@{/images/zoom_out.png}" alt="축소"/></div>
-		    	</div>
+		    	<div id="zoomIn"><img th:src="@{/images/zoom_in.png}" alt="확대"/></div>
+		    	<div id="zoomOut"><img th:src="@{/images/zoom_out.png}" alt="축소"/></div>
 	    	</div>
     	</div>
 	</th:block>
 </html>
 <script th:inline="javascript">
-	mapboxGl();
+	//map
+	
+	const invstLat = /*[[${loginExmnDTO.lat}]]*/ 
+	const invstLng = /*[[${loginExmnDTO.lon}]]*/ 
+	const invstExmnRange = /*[[${loginExmnDTO.exmnRange}]]*/
+	
+	document.querySelector('.ft-location').classList.add('on');
+	const surveyType = document.getElementById('surveyMapType').value;
+	
+	(async () => {
+		if(surveyType === 'traffic') {
+			//							center잡기위한 좌표
+			let mapgl = await mapboxGl(invstLng, invstLat);
+			//						조사위치, 조사반경 들어가야함
+			mapTrafficType(mapgl, invstLng, invstLat, invstExmnRange);
+			setMapZoomControl(mapgl);
+			myLocation(mapgl);
+		} else {
+			let mapgl = await mapboxGl(79.87812381167055, 6.93032250318177);
+			//surveyType 에 1103 = tazcode
+			mapSurveyType(mapgl,1103);
+			setMapZoomControl(mapgl);
+			myLocation(mapgl);
+		}
+	})();
+	
 </script>

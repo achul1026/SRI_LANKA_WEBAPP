@@ -19,14 +19,15 @@ public class TmSrvyAns{
 
     private Integer ansSqno; //답변 순번
     
+    private String etcYn; //기타 유무
+    
     public TmSrvyAns(){}
     
     @Builder
-	public TmSrvyAns(String qstnId, String ansCnts, Integer ansSqno) {
+	public TmSrvyAns(String qstnId, String ansCnts, Integer ansSqno, String etcYn) {
 		this.qstnId 		= qstnId;
 		this.ansCnts 		= ansCnts;
 		this.ansSqno 		= ansSqno;
-		
+		this.etcYn 			= etcYn;
 	}
-    
 }

@@ -3,29 +3,22 @@ package com.sri.lanka.traffic.webapp.common.enums.code;
 import lombok.Getter;
 
 @Getter
-public enum BbsTypeCd implements CommonEnumType<String> {
+public enum BbsTypeCd {
 	
-	NOTICE("BTC001","공지사항"),
-	ALARM("BTC002","알림"),
-	REPORT("BTC003","보고서"),
+	NOTICE("BTC001"),
+	NEWS("BTC002"),
+	RESOURCES("BTC003"),
+	ALARM("BTC004"),
 	;
 	
 	private String code; 
-	private String name;
 	
-	BbsTypeCd(String code, String name) {
+	BbsTypeCd(String code) {
 		this.code = code;
-		this.name = name;
 	}
 	
-	@Override
     public String getCode() {
         return code;
     }
-	
-	@Override
-	public String getName() {
-		return name;
-	}
 	
 }

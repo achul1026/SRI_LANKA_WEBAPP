@@ -26,6 +26,8 @@ public class TlTrfvlRslt {
     
     private String endlcNm; //종료위치 명
     
+    private String pollsterTel; //조사원 연락처
+    
     private BigDecimal pollsterLat; //조사원 위도
     
     private BigDecimal pollsterLon; //조사원 경도
@@ -52,7 +54,7 @@ public class TlTrfvlRslt {
 	public TlTrfvlRslt(String trfvlmexmnId ,String exmnrsltId, String pollsterLc
 						, BigDecimal pollsterLat, BigDecimal pollsterLon
 						, LocalDateTime exmnstartDt, LocalDateTime exmnendDt
-						, String lcchgRsn,String startlcNm,String endlcNm) {
+						, String lcchgRsn,String startlcNm,String endlcNm,String pollsterTel) {
     	
 		this.trfvlmexmnId 		= trfvlmexmnId;
 		this.exmnrsltId 		= exmnrsltId;
@@ -64,6 +66,7 @@ public class TlTrfvlRslt {
 		this.lcchgRsn 			= lcchgRsn;
 		this.startlcNm 			= startlcNm;
 		this.endlcNm 			= endlcNm;
+		this.pollsterTel 		= pollsterTel;
 		
 	}
 }

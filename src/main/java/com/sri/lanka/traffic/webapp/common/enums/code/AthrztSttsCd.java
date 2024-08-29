@@ -8,9 +8,9 @@ import lombok.Getter;
 @Getter
 public enum AthrztSttsCd implements CommonEnumType<String> {
 	
-	APPROVAL("ASC001","승인"),
-	NOT_APPROVED("ASC002","미승인"),
-	SUSPENDED("ASC003","정지");
+	APPROVAL("ASC001","enums.AthrztSttsCd.APPROVAL"),
+	NOT_APPROVED("ASC002","enums.AthrztSttsCd.NOT_APPROVED"),
+	SUSPENDED("ASC003","enums.AthrztSttsCd.SUSPENDED");
 	
 	private String code; 
 	private String name;
@@ -27,7 +27,7 @@ public enum AthrztSttsCd implements CommonEnumType<String> {
 	
 	@Override
 	public String getName() {
-		return name;
+		return CommonUtils.getMessage(name);
 	}
 	
 	public static AthrztSttsCd getEnums(String code) {

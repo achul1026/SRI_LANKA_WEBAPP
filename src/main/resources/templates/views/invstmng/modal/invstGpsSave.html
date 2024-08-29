@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/modalLayout}">
+      
+	<th:block layout:fragment="modalContent">
+		<div id="mapGps">
+			<div id="map"></div>
+			<div id="mapControl">
+		    	<div id="currentLocation"><img th:src="@{/images/current_location.png}" alt="현재위치"/></div>
+		    	<div id="zoomIn"><img th:src="@{/images/zoom_in.png}" alt="확대"/></div>
+		    	<div id="zoomOut"><img th:src="@{/images/zoom_out.png}" alt="축소"/></div>
+	    	</div>
+		</div>
+		<input type="text" id="modalGpsLocation" class="div-input wd100 mt8" readonly/>
+	</th:block>
+</html>
+<script>
+	const loading = new setLoading().start();
+	(async () => {
+		let mapgl = await mapboxGl();
+		surveyGps(mapgl);
+		setMapSearch(mapgl);
+		setMapZoomControl(mapgl);
+		window.modalMapMaker.addTo(mapgl);
+		
+		mapgl.jumpTo({
+            center: [window.lng, window.lat],
+            zoom: 17
+        });
+		
+	})();
+	loading.end();
+</script>
+

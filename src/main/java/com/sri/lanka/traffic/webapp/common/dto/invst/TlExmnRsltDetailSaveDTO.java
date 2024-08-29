@@ -19,6 +19,7 @@ public class TlExmnRsltDetailSaveDTO {
     private LocalDateTime exmnendDt; //조사 종료 일시
     private BigDecimal pollsterLat; //조사원 위도	
     private BigDecimal pollsterLon; //조사원 경도
+    private String pollsterTel; //조사원 연락처
     private String pollsterLc; //조사원 위치
     private String lcchgRsn; //위치 변경 사유
     private String type;
@@ -32,6 +33,7 @@ public class TlExmnRsltDetailSaveDTO {
     						.pollsterLat(pollsterLat)
     						.pollsterLon(pollsterLon)
     						.pollsterLc(pollsterLc)
+    						.pollsterTel(pollsterTel)
     						.exmnstartDt(exmnstartDt)
     						.exmnendDt(exmnendDt)
     						.lcchgRsn(CommonUtils.isNull(lcchgRsn) ? null : lcchgRsn )
@@ -48,4 +50,11 @@ public class TlExmnRsltDetailSaveDTO {
 			    			.exmnendDt(exmnendDt)
 			    			.build();
     }
+    
+//    public TlExmnRsltDetailSaveDTO() {
+//    }
+//	public TlExmnRsltDetailSaveDTO(TlTrfvlRslt tlTrfvlRslt) {
+//		BeanUtils.copyProperties(tlTrfvlRslt, this);
+//	}
+    
 }
